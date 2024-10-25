@@ -151,6 +151,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#f5f5f5",
+    justifyContent:"center",
+    alignItems:"center"
   },
   header: {
     flexDirection: "row",
@@ -202,6 +204,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
+    width: "20%"
   },
   deleteButtonText: {
     color: "white",
