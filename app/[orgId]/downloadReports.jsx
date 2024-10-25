@@ -80,7 +80,7 @@ const DownloadReports = () => {
         }\n`
 
       csvContent +=
-        "Fecha,Entrada,Salida,Horas Totales\n"; // Updated CSV headers
+        "Fecha,Entrada,Salida,Horas Totales,Feriado\n"; // Updated CSV headers
 
       try {
         const shiftsData = await fetchShiftWithId(
@@ -98,7 +98,8 @@ const DownloadReports = () => {
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
-          const shiftDate = shift.date
+          const shiftDate = shift.date;
+          const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "No";
 
           const shiftCost =
             shift.shift_mode === "holiday"
@@ -108,7 +109,7 @@ const DownloadReports = () => {
 
           csvContent += `${shiftDate},${shift.in},${shift.out},${
             shift.total_hours
-          },,\n`;
+          },${shiftMode},,\n`;
         });
 
         // Totales y cálculos finales
@@ -133,7 +134,7 @@ const DownloadReports = () => {
           parseFloat(bonusPrize);
 
         // Línea de resumen para el empleado
-        csvContent += `${employee.firstname} ${
+        csvContent += `\n${employee.firstname} ${
           employee.lastname
         },,,${workedHours}h ${remainingMinutes}m,\n\nTarifa Hora,Viaticos,Premio,Total Minutos,Feriados,Excedente,Total\n $${hourlyFee}, $${travelCost}, $${bonusPrize},${totalWorkedMinutes}m, $${holidayCost}, $${excedenteCost}, $${totalFinal.toFixed(
           2
