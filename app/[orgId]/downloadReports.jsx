@@ -98,6 +98,7 @@ const DownloadReports = () => {
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
+          const shiftDate = shift.date
 
           const shiftCost =
             shift.shift_mode === "holiday"
@@ -105,7 +106,7 @@ const DownloadReports = () => {
               : 0;
           holidayCost += shiftCost;
 
-          csvContent += `${new Date(shift.date).toLocaleDateString("en-GB")},${shift.in},${shift.out},${
+          csvContent += `${shiftDate},${shift.in},${shift.out},${
             shift.total_hours
           },,\n`;
         });
