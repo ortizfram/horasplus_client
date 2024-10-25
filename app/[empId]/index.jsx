@@ -48,6 +48,20 @@ const Index = () => {
     }));
   };
 
+  const handleRemoveFromOrganization = async () => {
+    setLoading(true);
+    const updatedData = await updateEmployee(empId, {
+      ...employee,
+      organization_id: null,
+    });
+    setEmployee(updatedData);
+    console.log("Updated Employee Data after removal:", updatedData);
+    setTimeout(() => {
+      setLoading(false);
+      alert("Empleado ha sido removido de la organizacion!");
+    }, 2000);
+  };
+
   const handleSaveChanges = async () => {
     setLoading(true);
     const updatedData = await updateEmployee(empId, employee);
@@ -166,6 +180,16 @@ const Index = () => {
           onPress={handleSaveChanges}
           disabled={loading}
         />
+
+        <Pressable
+          style={[styles.removeButton, loading && styles.disabledButton]}
+          onPress={handleRemoveFromOrganization}
+          disabled={loading}
+        >
+          <Text style={styles.removeButtonText}>
+            {loading ? "Removing..." : "Sacar de Organización"}
+          </Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
@@ -174,6 +198,30 @@ const Index = () => {
 export default Index;
 
 const styles = StyleSheet.create({
+  removeButton: {
+    marginTop: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "#FF4C4C", // Bright red color for emphasis
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+    alignSelf: "center",
+  },
+  removeButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  disabledButton: {
+    backgroundColor: "#FFB3B3", // Lighter red when disabled
+  },
+
   container: {
     flexGrow: 1,
     padding: 10, // Reduced padding

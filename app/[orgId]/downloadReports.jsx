@@ -74,8 +74,13 @@ const DownloadReports = () => {
 
   const handleDownloadClick = async () => {
     for (let employee of employees) {
-      let csvContent =
-        "Fecha,Empleado,Horas Totales,Tarifa Horaria,Costo Viaje,Premio,Excedente,Feriados,Total Excedente,Total Final\n"; // Updated CSV headers
+
+      let csvContent =`${employee.firstname} ${
+          employee.lastname
+        }\n`
+
+      csvContent +=
+        "Fecha,Entrada,Salida,Horas Totales\n"; // Updated CSV headers
 
       try {
         const shiftsData = await fetchShiftWithId(
@@ -84,51 +89,52 @@ const DownloadReports = () => {
           endDate.toISOString().split("T")[0]
         );
 
-        // Process shift data for each employee
-        const workedTimeMinutes = shiftsData.reduce((total, shift) => {
+        let totalWorkedMinutes = 0;
+        let holidayCost = 0;
+
+        shiftsData.forEach((shift) => {
           const [h, m] = shift.total_hours.split(" ");
           const hours = parseInt(h.replace("h", ""), 10) || 0;
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
-          return total + hours * 60 + minutes; // Convert total hours to minutes
-        }, 0);
+          const shiftMinutes = hours * 60 + minutes;
+          totalWorkedMinutes += shiftMinutes;
 
-        // Convert worked time to hours and minutes for display
-        const workedHours = Math.floor(workedTimeMinutes / 60);
-        const remainingMinutes = workedTimeMinutes % 60;
+          const shiftCost =
+            shift.shift_mode === "holiday"
+              ? hours * (employee.hourly_fee || 0)
+              : 0;
+          holidayCost += shiftCost;
 
+          csvContent += `${new Date(shift.date).toLocaleDateString("en-GB")},${shift.in},${shift.out},${
+            shift.total_hours
+          },,\n`;
+        });
+
+        // Totales y cálculos finales
+        const workedHours = Math.floor(totalWorkedMinutes / 60);
+        const remainingMinutes = totalWorkedMinutes % 60;
         const hourlyFee = employee.hourly_fee || 0;
         const travelCost = employee.travel_cost || 0;
         const bonusPrize = employee.bonus_prize || 0;
-        const holidayCost = shiftsData.reduce((total, shift) => {
-          return (
-            total +
-            (shift.shift_mode === "holiday"
-              ? parseInt(shift.total_hours.split(" ")[0]) * hourlyFee
-              : 0)
-          );
-        }, 0);
 
         const declaredMinutes = employee.declared_hours || 0;
         const excedenteMinutes = Math.max(
           0,
-          workedTimeMinutes - declaredMinutes
+          totalWorkedMinutes - declaredMinutes
         );
         const excedenteCost = Math.floor(
           excedenteMinutes * (hourlyFee / 60) + travelCost
-        ); // Cost of exceeded minutes
-
+        );
         const totalFinal =
-          (workedTimeMinutes / 60) * hourlyFee +
+          (totalWorkedMinutes / 60) * hourlyFee +
           holidayCost +
           travelCost +
-          parseFloat(bonusPrize); // Calculate total final payment
+          parseFloat(bonusPrize);
 
-        // Prepare CSV row with total hours formatted
-        csvContent += `${new Date().toLocaleDateString("en-GB")},${
-          employee.firstname
-        } ${
+        // Línea de resumen para el empleado
+        csvContent += `${employee.firstname} ${
           employee.lastname
-        },${workedHours}h ${remainingMinutes}m,${hourlyFee},${travelCost},${bonusPrize},${excedenteMinutes}m,${holidayCost},${excedenteCost},${totalFinal.toFixed(
+        },,,${workedHours}h ${remainingMinutes}m,\n\nTarifa Hora,Viaticos,Premio,Total Minutos,Feriados,Excedente,Total\n $${hourlyFee}, $${travelCost}, $${bonusPrize},${totalWorkedMinutes}m, $${holidayCost}, $${excedenteCost}, $${totalFinal.toFixed(
           2
         )}\n`;
       } catch (error) {
@@ -138,7 +144,7 @@ const DownloadReports = () => {
         );
       }
 
-      // Function to download the CSV
+      // Descargar el archivo CSV
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const link = document.createElement("a");
       const url = URL.createObjectURL(blob);
