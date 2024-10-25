@@ -99,7 +99,7 @@ export default function Dashboard() {
           onPress={() => router.push(`${organization?._id}/employees`)}
         >
           <Icon name="people" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Empleados</Text>
+          <Text style={styles.gridText}>Editar Empleados - Reporte Individual</Text>
         </Pressable>
         <Pressable
           style={styles.gridItem}
@@ -108,13 +108,13 @@ export default function Dashboard() {
           <Icon name="assessment" size={30} color="#007bff" />
           <Text style={styles.gridText}>Descargar reporte mensual de {organization?.name}</Text>
         </Pressable>
-        <Pressable
+        {/* <Pressable
           style={styles.gridItem}
           onPress={() => router.push("/roles")}
         >
           <Icon name="group" size={30} color="#007bff" />
           <Text style={styles.gridText}>Roles</Text>
-        </Pressable>
+        </Pressable> */}
         {/* <Pressable
           style={styles.gridItem}
           onPress={() => router.push("/alerts")}
