@@ -8,8 +8,8 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [splashLoading, setSplashLoading] = useState(true);
-  const [userInfo, setUserInfo] = useState(null);
+  const [splashLoading, setSplashLoading] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
   const router = useRouter();
 
   const updateUserInfo = (updatedUser) => {
@@ -37,15 +37,9 @@ export const AuthProvider = ({ children }) => {
         { email, password, firstname, lastname },
         { withCredentials: true }
       );
-  
+
       if (res.status === 201) {
         let userInfo = res.data;
-  
-        // Set organization_id to null in user.data if it's not included
-        if (!userInfo.user.data?.organization_id) {
-          userInfo.user.data = { ...userInfo.user.data, organization_id: null };
-        }
-  
         console.log(userInfo);
         setUserInfo(userInfo);
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -75,7 +69,6 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
-  
 
   const login = async (email, password) => {
     setIsLoading(true);
@@ -91,16 +84,10 @@ export const AuthProvider = ({ children }) => {
           withCredentials: true,
         }
       );
-  
+
       if (res.status === 200) {
         console.log("Response received, setting token");
         let userInfo = res.data;
-  
-        // Set organization_id to null in user.data if it's not included
-        if (!userInfo.user.data?.organization_id) {
-          userInfo.user.data = { ...userInfo.user.data, organization_id: null };
-        }
-  
         console.log(userInfo);
         setUserInfo(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
@@ -110,7 +97,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       setIsLoading(false);
       let errorMessage = "An unexpected error occurred";
-  
+
       if (axios.isAxiosError(error)) {
         if (error.response) {
           if (error.response.status === 401) {
@@ -123,12 +110,11 @@ export const AuthProvider = ({ children }) => {
           errorMessage = "No response from the server. Please try again later.";
         }
       }
-  
+
       alert(errorMessage); // Display the error message as an alert
       console.log(`login error: ${error}`);
     }
   };
-  
 
   const logout = async () => {
     setIsLoading(true);
@@ -165,6 +151,7 @@ export const AuthProvider = ({ children }) => {
 
   const isLoggedIn = async () => {
     try {
+      setSplashLoading(true);
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
       if (userInfo) {

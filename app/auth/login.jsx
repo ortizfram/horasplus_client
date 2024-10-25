@@ -7,13 +7,13 @@ import {
   Pressable,
   Alert,
 } from "react-native";
+import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Link } from "expo-router";
-import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const { login, loginWithGoogle, loginWithFacebook, isLoading } =
-    useContext(AuthContext) || {};
+    useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
