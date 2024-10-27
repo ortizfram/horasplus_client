@@ -12,3 +12,14 @@ export const fetchShiftWithId = async (uid, startDate, endDate) => {
     throw error;
   }
 };
+export const fetchAShift = async (uid, date) => {
+  try {
+    const response = await axios.get(`${RESP_URL}/api/shift/${uid}`, {
+      params: { date }, // Send the start and end dates as query parameters
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching shift Id:", error);
+    throw error;
+  }
+};
