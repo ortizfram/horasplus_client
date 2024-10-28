@@ -13,9 +13,13 @@ import {
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ViewShot from "react-native-view-shot";
-import { fetchEmployees, fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
+import {
+  fetchEmployees,
+  fetchEmployeeWithId,
+} from "../../services/organization/fetchEmployees";
 import { fetchShift, updateShift } from "../../services/userShift/fetchShifts";
 import { useLocalSearchParams } from "expo-router";
+import { Picker } from "@react-native-picker/picker"; // Asegúrate de instalar este paquete
 
 const FixARecord = () => {
   const viewRef = useRef();
@@ -26,6 +30,7 @@ const FixARecord = () => {
   const [showEmployeeList, setShowEmployeeList] = useState(true);
   const [shiftDetails, setShiftDetails] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
+  const [shiftType, setShiftType] = useState("regular"); // Default value
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -36,7 +41,7 @@ const FixARecord = () => {
         console.error("Error fetching employees:", error);
       }
     };
-    
+
     const loadEmployee = async () => {
       try {
         const data = await fetchEmployeeWithId(empId);
@@ -65,6 +70,13 @@ const FixARecord = () => {
     }
   }, [empId, startDate]);
 
+  // Update shiftType when shiftDetails changes
+  useEffect(() => {
+    if (shiftDetails) {
+      setShiftType(shiftDetails.shift_mode);
+    }
+  }, [shiftDetails]);
+
   const handleEmployeeSelect = (id) => {
     setEmpId(id);
     setShowEmployeeList(false);
@@ -81,19 +93,19 @@ const FixARecord = () => {
         empId,
         startDate.toISOString().split("T")[0],
         inTime,
-        outTime
+        outTime,
+        shiftType // Include shift type in the update
       );
       setShiftDetails(updatedShift);
       alert("Shift updated successfully!");
-      
-      // Recargar la página
+
+      // Reload the page
       window.location.reload();
     } catch (error) {
       console.error("Error updating shift:", error);
       alert("Failed to update shift.");
     }
   };
-  
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -132,20 +144,32 @@ const FixARecord = () => {
             {shiftDetails ? (
               <View style={styles.shiftDetailsContainer}>
                 <Text style={styles.shiftDetailsText}>Detalle de Turno:</Text>
-                <Text style={styles.shiftInfo}>Tipo de turno: {shiftDetails.shift_mode}</Text>
+                <Text style={styles.label}>Tipo de Turno:</Text>
+                <Picker
+                  selectedValue={shiftType}
+                  style={styles.picker}
+                  onValueChange={(itemValue) => setShiftType(itemValue)}
+                >
+                  <Picker.Item label="Regular" value="regular" />
+                  <Picker.Item label="Feriado" value="holiday" />
+                </Picker>
 
                 <Text style={styles.label}>Hora de Ingreso:</Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails.in}
-                  onChangeText={(text) => setShiftDetails({ ...shiftDetails, in: text })}
+                  onChangeText={(text) =>
+                    setShiftDetails({ ...shiftDetails, in: text })
+                  }
                 />
 
                 <Text style={styles.label}>Hora de salida:</Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails.out}
-                  onChangeText={(text) => setShiftDetails({ ...shiftDetails, out: text })}
+                  onChangeText={(text) =>
+                    setShiftDetails({ ...shiftDetails, out: text })
+                  }
                 />
 
                 <Pressable style={styles.button} onPress={handleSaveShift}>
@@ -168,16 +192,39 @@ const styles = StyleSheet.create({
   scrollContainer: { flexGrow: 1 },
   container: { padding: 16, alignItems: "center" },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 16 },
-  employeeItem: { fontSize: 16, padding: 8, backgroundColor: "#f0f0f0", marginVertical: 4 },
+  employeeItem: {
+    fontSize: 16,
+    padding: 8,
+    backgroundColor: "#f0f0f0",
+    marginVertical: 4,
+  },
   employeeText: { fontSize: 18, fontWeight: "bold", marginBottom: 8 },
-  input: { borderWidth: 1, borderColor: "#ccc", padding: 8, width: "100%", marginVertical: 8 },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 8,
+    width: "100%",
+    marginVertical: 8,
+  },
   dateContainer: { marginBottom: 16, alignItems: "center" },
   info: { fontSize: 16, marginVertical: 4 },
-  shiftDetailsContainer: { marginTop: 16, padding: 10, backgroundColor: "#e0e0e0", borderRadius: 8 },
+  shiftDetailsContainer: {
+    marginTop: 16,
+    padding: 10,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 8,
+  },
   shiftDetailsText: { fontSize: 18, fontWeight: "bold", marginBottom: 4 },
   shiftInfo: { fontSize: 16, marginBottom: 2 },
-  button: { backgroundColor: "#4CAF50", padding: 12, borderRadius: 8, marginTop: 16 },
+  label: { fontSize: 16, marginBottom: 4 }, // Añadido para el estilo del label
+  button: {
+    backgroundColor: "#4CAF50",
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 16,
+  },
   buttonText: { color: "#fff", fontWeight: "bold", textAlign: "center" },
+  picker: { height: 50, width: "100%", marginVertical: 8 }, // Estilo para el picker
 });
 
 export default FixARecord;

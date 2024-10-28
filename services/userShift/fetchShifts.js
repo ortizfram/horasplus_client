@@ -24,12 +24,13 @@ export const fetchShift = async (empId, selectedDate) => {
   }
 };
 
-export const updateShift = async (empId, selectedDate, inTime, outTime) => {
+export const updateShift = async (empId, selectedDate, inTime, outTime,mode) => {
   try {
     const response = await axios.put(`${RESP_URL}/api/shift/${empId}`, {
       date: selectedDate,
       inTime,
       outTime,
+      mode
     });
     return response.data.shift;
   } catch (error) {
