@@ -12,14 +12,28 @@ export const fetchShiftWithId = async (uid, startDate, endDate) => {
     throw error;
   }
 };
-export const fetchAShift = async (uid, date) => {
+export const fetchShift = async (empId, selectedDate) => {
   try {
-    const response = await axios.get(`${RESP_URL}/api/shift/${uid}`, {
-      params: { date }, // Send the start and end dates as query parameters
+    const response = await axios.get(`${RESP_URL}/api/shift/${empId}/fetch`, {
+      params: { date: selectedDate },
     });
     return response.data;
   } catch (error) {
-    console.error("Error fetching shift Id:", error);
+    console.error("Error fetching shift:", error);
+    throw error;
+  }
+};
+
+export const updateShift = async (empId, selectedDate, inTime, outTime) => {
+  try {
+    const response = await axios.put(`${RESP_URL}/api/shift/${empId}`, {
+      date: selectedDate,
+      inTime,
+      outTime,
+    });
+    return response.data.shift;
+  } catch (error) {
+    console.error("Error updating shift:", error);
     throw error;
   }
 };
