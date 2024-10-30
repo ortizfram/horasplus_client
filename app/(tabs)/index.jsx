@@ -49,7 +49,7 @@ export default function OrganizationList() {
       );
 
       const organization = response.data;
-      if (organization?.user_id === userInfo?.user?._id) {
+      if (organization?.user_id === userInfo?.user?._id || userInfo?.user?.isAdmin) {
         router.push(`/${orgId}/dashboard`);
       } else {
         router.push(`/${orgId}/bePart`);

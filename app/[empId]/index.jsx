@@ -1,13 +1,6 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Pressable,
-  Button,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, Pressable, Button, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
+import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { updateEmployee } from "../../services/employee/employee";
@@ -24,6 +17,7 @@ const Index = () => {
     bonus_prize: 0,
     cash_advance: 0,
     cash_a_date: "",
+    role: "User", // default role
   });
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +49,6 @@ const Index = () => {
       organization_id: null,
     });
     setEmployee(updatedData);
-    console.log("Updated Employee Data after removal:", updatedData);
     setTimeout(() => {
       setLoading(false);
       alert("Empleado ha sido removido de la organizacion!");
@@ -66,7 +59,6 @@ const Index = () => {
     setLoading(true);
     const updatedData = await updateEmployee(empId, employee);
     setEmployee(updatedData);
-    console.log("Updated Employee Data:", employee);
     setTimeout(() => {
       setLoading(false);
       alert("Changes saved successfully!");
@@ -78,22 +70,17 @@ const Index = () => {
       <View style={styles.formContainer}>
         <Text style={styles.title}>
           Empleado:{" "}
-          {employee?.firstname
-            ? `${employee.firstname} ${employee.lastname}`
-            : employee.email}
+          {employee?.firstname ? `${employee.firstname} ${employee.lastname}` : employee.email}
         </Text>
 
         {/* Reporte de Horas Button */}
-        <Pressable
-          style={styles.gridItem}
-          onPress={() => router.push(`${empId}/report`)}
-        >
+        <Pressable style={styles.gridItem} onPress={() => router.push(`${empId}/report`)}>
           <Text style={styles.gridText}>🕒 Ver Reporte de Horas</Text>
         </Pressable>
 
         <Text style={styles.sectionTitle}>Editar valores</Text>
 
-        {/* Editable Fields with Titles */}
+        {/* Editable Fields */}
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Nombre</Text>
           <TextInput
@@ -127,26 +114,21 @@ const Index = () => {
             style={styles.input}
             value={String(employee.hourly_fee)}
             keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("hourly_fee", Number(text))
-            }
+            onChangeText={(text) => handleInputChange("hourly_fee", Number(text))}
           />
         </View>
 
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Horas Declaradas</Text>
           <Text style={styles.fieldDescription}>
-            Ingresar unicamente si tiene bono de sueldo, para poder sacar las
-            horas excedentes. Se ingresa en minutos. Ejemplo : 1.5hs se ingresa
-            como 90.
+            Ingresar unicamente si tiene bono de sueldo, para poder sacar las horas excedentes.
+            Se ingresa en minutos. Ejemplo : 1.5hs se ingresa como 90.
           </Text>
           <TextInput
             style={styles.input}
             value={String(employee.declared_hours)}
             keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("declared_hours", Number(text))
-            }
+            onChangeText={(text) => handleInputChange("declared_hours", Number(text))}
           />
         </View>
 
@@ -156,9 +138,7 @@ const Index = () => {
             style={styles.input}
             value={String(employee.travel_cost)}
             keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("travel_cost", Number(text))
-            }
+            onChangeText={(text) => handleInputChange("travel_cost", Number(text))}
           />
         </View>
 
@@ -168,10 +148,21 @@ const Index = () => {
             style={styles.input}
             value={String(employee.bonus_prize)}
             keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("bonus_prize", Number(text))
-            }
+            onChangeText={(text) => handleInputChange("bonus_prize", Number(text))}
           />
+        </View>
+
+        {/* Role Picker */}
+        <View style={styles.fieldGroup}>
+          <Text style={styles.fieldTitle}>Roles</Text>
+          <Picker
+            selectedValue={employee.role}
+            onValueChange={(value) => handleInputChange("role", value)}
+            style={styles.input}
+          >
+            <Picker.Item label="Adminstrador" value="Admin" />
+            <Picker.Item label="Empleado" value="User" />
+          </Picker>
         </View>
 
         {/* Save Button */}
@@ -202,7 +193,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: "#FF4C4C", // Bright red color for emphasis
+    backgroundColor: "#FF4C4C",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
@@ -219,16 +210,15 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   disabledButton: {
-    backgroundColor: "#FFB3B3", // Lighter red when disabled
+    backgroundColor: "#FFB3B3",
   },
-
   container: {
     flexGrow: 1,
-    padding: 10, // Reduced padding
+    padding: 10,
     backgroundColor: "#f5f5f5",
   },
   formContainer: {
-    padding: 10, // Reduced padding
+    padding: 10,
     backgroundColor: "#fff",
     borderRadius: 10,
     shadowColor: "#000",
@@ -238,7 +228,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: 20, // Reduced font size
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
@@ -250,38 +240,38 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   fieldGroup: {
-    marginBottom: 10, // Reduced margin between fields
+    marginBottom: 10,
   },
   fieldTitle: {
-    fontSize: 14, // Reduced font size
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
   },
   fieldDescription: {
-    fontSize: 10, // Reduced font size
+    fontSize: 10,
     marginBottom: 5,
   },
   input: {
     width: "100%",
-    height: 40, // Reduced height
+    height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
-    fontSize: 14, // Reduced font size
+    fontSize: 14,
   },
   gridItem: {
     marginTop: 10,
-    width: "80%", // Reduced width to take less space
-    height: 50, // Reduced height
+    width: "80%",
+    height: 50,
     backgroundColor: "#007BFF",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8, // Reduced border radius
+    borderRadius: 8,
     alignSelf: "center",
   },
   gridText: {
-    fontSize: 16, // Reduced font size
+    fontSize: 16,
     fontWeight: "bold",
     color: "#fff",
   },
