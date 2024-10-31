@@ -49,7 +49,7 @@ export default function OrganizationList() {
       );
 
       const organization = response.data;
-      if (organization?.user_id === userInfo?.user?._id || userInfo?.user?.isAdmin) {
+      if (organization?.user_id === userInfo?.user?._id || userInfo?.user?.isAdmin || userInfo?.user?.isSuperAdmin) {
         router.push(`/${orgId}/dashboard`);
       } else {
         router.push(`/${orgId}/bePart`);
@@ -66,7 +66,7 @@ export default function OrganizationList() {
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>
-        Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
+        Bienvenido {userInfo?.user?.isAdmin || userInfo?.user?.isSuperAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.data?.firstname
           ? userInfo?.user?.data?.firstname
           : userInfo?.user?.email || ""}
