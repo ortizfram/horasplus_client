@@ -12,7 +12,14 @@ import {
 import axios from "axios";
 import { RESP_URL } from "../config";
 
-export default function SearchOrganization({ userId, token, onSelectOrg, isAdmin }) {
+export default function SearchOrganization({
+  userId,
+  token,
+  onSelectOrg,
+  isAdmin,
+  isSuperAdmin,
+  organizationIds, // Pass organization IDs the admin has access to
+}) {
   const [organizations, setOrganizations] = useState([]);
   const [filteredOrganizations, setFilteredOrganizations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,15 +31,25 @@ export default function SearchOrganization({ userId, token, onSelectOrg, isAdmin
       setLoading(true);
       try {
         const response = await axios.get(`${RESP_URL}/api/organization`, {
-          params: { userId },
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           withCredentials: true,
         });
-        setOrganizations(response.data);
-        setFilteredOrganizations(response.data); // Initially, all organizations are displayed
+
+        let organizationsData = response.data;
+
+        if (isAdmin && !isSuperAdmin) {
+          // Admins only see organizations with IDs in organizationIds
+          organizationsData = organizationsData.filter((org) =>
+            organizationIds.includes(org._id)
+          );
+        }
+        // Super admins see all organizations (no filtering)
+
+        setOrganizations(organizationsData);
+        setFilteredOrganizations(organizationsData); // Show all initially
       } catch (error) {
         console.error("Failed to fetch organizations:", error);
         setError("Failed to fetch organizations");
@@ -42,9 +59,8 @@ export default function SearchOrganization({ userId, token, onSelectOrg, isAdmin
     };
 
     fetchOrganizations();
-  }, [userId, token]);
+  }, [userId, token, isAdmin, isSuperAdmin, organizationIds]);
 
-  // Filter organizations based on search query
   useEffect(() => {
     if (searchQuery) {
       const filtered = organizations.filter((org) =>
@@ -52,7 +68,7 @@ export default function SearchOrganization({ userId, token, onSelectOrg, isAdmin
       );
       setFilteredOrganizations(filtered);
     } else {
-      setFilteredOrganizations(organizations); // Show all organizations if no search query
+      setFilteredOrganizations(organizations);
     }
   }, [searchQuery, organizations]);
 
@@ -70,7 +86,6 @@ export default function SearchOrganization({ userId, token, onSelectOrg, isAdmin
 
   return (
     <View style={styles.container}>
-      {/* Show input only if user is not an admin */}
       {!isAdmin && (
         <TextInput
           style={styles.searchInput}
@@ -79,81 +94,40 @@ export default function SearchOrganization({ userId, token, onSelectOrg, isAdmin
           onChangeText={setSearchQuery}
         />
       )}
-      {isAdmin ? (
-        // Display organizations directly for admins
-        <FlatList
-          contentContainerStyle={styles.listContainer}
-          style={styles.listBg}
-          data={organizations}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => onSelectOrg(item._id)}
-              style={({ pressed }) => [
-                {
-                  padding: 20,
-                  backgroundColor: pressed ? "#ddd" : "#f5f5f5",
-                  margin: 5,
-                  width: "100%",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  borderRadius: 8,
-                },
-                styles.itemContainer,
-              ]}
-            >
-              <Image
-                source={
-                  item.image
-                    ? { uri: `${RESP_URL}/${item.image}` }
-                    : require("../assets/images/org_placeholder.jpg")
-                }
-                style={styles.image}
-              />
-              <Text>{item.name}</Text>
-            </Pressable>
-          )}
-        />
-      ) : (
-        // Display filtered organizations for non-admins
-        filteredOrganizations.length > 0 ? (
-          <FlatList
-            contentContainerStyle={styles.listContainer}
-            style={styles.listBg}
-            data={filteredOrganizations}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => (
-              <Pressable
-                onPress={() => onSelectOrg(item._id)}
-                style={({ pressed }) => [
-                  {
-                    padding: 20,
-                    backgroundColor: pressed ? "#ddd" : "#f5f5f5",
-                    margin: 5,
-                    width: "100%",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    borderRadius: 8,
-                  },
-                  styles.itemContainer,
-                ]}
-              >
-                <Image
-                  source={
-                    item.image
-                      ? { uri: `${RESP_URL}/${item.image}` }
-                      : require("../assets/images/org_placeholder.jpg")
-                  }
-                  style={styles.image}
-                />
-                <Text>{item.name}</Text>
-              </Pressable>
-            )}
-          />
-        ) : (
-          <Text style={styles.noResults}>No se encontraron organizaciones</Text>
-        )
-      )}
+      <FlatList
+        contentContainerStyle={styles.listContainer}
+        style={styles.listBg}
+        data={filteredOrganizations}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() => onSelectOrg(item._id)}
+            style={({ pressed }) => [
+              {
+                padding: 20,
+                backgroundColor: pressed ? "#ddd" : "#f5f5f5",
+                margin: 5,
+                width: "100%",
+                flexDirection: "row",
+                alignItems: "center",
+                borderRadius: 8,
+              },
+              styles.itemContainer,
+            ]}
+          >
+            <Image
+              source={
+                item.image
+                  ? { uri: `${RESP_URL}/${item.image}` }
+                  : require("../assets/images/org_placeholder.jpg")
+              }
+              style={styles.image}
+            />
+            <Text>{item.name}</Text>
+          </Pressable>
+        )}
+        ListEmptyComponent={<Text style={styles.noResults}>No se encontraron organizaciones</Text>}
+      />
     </View>
   );
 }

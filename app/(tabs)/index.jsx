@@ -49,7 +49,11 @@ export default function OrganizationList() {
       );
 
       const organization = response.data;
-      if (organization?.user_id === userInfo?.user?._id || userInfo?.user?.isAdmin || userInfo?.user?.isSuperAdmin) {
+      if (
+        organization?.user_id === userInfo?.user?._id ||
+        userInfo?.user?.isAdmin ||
+        userInfo?.user?.isSuperAdmin
+      ) {
         router.push(`/${orgId}/dashboard`);
       } else {
         router.push(`/${orgId}/bePart`);
@@ -66,7 +70,8 @@ export default function OrganizationList() {
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>
-        Bienvenido {userInfo?.user?.isAdmin || userInfo?.user?.isSuperAdmin && <Text>Admin</Text>}{" "}
+        Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
+        {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
         {userInfo?.user?.data?.firstname
           ? userInfo?.user?.data?.firstname
           : userInfo?.user?.email || ""}
@@ -78,6 +83,9 @@ export default function OrganizationList() {
           userId={userInfo?._id}
           token={userInfo.token}
           onSelectOrg={handleSelectOrg}
+          isAdmin={userInfo?.user?.isAdmin}
+          isSuperAdmin={userInfo?.user?.isSuperAdmin}
+          organizationIds={userInfo?.user?.data?.organization_id || []}
         />
       ) : (
         <>
@@ -98,6 +106,9 @@ export default function OrganizationList() {
                 userId={userInfo?._id}
                 token={userInfo.token}
                 onSelectOrg={handleSelectOrg}
+                isAdmin={userInfo?.user?.isAdmin}
+                isSuperAdmin={userInfo?.user?.isSuperAdmin}
+                organizationIds={userInfo?.user?.data?.organization_id || []}
               />
             </View>
           ) : (
@@ -122,8 +133,13 @@ export default function OrganizationList() {
                   </Text>
                   <SearchOrganization
                     userId={userInfo?._id}
-                    token={userInfo?.token}
+                    token={userInfo.token}
                     onSelectOrg={handleSelectOrg}
+                    isAdmin={userInfo?.user?.isAdmin}
+                    isSuperAdmin={userInfo?.user?.isSuperAdmin}
+                    organizationIds={
+                      userInfo?.user?.data?.organization_id || []
+                    }
                   />
                 </View>
               )}
