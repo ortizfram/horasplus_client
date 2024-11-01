@@ -12,3 +12,15 @@ export const updateEmployee = async (uid, updateData) => {
     throw new Error("Error updating employee");
   }
 };
+
+export const fetchAllEmployees = async () => {
+  try {
+    const response = await axios.get(
+      `${RESP_URL}/api/users`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+    throw error;
+  }
+};

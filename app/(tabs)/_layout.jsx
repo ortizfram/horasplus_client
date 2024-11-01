@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import OrganizationList from ".";
 import Settings from "./settings";
 import { AuthContext } from "../../context/AuthContext";
+import Roles from "./roles";
 
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +40,17 @@ export default function TabsLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialIcons name={"home"} size={24} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Roles"
+        component={Roles}
+        options={{
+          title: "Roles",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons name={"flag"} size={24} color={color} />
           ),
         }}
       />
