@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { RESP_URL } from "../config";
+import { useRouter } from "expo-router";
 
 export default function SearchOrganization({
   userId,
@@ -25,6 +26,7 @@ export default function SearchOrganization({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     const fetchOrganizations = async () => {
@@ -126,7 +128,9 @@ export default function SearchOrganization({
             <Text>{item.name}</Text>
           </Pressable>
         )}
-        ListEmptyComponent={<Text style={styles.noResults}>No se encontraron organizaciones</Text>}
+        ListEmptyComponent={
+          <Text style={styles.noResults}>No se encontraron organizaciones</Text>
+        }
       />
     </View>
   );
