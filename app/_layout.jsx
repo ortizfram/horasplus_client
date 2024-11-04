@@ -48,7 +48,6 @@ function Layout() {
         <>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="organization" options={{ headerShown: false }} />
-          <Stack.Screen name="scanner" options={{ headerShown: false }} />
         </>
       ) : (
         <>

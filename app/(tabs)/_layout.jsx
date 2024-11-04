@@ -30,41 +30,70 @@ export default function TabsLayout() {
     return null; // Or display a loading state
   }
 
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="OrganizationList"
-        component={OrganizationList}
-        options={{
-          title: "Organizaciones",
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name={"home"} size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Roles"
-        component={Roles}
-        options={{
-          title: "Roles",
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name={"flag"} size={24} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="settings"
-        component={Settings}
-        options={{
-          title: "Configuracion",
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name={"settings"} size={24} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
+  if (userInfo?.user?.isSuperAdmin) {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen
+          name="OrganizationList"
+          component={OrganizationList}
+          options={{
+            title: "Organizaciones",
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name={"home"} size={24} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Roles"
+          component={Roles}
+          options={{
+            title: "Roles",
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name={"flag"} size={24} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="settings"
+          component={Settings}
+          options={{
+            title: "Perfil",
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name={"person"} size={24} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  } else {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen
+          name="OrganizationList"
+          component={OrganizationList}
+          options={{
+            title: "Organizaciones",
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name={"home"} size={24} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="settings"
+          component={Settings}
+          options={{
+            title: "Perfil",
+            headerShown: false,
+            tabBarIcon: ({ color }) => (
+              <MaterialIcons name={"person"} size={24} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    );
+  }
 }
