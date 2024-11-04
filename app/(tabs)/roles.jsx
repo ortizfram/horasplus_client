@@ -12,6 +12,7 @@ import {
   fetchAllEmployees,
   updateEmployee,
 } from "../../services/employee/employee";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Roles = () => {
   const [users, setUsers] = useState([]);
@@ -23,7 +24,7 @@ const Roles = () => {
     try {
       const data = await fetchAllEmployees();
       setUsers(data);
-      setFilteredUsers(data); // Initialize filtered users with all users
+      setFilteredUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
@@ -73,12 +74,20 @@ const Roles = () => {
       <Text style={styles.title}>Lista de Usuarios y Roles</Text>
 
       {/* Search Input */}
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Buscar por nombre, apellido o email"
-        value={searchTerm}
-        onChangeText={handleSearch}
-      />
+      <View style={styles.searchContainer}>
+        <MaterialIcons
+          name="search"
+          size={24}
+          color="#8E8E93"
+          style={styles.icon}
+        />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Buscar por nombre, apellido o email"
+          value={searchTerm}
+          onChangeText={handleSearch}
+        />
+      </View>
 
       {filteredUsers.map((user) => (
         <View key={user.id} style={styles.userCard}>
@@ -113,13 +122,31 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F0F0F0",
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginVertical: 15,
+    marginHorizontal: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  icon: {
+    marginRight: 8,
+  },
   searchInput: {
-    height: 40,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 8,
+    flex: 1,
+    fontSize: 16,
+    backgroundColor: "#F0F0F0", // Same as container to blend
+    borderRadius: 25,
+    paddingVertical: 8,
     paddingHorizontal: 10,
-    marginBottom: 15,
   },
   userCard: {
     backgroundColor: "#fff",
@@ -145,5 +172,9 @@ const styles = StyleSheet.create({
   picker: {
     height: 40,
     width: "100%",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+    marginTop: 8,
   },
 });

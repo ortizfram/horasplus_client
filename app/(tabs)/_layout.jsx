@@ -6,6 +6,7 @@ import OrganizationList from ".";
 import Settings from "./settings";
 import { AuthContext } from "../../context/AuthContext";
 import Roles from "./roles";
+import { View, Animated, Platform } from "react-native";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,18 +31,59 @@ export default function TabsLayout() {
     return null; // Or display a loading state
   }
 
+  const customTabBarStyle = {
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+    right: 10,
+    borderRadius: 25,
+    height: 60,
+    backgroundColor: "#fff",
+    elevation: 5, // Android shadow
+    shadowColor: "#000", // iOS shadow
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    paddingHorizontal: 10,
+  };
+
+  const renderIcon = (name, focused) => {
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Animated.View
+          style={{
+            transform: [
+              {
+                scale: focused ? 1.2 : 1,
+              },
+            ],
+          }}
+        >
+          <MaterialIcons
+            name={name}
+            size={focused ? 28 : 24}
+            color={focused ? "#4CAF50" : "#8E8E93"}
+          />
+        </Animated.View>
+      </View>
+    );
+  };
+
   if (userInfo?.user?.isSuperAdmin) {
     return (
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: customTabBarStyle,
+          tabBarShowLabel: false,
+        }}
+      >
         <Tab.Screen
           name="OrganizationList"
           component={OrganizationList}
           options={{
             title: "Organizaciones",
             headerShown: false,
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name={"home"} size={24} color={color} />
-            ),
+            tabBarIcon: ({ focused }) => renderIcon("home", focused),
           }}
         />
         <Tab.Screen
@@ -50,9 +92,7 @@ export default function TabsLayout() {
           options={{
             title: "Roles",
             headerShown: false,
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name={"flag"} size={24} color={color} />
-            ),
+            tabBarIcon: ({ focused }) => renderIcon("flag", focused),
           }}
         />
         <Tab.Screen
@@ -61,25 +101,26 @@ export default function TabsLayout() {
           options={{
             title: "Perfil",
             headerShown: false,
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name={"person"} size={24} color={color} />
-            ),
+            tabBarIcon: ({ focused }) => renderIcon("person", focused),
           }}
         />
       </Tab.Navigator>
     );
   } else {
     return (
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarStyle: customTabBarStyle,
+          tabBarShowLabel: false,
+        }}
+      >
         <Tab.Screen
           name="OrganizationList"
           component={OrganizationList}
           options={{
             title: "Organizaciones",
             headerShown: false,
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name={"home"} size={24} color={color} />
-            ),
+            tabBarIcon: ({ focused }) => renderIcon("home", focused),
           }}
         />
         <Tab.Screen
@@ -88,9 +129,7 @@ export default function TabsLayout() {
           options={{
             title: "Perfil",
             headerShown: false,
-            tabBarIcon: ({ color }) => (
-              <MaterialIcons name={"person"} size={24} color={color} />
-            ),
+            tabBarIcon: ({ focused }) => renderIcon("person", focused),
           }}
         />
       </Tab.Navigator>
