@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { RESP_URL } from "../config";
 import { useRouter } from "expo-router";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function SearchOrganization({
   userId,
@@ -89,12 +90,20 @@ export default function SearchOrganization({
   return (
     <View style={styles.container}>
       {!isAdmin && (
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar organización"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
+        <View style={styles.searchContainer}>
+          <MaterialIcons
+            name="search"
+            size={24}
+            color="#8E8E93"
+            style={styles.icon}
+          />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar organización"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </View>
       )}
       <FlatList
         contentContainerStyle={styles.listContainer}
@@ -137,18 +146,37 @@ export default function SearchOrganization({
 }
 
 const styles = StyleSheet.create({
+  
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    backgroundColor: "#F0F0F0", // Same as container to blend
+    borderRadius: 25,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+  },
+  icon: {
+    marginRight: 8,
+  },
+  searchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F0F0F0",
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginVertical: 15,
+    marginHorizontal: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-  },
-  searchInput: {
-    width: "90%",
-    padding: 10,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
   },
   listBg: {
     width: "100%",

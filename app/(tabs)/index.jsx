@@ -126,7 +126,7 @@ export default function OrganizationList() {
                   </Pressable>
                 </View>
               ) : (
-                <View>
+                <View style={{}}>
                   <Text style={styles.blue}>
                     Busca el nombre de la organización o nombre del dueño, para
                     enviar la solicitud y ser parte de la organización
@@ -156,6 +156,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding:10,
+    marginBottom:80   
   },
   blue: {
     color: "blue",
