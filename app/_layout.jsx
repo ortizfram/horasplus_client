@@ -1,10 +1,14 @@
-import { Stack } from "expo-router";
+import { router, Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useContext } from "react";
 import "react-native-reanimated";
 
 import { AuthContext, AuthProvider } from "../context/AuthContext";
+import { Text } from "react-native-web";
+import { Pressable, StyleSheet } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import BackButtonLayout from "../components/GoBackButton";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -13,6 +17,12 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
+
+  const router = useRouter();
+
+  const handleGoBack = () => {
+    router.back();
+  };
 
   useEffect(() => {
     if (loaded) {
@@ -25,8 +35,9 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
+    <AuthProvider style={styles.container}>
       <Layout />
+      <BackButtonLayout />
     </AuthProvider>
   );
 }
@@ -36,23 +47,38 @@ function Layout() {
 
   useEffect(() => {
     if (userInfo == null) {
-      router.push("/auth/login");
+      // router.push("/auth/login");
     }
   }, [splashLoading, userInfo]);
 
   return (
-    <Stack screenOptions={{headerShown:false}}>
+    <Stack screenOptions={{ headerShown: false }}>
       {splashLoading ? (
-        <Stack.Screen name="splashScreen" options={{ headerShown: false, title:"" }} />
+        <Stack.Screen
+          name="splashScreen"
+          screenOptions={{ headerShown: false, title: "" }}
+        />
       ) : userInfo?.token ? (
         <>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false, title:"" }} />
-          <Stack.Screen name="organization" options={{ headerShown: false, title:"" }} />
+          <Stack.Screen
+            name="(tabs)"
+            screenOptions={{ headerShown: false, title: "" }}
+          />
+          <Stack.Screen
+            name="organization"
+            screenOptions={{ headerShown: false, title: "" }}
+          />
         </>
       ) : (
         <>
-          <Stack.Screen name="auth/signup" options={{ headerShown: false, title:"" }} />
-          <Stack.Screen name="auth/login" options={{ headerShown: false, title:"" }} />
+          <Stack.Screen
+            name="auth/signup"
+            screenOptions={{ headerShown: false, title: "" }}
+          />
+          <Stack.Screen
+            name="auth/login"
+            screenOptions={{ headerShown: false, title: "" }}
+          />
         </>
       )}
 
@@ -60,3 +86,10 @@ function Layout() {
     </Stack>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    position: "relative",
+  },
+});

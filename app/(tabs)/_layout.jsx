@@ -84,7 +84,6 @@ export default function TabsLayout() {
           component={OrganizationList}
           options={{
             title: "Organizaciones",
-            headerShown: false,
             tabBarIcon: ({ focused }) => renderIcon("home", focused),
           }}
         />
