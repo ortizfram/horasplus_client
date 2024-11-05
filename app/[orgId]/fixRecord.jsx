@@ -190,7 +190,8 @@ const FixARecord = () => {
 
 const styles = StyleSheet.create({
   scrollContainer: { flexGrow: 1 },
-  container: { padding: 16, alignItems: "center" },
+  container: { padding: 16, alignItems: "center",    marginBottom:80   
+  },
   title: { fontSize: 24, fontWeight: "bold", marginBottom: 16 },
   employeeItem: {
     fontSize: 16,

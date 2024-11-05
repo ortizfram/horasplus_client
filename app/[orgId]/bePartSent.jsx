@@ -46,6 +46,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     backgroundColor: "#f9f9f9",
+    marginBottom:80   
+
   },
   emojiText: {
     fontSize: 24,

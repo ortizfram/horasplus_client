@@ -89,6 +89,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Set to flex: 1 to enable scrolling
     padding: 20,
+    marginBottom:80   
+
   },
   employeeContainer: {
     marginBottom: 10,

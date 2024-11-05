@@ -45,7 +45,7 @@ export default function TabsLayout() {
     shadowOpacity: 0.1,
     shadowRadius: 10,
     paddingHorizontal: 10,
-    justifyContent:"center",
+    justifyContent: "center",
   };
 
   const renderIcon = (name, focused) => {
@@ -76,6 +76,7 @@ export default function TabsLayout() {
         screenOptions={{
           tabBarStyle: customTabBarStyle,
           tabBarShowLabel: false,
+          headerShown: false,
         }}
       >
         <Tab.Screen
@@ -113,6 +114,7 @@ export default function TabsLayout() {
         screenOptions={{
           tabBarStyle: customTabBarStyle,
           tabBarShowLabel: false,
+          headerShown: false,
         }}
       >
         <Tab.Screen

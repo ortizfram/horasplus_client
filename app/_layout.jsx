@@ -41,7 +41,7 @@ function Layout() {
   }, [splashLoading, userInfo]);
 
   return (
-    <Stack>
+    <Stack screenOptions={{headerShown:false}}>
       {splashLoading ? (
         <Stack.Screen name="splashScreen" options={{ headerShown: false, title:"" }} />
       ) : userInfo?.token ? (

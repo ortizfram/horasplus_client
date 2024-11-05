@@ -216,6 +216,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 10,
     backgroundColor: "#f5f5f5",
+    marginBottom:80   
   },
   formContainer: {
     padding: 10,

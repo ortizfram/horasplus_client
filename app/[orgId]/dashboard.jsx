@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#f5f5f5",
     justifyContent:"center",
-    alignItems:"center"
+    alignItems:"center",
+    marginBottom:80   
   },
   header: {
     flexDirection: "row",
