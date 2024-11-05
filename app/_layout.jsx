@@ -43,16 +43,16 @@ function Layout() {
   return (
     <Stack>
       {splashLoading ? (
-        <Stack.Screen name="splashScreen" options={{ headerShown: false }} />
+        <Stack.Screen name="splashScreen" options={{ headerShown: false, title:"" }} />
       ) : userInfo?.token ? (
         <>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="organization" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false, title:"" }} />
+          <Stack.Screen name="organization" options={{ headerShown: false, title:"" }} />
         </>
       ) : (
         <>
-          <Stack.Screen name="auth/signup" options={{ headerShown: false }} />
-          <Stack.Screen name="auth/login" options={{ headerShown: false }} />
+          <Stack.Screen name="auth/signup" options={{ headerShown: false, title:"" }} />
+          <Stack.Screen name="auth/login" options={{ headerShown: false, title:"" }} />
         </>
       )}
 
