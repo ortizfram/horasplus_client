@@ -74,13 +74,9 @@ const DownloadReports = () => {
 
   const handleDownloadClick = async () => {
     for (let employee of employees) {
+      let csvContent = `${employee.firstname} ${employee.lastname}\n`;
 
-      let csvContent =`${employee.firstname} ${
-          employee.lastname
-        }\n`
-
-      csvContent +=
-        "Fecha,Entrada,Salida,Horas Totales,Feriado\n"; // Updated CSV headers
+      csvContent += "Fecha,Entrada,Salida,Horas Totales,Feriado\n"; // Updated CSV headers
 
       try {
         const shiftsData = await fetchShiftWithId(
@@ -107,9 +103,7 @@ const DownloadReports = () => {
               : 0;
           holidayCost += shiftCost;
 
-          csvContent += `${shiftDate},${shift.in},${shift.out},${
-            shift.total_hours
-          },${shiftMode},,\n`;
+          csvContent += `${shiftDate},${shift.in},${shift.out},${shift.total_hours},${shiftMode},,\n`;
         });
 
         // Totales y cálculos finales
@@ -238,8 +232,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    marginBottom:80   
-
+    marginBottom: 80,
+    marginTop: "2%",
+    marginHorizontal: "8%",
   },
   title: {
     fontSize: 24,

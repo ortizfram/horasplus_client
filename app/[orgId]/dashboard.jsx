@@ -154,6 +154,8 @@ const styles = StyleSheet.create({
     justifyContent:"center",
     alignItems:"center",
     marginBottom:80   
+    ,
+    marginTop:"2%",
   },
   header: {
     flexDirection: "row",

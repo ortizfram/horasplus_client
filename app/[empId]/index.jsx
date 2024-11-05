@@ -1,4 +1,12 @@
-import { StyleSheet, Text, View, TextInput, Pressable, Button, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  Button,
+  ScrollView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -70,11 +78,16 @@ const Index = () => {
       <View style={styles.formContainer}>
         <Text style={styles.title}>
           Empleado:{" "}
-          {employee?.firstname ? `${employee.firstname} ${employee.lastname}` : employee.email}
+          {employee?.firstname
+            ? `${employee.firstname} ${employee.lastname}`
+            : employee.email}
         </Text>
 
         {/* Reporte de Horas Button */}
-        <Pressable style={styles.gridItem} onPress={() => router.push(`${empId}/report`)}>
+        <Pressable
+          style={styles.gridItem}
+          onPress={() => router.push(`${empId}/report`)}
+        >
           <Text style={styles.gridText}>🕒 Ver Reporte de Horas</Text>
         </Pressable>
 
@@ -114,21 +127,26 @@ const Index = () => {
             style={styles.input}
             value={String(employee.hourly_fee)}
             keyboardType="numeric"
-            onChangeText={(text) => handleInputChange("hourly_fee", Number(text))}
+            onChangeText={(text) =>
+              handleInputChange("hourly_fee", Number(text))
+            }
           />
         </View>
 
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Horas Declaradas</Text>
           <Text style={styles.fieldDescription}>
-            Ingresar unicamente si tiene bono de sueldo, para poder sacar las horas excedentes.
-            Se ingresa en minutos. Ejemplo : 1.5hs se ingresa como 90.
+            Ingresar unicamente si tiene bono de sueldo, para poder sacar las
+            horas excedentes. Se ingresa en minutos. Ejemplo : 1.5hs se ingresa
+            como 90.
           </Text>
           <TextInput
             style={styles.input}
             value={String(employee.declared_hours)}
             keyboardType="numeric"
-            onChangeText={(text) => handleInputChange("declared_hours", Number(text))}
+            onChangeText={(text) =>
+              handleInputChange("declared_hours", Number(text))
+            }
           />
         </View>
 
@@ -138,7 +156,9 @@ const Index = () => {
             style={styles.input}
             value={String(employee.travel_cost)}
             keyboardType="numeric"
-            onChangeText={(text) => handleInputChange("travel_cost", Number(text))}
+            onChangeText={(text) =>
+              handleInputChange("travel_cost", Number(text))
+            }
           />
         </View>
 
@@ -148,7 +168,9 @@ const Index = () => {
             style={styles.input}
             value={String(employee.bonus_prize)}
             keyboardType="numeric"
-            onChangeText={(text) => handleInputChange("bonus_prize", Number(text))}
+            onChangeText={(text) =>
+              handleInputChange("bonus_prize", Number(text))
+            }
           />
         </View>
 
@@ -216,7 +238,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 10,
     backgroundColor: "#f5f5f5",
-    marginBottom:80   
+    marginBottom: 80,
+    marginTop: "2%",
+    marginHorizontal: "8%",
   },
   formContainer: {
     padding: 10,

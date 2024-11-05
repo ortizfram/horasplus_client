@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     marginBottom:80   
+    ,
+    marginTop: "2%",
+    marginHorizontal: "8%"
   },
   account: {
     color: "blue",

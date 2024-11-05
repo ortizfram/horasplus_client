@@ -443,7 +443,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15, // Reduced padding
     backgroundColor: "#f5f5f5",
-    marginBottom:80   
+    marginBottom:80    ,
+    marginTop: "2%",
+    marginHorizontal: "8%",  
   },
   title: {
     fontSize: 24,

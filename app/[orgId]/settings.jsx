@@ -30,8 +30,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginBottom:80   
-
+    marginBottom: 80,
+    marginTop: "2%",
+    marginHorizontal: "8%",
   },
   account: {
     color: "blue",
@@ -47,7 +48,6 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 18,
   },
-  
 });
 
 export default Settings;
