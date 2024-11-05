@@ -34,8 +34,8 @@ export default function TabsLayout() {
   const customTabBarStyle = {
     position: "absolute",
     bottom: 10,
-    left: 10,
-    right: 10,
+    left: 500,
+    right: 500,
     borderRadius: 25,
     height: 60,
     backgroundColor: "#fff",
@@ -45,6 +45,7 @@ export default function TabsLayout() {
     shadowOpacity: 0.1,
     shadowRadius: 10,
     paddingHorizontal: 10,
+    justifyContent:"center",
   };
 
   const renderIcon = (name, focused) => {
