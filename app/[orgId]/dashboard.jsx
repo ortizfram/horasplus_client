@@ -99,7 +99,7 @@ export default function Dashboard() {
           onPress={() => router.push(`${organization?._id}/employees`)}
         >
           <Icon name="people" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Editar Empleados - Reporte Individual</Text>
+          <Text style={styles.gridText}>Editar Empleados - Ver Reporte Individual</Text>
         </Pressable>
         <Pressable
           style={styles.gridItem}
@@ -127,7 +127,7 @@ export default function Dashboard() {
           onPress={() => router.push(`${orgId}/fixRecord`)}
         >
           <Icon name="edit" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Corregir un Registro</Text>
+          <Text style={styles.gridText}>Corregir o Agregar un Registro</Text>
         </Pressable>
      
         {/* <Pressable

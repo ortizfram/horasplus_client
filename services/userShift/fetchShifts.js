@@ -24,17 +24,49 @@ export const fetchShift = async (empId, selectedDate) => {
   }
 };
 
-export const updateShift = async (empId, selectedDate, inTime, outTime,mode) => {
+export const updateShift = async (
+  empId,
+  selectedDate,
+  inTime,
+  outTime,
+  mode
+) => {
   try {
     const response = await axios.put(`${RESP_URL}/api/shift/${empId}`, {
       date: selectedDate,
       inTime,
       outTime,
-      mode
+      mode,
     });
     return response.data.shift;
   } catch (error) {
     console.error("Error updating shift:", error);
+    throw error;
+  }
+};
+
+export const addShiftFromUpdateView = async (
+  empId,
+  selectedDate,
+  inTime,
+  outTime,
+  mode,
+  organization_id
+) => {
+  try {   
+    const response = await axios.post(
+      `${RESP_URL}/api/shift/${empId}/add-fix`,
+      {
+        date: selectedDate,
+        inTime,
+        outTime,
+        mode,
+        organization_id
+      }
+    );
+    return response.data.shift;
+  } catch (error) {
+    console.error("Error when createShiftFromUpdateView:", error);
     throw error;
   }
 };

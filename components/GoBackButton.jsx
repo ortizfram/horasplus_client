@@ -8,11 +8,17 @@ export default function BackButtonLayout() {
   const pathname = usePathname(); // Get the current route path
 
   // Check if the current route matches any path where the back button should be hidden
-  const shouldHideBackButton = ["/", "/auth/login", "/auth/signup"].includes(pathname);
+  const shouldHideBackButton = ["/", "/auth/login", "/auth/signup"].includes(
+    pathname
+  );
 
   // Handle back navigation
   const handleGoBack = () => {
-    router.back();
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace("/"); // Navigate to the home screen if no back action is possible
+    }
   };
 
   // Conditionally render the back button
