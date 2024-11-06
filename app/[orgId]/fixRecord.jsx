@@ -156,7 +156,7 @@ const FixARecord = () => {
                   <Picker.Item label="Holiday" value="holiday" />
                 </Picker>
 
-                <Text style={styles.label}>Start Time:</Text>
+                <Text style={styles.label}>Hora de Ingreso:</Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails.in}
@@ -165,7 +165,7 @@ const FixARecord = () => {
                   }
                 />
 
-                <Text style={styles.label}>End Time:</Text>
+                <Text style={styles.label}>Hora de Salida:</Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails.out}
