@@ -336,30 +336,46 @@ const Report = () => {
           </Pressable>
         )}
         {shifts.length > 0 ? (
-          shifts.map((shift, index) => (
-            <View key={index} style={styles.shiftContainer}>
-              <View
-                style={
-                  shift.shift_mode === "holiday" ? styles.star : styles.circle
-                }
-              >
-                <Text
+          shifts.map((shift, index) => {
+            console.log(
+              "Original shift.date:",
+              shift.date,
+              "type:",
+              typeof shift.date
+            ); // Log date and its type
+
+            // Split the date and increment the day portion
+            const [day, month, year] = shift.date.split("/");
+            const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Add 1 to the day, ensuring it's two digits
+            const updatedDate = `${incrementedDay}/${month}/${year}`;
+
+            console.log("Updated shift.date:", updatedDate); // Log the updated date
+
+            return (
+              <View key={index} style={styles.shiftContainer}>
+                <View
                   style={
-                    shift.shift_mode === "holiday"
-                      ? styles.starText
-                      : styles.circleText
+                    shift.shift_mode === "holiday" ? styles.star : styles.circle
                   }
                 >
-                  {shift.shift_mode === "holiday" ? "F" : "R"}
+                  <Text
+                    style={
+                      shift.shift_mode === "holiday"
+                        ? styles.starText
+                        : styles.circleText
+                    }
+                  >
+                    {shift.shift_mode === "holiday" ? "F" : "R"}
+                  </Text>
+                </View>
+                <Text style={styles.shiftText}>
+                  {updatedDate} - <Text style={styles.inText}>{shift.in}</Text>{" "}
+                  - <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
+                  {shift.total_hours}
                 </Text>
               </View>
-              <Text style={styles.shiftText}>
-                {shift.date} - <Text style={styles.inText}>{shift.in}</Text> -{" "}
-                <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
-                {shift.total_hours}
-              </Text>
-            </View>
-          ))
+            );
+          })
         ) : (
           <Text style={styles.errorText}>
             No se encontraron turnos para las fechas seleccionadas
@@ -443,9 +459,9 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 15, // Reduced padding
     backgroundColor: "#f5f5f5",
-    marginBottom:80    ,
+    marginBottom: 80,
     marginTop: "2%",
-    marginHorizontal: "8%",  
+    marginHorizontal: "8%",
   },
   title: {
     fontSize: 24,
