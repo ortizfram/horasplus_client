@@ -73,6 +73,7 @@ const FixARecord = () => {
     if (empId) {
       loadEmployee();
       loadShiftForEmployee();
+      console.log("startDate ",startDate)
     }
   }, [empId, startDate]);
 
