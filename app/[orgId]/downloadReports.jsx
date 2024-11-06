@@ -94,17 +94,23 @@ const DownloadReports = () => {
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
-          const shiftDate = shift.date;
+        
+          // Increment the day in shift.date
+          const [day, month, year] = shift.date.split('/');
+          const incrementedDay = String(parseInt(day) + 1).padStart(2, '0'); // Increment and pad day
+          const updatedDate = `${incrementedDay}/${month}/${year}`;
+        
           const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "No";
-
+        
           const shiftCost =
             shift.shift_mode === "holiday"
               ? hours * (employee.hourly_fee || 0)
               : 0;
           holidayCost += shiftCost;
-
-          csvContent += `${shiftDate},${shift.in},${shift.out},${shift.total_hours},${shiftMode},,\n`;
+        
+          csvContent += `${updatedDate},${shift.in},${shift.out},${shift.total_hours},${shiftMode},,\n`;
         });
+        
 
         // Totales y cálculos finales
         const workedHours = Math.floor(totalWorkedMinutes / 60);
