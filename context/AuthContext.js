@@ -149,6 +149,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+
   const isLoggedIn = async () => {
     try {
       setSplashLoading(true);

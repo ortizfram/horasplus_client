@@ -79,6 +79,10 @@ function Layout() {
             name="auth/login"
             screenOptions={{ headerShown: false, title: "" }}
           />
+          <Stack.Screen
+            name="auth/forgot"
+            screenOptions={{ headerShown: false, title: "" }}
+          />
         </>
       )}
 

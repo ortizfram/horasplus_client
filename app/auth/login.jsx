@@ -54,7 +54,7 @@ const Login = () => {
         <Text style={styles.textButton}>Ingresar</Text>
       </Pressable>
 
-      <Pressable
+      {/* <Pressable
         onPress={loginWithGoogle}
         style={[styles.button, styles.googleButton]}
       >
@@ -66,11 +66,16 @@ const Login = () => {
         style={[styles.button, styles.facebookButton]}
       >
         <Text style={styles.textButton}>Ingresar con Facebook</Text>
-      </Pressable>
+      </Pressable> */}
 
       <Pressable style={styles.link}>
         <Link href="/auth/signup">
           <Text style={{ color: "blue" }}>No tengo una cuenta aun!</Text>
+        </Link>
+      </Pressable>
+      <Pressable style={styles.link}>
+        <Link href="/auth/forgot">
+          <Text style={{ color: "blue" }}>Olvide la contraseña</Text>
         </Link>
       </Pressable>
     </View>
@@ -88,6 +93,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+    marginHorizontal: "10%",
   },
   header: {
     fontSize: 24,
