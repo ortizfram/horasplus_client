@@ -94,23 +94,22 @@ const DownloadReports = () => {
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
-        
+
           // Increment the day in shift.date
-          const [day, month, year] = shift.date.split('/');
-          const incrementedDay = String(parseInt(day) + 1).padStart(2, '0'); // Increment and pad day
+          const [day, month, year] = shift.date.split("/");
+          const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
           const updatedDate = `${incrementedDay}/${month}/${year}`;
-        
+
           const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "No";
-        
+
           const shiftCost =
             shift.shift_mode === "holiday"
               ? hours * (employee.hourly_fee || 0)
               : 0;
           holidayCost += shiftCost;
-        
+
           csvContent += `${updatedDate},${shift.in},${shift.out},${shift.total_hours},${shiftMode},,\n`;
         });
-        
 
         // Totales y cálculos finales
         const workedHours = Math.floor(totalWorkedMinutes / 60);
@@ -199,6 +198,7 @@ const DownloadReports = () => {
               mode="date"
               display="default"
               onChange={onStartDateChange}
+              style={styles.datePicker}
             />
           )}
 
@@ -208,15 +208,28 @@ const DownloadReports = () => {
               mode="date"
               display="default"
               onChange={onEndDateChange}
+              style={styles.datePicker}
             />
           )}
 
           {Platform.OS === "web" && (
             <View style={styles.datePickerContainer}>
               <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-              <DatePicker selected={startDate} onChange={onStartDateChange} />
+              <View style={styles.datePickerWrapper}>
+                <DatePicker
+                  selected={startDate}
+                  onChange={onStartDateChange}
+                  style={styles.datePicker}
+                />
+              </View>
               <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-              <DatePicker selected={endDate} onChange={onEndDateChange} />
+              <View style={styles.datePickerWrapper}>
+                <DatePicker
+                  selected={endDate}
+                  onChange={onEndDateChange}
+                  style={styles.datePicker}
+                />
+              </View>
             </View>
           )}
 
@@ -239,9 +252,36 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     marginBottom: 80,
-    marginTop: "2%",
-    marginHorizontal: "8%",
+    marginTop: "10%",
+    marginHorizontal: "15%",
   },
+  // date pickers
+  datePickerContainer: {
+    marginVertical: 10,
+  },
+  datePickerWrapper: {
+    position: "relative",
+  },
+  datePicker: {
+    position: "absolute",
+    top: 0, // Adjust as needed
+    left: 0,
+    zIndex: 1, // Keep above other content when open
+  },
+  downloadButton: {
+    marginTop: 40, // Increase margin to ensure distance from date pickers
+    backgroundColor: "#28a745",
+    padding: 15,
+    borderRadius: 5,
+    alignItems: "center",
+    width: "36%",
+  },
+  downloadButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  // date pickers end
   title: {
     fontSize: 24,
     fontWeight: "bold",
@@ -251,6 +291,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+
   button: {
     backgroundColor: "#007BFF",
     padding: 10,
@@ -259,22 +300,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     textAlign: "center",
-  },
-  downloadButton: {
-    marginTop: 20,
-    backgroundColor: "#28a745",
-    padding: 15,
-    borderRadius: 5,
-    alignItems: "center",
-    width: "40%",
-  },
-  downloadButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  datePickerContainer: {
-    marginVertical: 10,
   },
   label: {
     fontSize: 16,
