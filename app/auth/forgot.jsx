@@ -51,7 +51,14 @@ const ForgotPassword = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", padding: 20 },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 20,
+    marginHorizontal: "8%",
+    marginBottom: 80,
+    marginTop: "2%",
+  },
   title: { fontSize: 24, marginBottom: 20 },
   input: { borderColor: "#ccc", borderWidth: 1, padding: 10, marginBottom: 20 },
   button: { backgroundColor: "#007BFF", padding: 15, alignItems: "center" },

@@ -17,6 +17,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false); // State to toggle password visibility
 
   const handleLogin = async () => {
     setError(""); // Reset error before attempting to login
@@ -40,13 +41,20 @@ const Login = () => {
         inputMode="email"
         autoCapitalize="none"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={!passwordVisible} // Toggle password visibility
+        />
+        <Pressable onPress={() => setPasswordVisible(!passwordVisible)}>
+          <Text style={styles.toggleText}>
+            {passwordVisible ? "Ocultar" : "Mostrar"}
+          </Text>
+        </Pressable>
+      </View>
       {error ? <Text style={styles.error}>{error}</Text> : null}
       {/* Display error if exists */}
 
@@ -110,6 +118,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+  toggleText: {
+    color: "#007BFF",
+    marginLeft: 10,
   },
   button: {
     width: "100%",

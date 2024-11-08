@@ -7,8 +7,8 @@ const Sent = () => {
       <Text style={styles.title}>📫📧</Text>
       <Text style={styles.title}>Correo enviado </Text>
       <Text style={styles.message}>
-        Chequea tu bandeja de entrada y/o spam para continuar al siguiente paso. Esta
-        ventana ya puedes cerrala
+        Chequea tu bandeja de entrada y/o spam para continuar al siguiente paso.
+        Esta ventana ya puedes cerrala
       </Text>
     </View>
   );
@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f9f9f9",
+    marginHorizontal: "8%",
+    marginBottom: 80,
+    marginTop: "2%",
   },
   title: {
     fontSize: 24,
