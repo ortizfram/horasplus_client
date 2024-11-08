@@ -77,49 +77,51 @@ const DownloadReports = () => {
       let csvContent = `${"INFORMACION PRIVADA EMPLEADOR"}\n${"----------HORAS PLUS----------"}\n\n${
         employee.firstname
       } ${employee.lastname}\n\n`;
-
-      csvContent += "Fecha,Entrada,Salida,Horas,Feriado\n"; // Updated CSV headers
-
+  
+      // Add headers with padding to ensure left alignment in CSV
+      csvContent += "Fecha                ,Entrada            ,Salida            ,Horas              ,Feriado\n"; 
+  
       try {
         const shiftsData = await fetchShiftWithId(
           employee._id,
           startDate.toISOString().split("T")[0],
           endDate.toISOString().split("T")[0]
         );
-
+  
         let totalWorkedMinutes = 0;
         let holidayCost = 0;
-
+  
         shiftsData.forEach((shift) => {
           const [h, m] = shift.total_hours.split(" ");
           const hours = parseInt(h.replace("h", ""), 10) || 0;
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
-
+  
           // Increment the day in shift.date
           const [day, month, year] = shift.date.split("/");
           const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
           const updatedDate = `${incrementedDay}/${month}/${year}`;
-
+  
           const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
-
+  
           const shiftCost =
             shift.shift_mode === "holiday"
               ? hours * (employee.hourly_fee || 0)
               : 0;
           holidayCost += shiftCost;
-
-          csvContent += `${updatedDate},${shift.in},${shift.out},${shift.total_hours},${shiftMode},,\n`;
+  
+          // Add shift data with padding for left alignment
+          csvContent += `${updatedDate.padEnd(20)}${shift.in.padEnd(20)}${shift.out.padEnd(20)}${shift.total_hours.padEnd(20)}${shiftMode.padEnd(20)}\n`;
         });
-
-        // Totales y cálculos finales
+  
+        // Totals and final calculations
         const workedHours = Math.floor(totalWorkedMinutes / 60);
         const remainingMinutes = totalWorkedMinutes % 60;
         const hourlyFee = employee.hourly_fee || 0;
         const travelCost = employee.travel_cost || 0;
         const bonusPrize = employee.bonus_prize || 0;
-
+  
         const declaredMinutes = employee.declared_hours || 0;
         const excedenteMinutes = Math.max(
           0,
@@ -130,40 +132,37 @@ const DownloadReports = () => {
         );
         const excedenteHours = Math.floor(excedenteMinutes / 60); // Get the integer number of hours
         const excedenteRemainingMinutes = Math.round(excedenteMinutes % 60); // Get the remaining minutes
-
+  
         const excedenteHM = `${excedenteHours}h ${excedenteRemainingMinutes}m`;
-
+  
         const totalFinal =
           (totalWorkedMinutes / 60) * hourlyFee +
           holidayCost +
           travelCost +
           parseFloat(bonusPrize);
-
-        // Línea de resumen para el empleado
-        csvContent += `\n
-        Valor Hora,,,Horas Bono
-        $${hourlyFee},,,${employee.declared_hours ? employee.declared_hours / 60 : ""}
-        Viaticos,,,Horas Excedente Bono
-        $${travelCost},,,${excedenteHM}
-        Premio,,,Horas Totales
-        $${bonusPrize},,,${workedHours}h ${remainingMinutes}m
-        Feriados,,,
-        $${holidayCost}
-        Excedente Bono,,,
-        $${excedenteCost}
-        Total,,,
-        $${totalFinal.toFixed(
-          2
-        )}
-        ----------------------------------------\n`;
+  
+        // Summary line with padding for left alignment
+        csvContent += `\nValor Hora           ,,,,,Horas Bono\n`;
+        csvContent += `$${hourlyFee.toFixed(2).padEnd(20)} ,,,,,${employee.declared_hours ? (employee.declared_hours / 60).toFixed(2).padEnd(20) : ""}\n`;
+        csvContent += `Viaticos             ,,,,,Horas Excedente Bono\n`;
+        csvContent += `$${travelCost.toFixed(2).padEnd(20)} ,,,,,${excedenteHM.padEnd(20)}\n`;
+        csvContent += `Premio               ,,,,,Horas Totales\n`;
+        csvContent += `$${bonusPrize.toFixed(2).padEnd(20)} ,,,,,${workedHours}h ${remainingMinutes}m\n`;
+        csvContent += `Feriados             ,,,,\n`;
+        csvContent += `$${holidayCost.toFixed(2).padEnd(20)} ,,,,\n`;
+        csvContent += `Excedente Bono       ,,,,\n`;
+        csvContent += `$${excedenteCost.toFixed(2).padEnd(20)} ,,,,\n`;
+        csvContent += `Total                ,,,,\n`;
+        csvContent += `$${totalFinal.toFixed(2).padEnd(20)} ,,,,\n`;
+  
       } catch (error) {
         console.error(
           `Error fetching shifts for employee ${employee._id}:`,
           error
         );
       }
-
-      // Descargar el archivo CSV
+  
+      // Download the CSV file
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const link = document.createElement("a");
       const url = URL.createObjectURL(blob);
@@ -179,6 +178,7 @@ const DownloadReports = () => {
       document.body.removeChild(link);
     }
   };
+  
 
   return (
     <View style={styles.container}>
