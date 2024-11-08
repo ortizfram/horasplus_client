@@ -258,7 +258,7 @@ const Report = () => {
                 {excedenteMin}m) | Feriados: ${holidayCost || 0}
               </Text>
 
-              <View style={styles.editableRow}>
+              {/* <View style={styles.editableRow}>
                 <Text style={styles.label}>Restar Adelanto:</Text>
                 <TextInput
                   style={styles.input}
@@ -267,7 +267,7 @@ const Report = () => {
                   onChangeText={setAdvance}
                   placeholder="Ingrese adelanto"
                 />
-              </View>
+              </View> */}
 
               <Text style={styles.excedenteText}>
                 Excedente: ${excedenteCost}
@@ -405,6 +405,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 10,
   },
+  downloadButton:{padding:10, backgroundColor:"green", marginHorizontal:"20%"},
+  downloadButtonText:{color:"white"},
   circle: {
     width: 30,
     height: 30,

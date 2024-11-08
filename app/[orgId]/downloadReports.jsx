@@ -74,9 +74,11 @@ const DownloadReports = () => {
 
   const handleDownloadClick = async () => {
     for (let employee of employees) {
-      let csvContent = `${employee.firstname} ${employee.lastname}\n`;
+      let csvContent = `${"INFORMACION PRIVADA EMPLEADOR"}\n${"----------HORAS PLUS----------"}\n\n${
+        employee.firstname
+      } ${employee.lastname}\n\n`;
 
-      csvContent += "Fecha,Entrada,Salida,Horas Totales,Feriado\n"; // Updated CSV headers
+      csvContent += "Fecha,Entrada,Salida,Horas,Feriado\n"; // Updated CSV headers
 
       try {
         const shiftsData = await fetchShiftWithId(
@@ -100,7 +102,7 @@ const DownloadReports = () => {
           const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
           const updatedDate = `${incrementedDay}/${month}/${year}`;
 
-          const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "No";
+          const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
 
           const shiftCost =
             shift.shift_mode === "holiday"
@@ -126,6 +128,11 @@ const DownloadReports = () => {
         const excedenteCost = Math.floor(
           excedenteMinutes * (hourlyFee / 60) + travelCost
         );
+        const excedenteHours = Math.floor(excedenteMinutes / 60); // Get the integer number of hours
+        const excedenteRemainingMinutes = Math.round(excedenteMinutes % 60); // Get the remaining minutes
+
+        const excedenteHM = `${excedenteHours}h ${excedenteRemainingMinutes}m`;
+
         const totalFinal =
           (totalWorkedMinutes / 60) * hourlyFee +
           holidayCost +
@@ -133,11 +140,22 @@ const DownloadReports = () => {
           parseFloat(bonusPrize);
 
         // Línea de resumen para el empleado
-        csvContent += `\n${employee.firstname} ${
-          employee.lastname
-        },,,${workedHours}h ${remainingMinutes}m,\n\nTarifa Hora,Viaticos,Premio,Total Minutos,Feriados,Excedente,Total\n $${hourlyFee}, $${travelCost}, $${bonusPrize},${totalWorkedMinutes}m, $${holidayCost}, $${excedenteCost}, $${totalFinal.toFixed(
+        csvContent += `\n
+        Valor Hora,,,Horas Bono
+        $${hourlyFee},,,${employee.declared_hours ? employee.declared_hours / 60 : ""}
+        Viaticos,,,Horas Excedente Bono
+        $${travelCost},,,${excedenteHM}
+        Premio,,,Horas Totales
+        $${bonusPrize},,,${workedHours}h ${remainingMinutes}m
+        Feriados,,,
+        $${holidayCost}
+        Excedente Bono,,,
+        $${excedenteCost}
+        Total,,,
+        $${totalFinal.toFixed(
           2
-        )}\n`;
+        )}
+        ----------------------------------------\n`;
       } catch (error) {
         console.error(
           `Error fetching shifts for employee ${employee._id}:`,
