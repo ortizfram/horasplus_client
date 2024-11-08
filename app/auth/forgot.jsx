@@ -10,12 +10,15 @@ import {
 } from "react-native";
 import { RESP_URL } from "../../config";
 import { useRouter } from "expo-router";
+import Loader from "../../components/Loader";  // Import the Loader component
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);  // Add loading state
   const router = useRouter();
 
   const handleForgotPassword = async () => {
+    setIsLoading(true);  // Start loading when request begins
     try {
       const res = await axios.post(
         `${RESP_URL}/api/users/request-password-reset`,
@@ -31,26 +34,36 @@ const ForgotPassword = () => {
     } catch (error) {
       console.error("Error al enviar solicitud:", error);
       Alert.alert("Error", "Error al solicitar recuperación de contraseña");
+    } finally {
+      setIsLoading(false);  // End loading when request completes
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Recuperación de contraseña</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Ingresa tu correo"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <Pressable style={styles.button} onPress={handleForgotPassword}>
-        <Text style={styles.buttonText}>Enviar</Text>
-      </Pressable>
+    <View style={styles.screenContainer}>
+      {isLoading && <Loader />}  {/* Display loader when loading */}
+
+      <View style={styles.container}>
+        <Text style={styles.title}>Recuperación de contraseña</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Ingresa tu correo"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <Pressable style={styles.button} onPress={handleForgotPassword}>
+          <Text style={styles.buttonText}>Enviar</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    position: "relative",  // Ensure the screen covers the entire space
+  },
   container: {
     flex: 1,
     justifyContent: "center",
