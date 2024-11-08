@@ -83,6 +83,14 @@ function Layout() {
             name="auth/forgot"
             screenOptions={{ headerShown: false, title: "" }}
           />
+          <Stack.Screen
+            name="auth/sent"
+            screenOptions={{ headerShown: false, title: "" }}
+          />
+          <Stack.Screen
+            name="auth/reset/:token"
+            screenOptions={{ headerShown: false, title: "" }}
+          />
         </>
       )}
 
