@@ -7,6 +7,7 @@ import {
   Platform,
   TextInput,
   ScrollView,
+  Image,
 } from "react-native";
 import { fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShiftWithId } from "../../services/userShift/fetchShifts";
@@ -259,7 +260,13 @@ const fEndDate = formatDate(new Date(endDate));
       <ViewShot ref={viewRef} style={styles.container}>
         <Text style={styles.title}>Reporte de Horas</Text>
         <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
-        <Text style={styles.title}>----------HORAS PLUS----------</Text>
+        <View style={styles.titleContainer}>
+        <Image
+          source={require("../../assets/images/app_logo_rectangle.png")} // URL de la imagen o ruta local
+          style={styles.smallImage}
+        />
+        {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}
+      </View>
         <Text style={styles.title}>
           {employee?.firstname && employee?.lastname ? (
             <Text style={styles.employeeText}>
@@ -408,6 +415,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
     backgroundColor: "#ffffff",
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    marginBottom: 15,
+  },
+  smallImage: {
+    width: 600, // Ajusta el tamaño
+    height: 240,
+    marginRight: 10, // Espacio entre la imagen y el texto
   },
   star: {
     width: 30,
