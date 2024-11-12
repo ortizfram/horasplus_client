@@ -41,11 +41,22 @@ const Report = () => {
   const [bonus, setBonus] = useState(0);
   const [advance, setAdvance] = useState(0);
 
+  const [horasBono, setHorasBono] = useState("0h 0m");
+
+  const formatMinutesToHours = (minutes) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
+  };
+
   useEffect(() => {
     const loadEmployee = async () => {
       try {
         const data = await fetchEmployeeWithId(empId);
         setEmployee(data);
+        if (data.declared_hours) {
+          setHorasBono(formatMinutesToHours(data.declared_hours));
+        }
       } catch (error) {
         console.error("Error fetching employee:", error);
       }
@@ -235,42 +246,34 @@ const Report = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <ViewShot ref={viewRef} style={styles.container}>
         <Text style={styles.title}>Reporte de Horas</Text>
+        <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
+        <Text style={styles.title}>----------HORAS PLUS----------</Text>
+        <Text style={styles.title}>
+          {employee?.firstname && employee?.lastname ? (
+            <Text style={styles.employeeText}>
+              {employee?.firstname} {employee?.lastname}
+            </Text>
+          ) : (
+            <Text style={styles.employeeText}>{employee?.email}</Text>
+          )}
+        </Text>
 
         {employee && employee.email ? (
           <View>
-            {employee.firstname && employee.lastname ? (
-              <Text style={styles.employeeText}>
-                {employee.firstname} {employee.lastname}
-              </Text>
-            ) : (
-              <Text style={styles.employeeText}>{employee.email}</Text>
-            )}
-
             <View style={styles.reportContainer}>
               <Text style={styles.title}>
                 Horas Totales: {totalHours}h {totalMinutes}m
               </Text>
 
               <Text style={styles.detailsText}>
-                Tarifa Horaria: ${employee.hourly_fee || 0} | Costo Viaje: $
+                Valor Hora: ${employee.hourly_fee || 0} | Viaticos: $
                 {employee.travel_cost || 0} | Premio: $
-                {employee.bonus_prize || 0} | Excedente: {excedente} (
-                {excedenteMin}m) | Feriados: ${holidayCost || 0}
+                {employee.bonus_prize || 0} | Horas Bono :{" "}
+                {horasBono} | Horas Excedente Bono : {excedente} | Feriados: ${holidayCost || 0}
               </Text>
 
-              {/* <View style={styles.editableRow}>
-                <Text style={styles.label}>Restar Adelanto:</Text>
-                <TextInput
-                  style={styles.input}
-                  keyboardType="numeric"
-                  value={String(advance)}
-                  onChangeText={setAdvance}
-                  placeholder="Ingrese adelanto"
-                />
-              </View> */}
-
               <Text style={styles.excedenteText}>
-                Excedente: ${excedenteCost}
+                Excedente Bono: ${excedenteCost}
               </Text>
 
               <Text style={styles.totalText}>Total: ${totalCost}</Text>
@@ -377,9 +380,7 @@ const Report = () => {
             );
           })
         ) : (
-          <Text style={styles.errorText}>
-            No se encontraron turnos para las fechas seleccionadas
-          </Text>
+          <Text style={styles.errorText}></Text>
         )}
       </ViewShot>
     </ScrollView>
@@ -405,8 +406,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 10,
   },
-  downloadButton:{padding:10, backgroundColor:"green", marginHorizontal:"20%"},
-  downloadButtonText:{color:"white"},
+  downloadButton: {
+    padding: 10,
+    backgroundColor: "green",
+    marginHorizontal: "20%",
+  },
+  downloadButtonText: { color: "white" },
   circle: {
     width: 30,
     height: 30,
