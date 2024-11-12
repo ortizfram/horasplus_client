@@ -49,6 +49,18 @@ const Report = () => {
     return `${hours}h ${remainingMinutes}m`;
   };
 
+  // Función para formatear las fechas
+function formatDate(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+// Formatear fechas de inicio y fin
+const fStartDate = formatDate(new Date(startDate));
+const fEndDate = formatDate(new Date(endDate));
+
   useEffect(() => {
     const loadEmployee = async () => {
       try {
@@ -202,7 +214,7 @@ const Report = () => {
   const downloadWeb = (uri) => {
     const link = document.createElement("a");
     link.href = uri;
-    link.download = "reporte.png";
+    link.download = `${employee.firstname}_${employee.lastname}_desde_${fStartDate}_hasta_${fEndDate}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -220,7 +232,7 @@ const Report = () => {
       return;
     }
 
-    const fileUri = `${FileSystem.documentDirectory}reporte.png`;
+    const fileUri = `${FileSystem.documentDirectory}${employee.firstname}_${employee.lastname}_desde_${fStartDate}_hasta_${fEndDate}.png`;
 
     // Guardar el archivo en el sistema de archivos local
     await FileSystem.copyAsync({

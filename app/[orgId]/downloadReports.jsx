@@ -27,6 +27,18 @@ const DownloadReports = () => {
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
 
+  // Función para formatear las fechas
+function formatDate(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+// Formatear fechas de inicio y fin
+const fStartDate = formatDate(new Date(startDate));
+const fEndDate = formatDate(new Date(endDate));
+
   useEffect(() => {
     const loadOrganization = async () => {
       try {
@@ -169,9 +181,9 @@ const DownloadReports = () => {
       link.setAttribute("href", url);
       link.setAttribute(
         "download",
-        `${employee.firstname}_${employee.lastname}_${
-          startDate.toISOString().split("T")[0]
-        }_${endDate.toISOString().split("T")[0]}.csv`
+        `${employee.firstname}_${employee.lastname}_desde_${
+          fStartDate
+        }_hasta_${fEndDate}.csv`
       );
       document.body.appendChild(link);
       link.click();
