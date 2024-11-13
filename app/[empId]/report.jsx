@@ -184,10 +184,11 @@ const fEndDate = formatDate(new Date(endDate));
     setExcedenteMin(convertExcedenteToMinutes(excedente));
 
     setExcedenteCost(
-      Math.floor(
-        excedenteMin * (employee.hourly_fee / 60) + employee.travel_cost
-      )
-    );
+      (
+          ((excedenteHours * 60) + excedenteRemainingMinutes) * (hourlyFee / 60) 
+          + travelCost
+      ).toFixed(2)
+  );
   };
 
   // Método para descargar o compartir el reporte según la plataforma

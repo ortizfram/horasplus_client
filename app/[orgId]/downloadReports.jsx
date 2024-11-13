@@ -39,6 +39,13 @@ function formatDate(date) {
 const fStartDate = formatDate(new Date(startDate));
 const fEndDate = formatDate(new Date(endDate));
 
+function decimalToHM(declaredMinutes = 0, padding = 20) {
+  const hours = Math.floor(declaredMinutes / 60);
+  const minutes = declaredMinutes % 60;
+  return `${hours}h ${minutes}m`.padEnd(padding, " ");
+}
+
+
   useEffect(() => {
     const loadOrganization = async () => {
       try {
@@ -91,7 +98,10 @@ const fEndDate = formatDate(new Date(endDate));
       } ${employee.lastname}\n\n`;
   
       // Add headers with padding to ensure left alignment in CSV
-      csvContent += "Fecha                ,Entrada            ,Salida            ,Horas              ,Feriado\n"; 
+      csvContent += "Fecha, Feriado                ,Entrada            ,Salida            ,Horas              \n"; 
+
+      const declared_hs = decimalToHM(employee.declared_hours);
+
   
       try {
         const shiftsData = await fetchShiftWithId(
@@ -124,7 +134,7 @@ const fEndDate = formatDate(new Date(endDate));
           holidayCost += shiftCost;
   
           // Add shift data with padding for left alignment
-          csvContent += `${updatedDate.padEnd(20)}${shift.in.padEnd(20)}${shift.out.padEnd(20)}${shift.total_hours.padEnd(20)}${shiftMode.padEnd(20)}\n`;
+          csvContent += `${updatedDate.padEnd(20)}${shiftMode.padEnd(20)}${shift.in.padEnd(20)}${shift.out.padEnd(20)}${shift.total_hours.padEnd(20)}\n`;
         });
   
         // Totals and final calculations
@@ -154,18 +164,12 @@ const fEndDate = formatDate(new Date(endDate));
           parseFloat(bonusPrize);
   
         // Summary line with padding for left alignment
-        csvContent += `\nValor Hora           ,,,,,Horas Bono\n`;
-        csvContent += `$${hourlyFee.toFixed(2).padEnd(20)} ,,,,,${employee.declared_hours ? (employee.declared_hours / 60).toFixed(2).padEnd(20) : ""}\n`;
-        csvContent += `Viaticos             ,,,,,Horas Excedente Bono\n`;
-        csvContent += `$${travelCost.toFixed(2).padEnd(20)} ,,,,,${excedenteHM.padEnd(20)}\n`;
-        csvContent += `Premio               ,,,,,Horas Totales\n`;
-        csvContent += `$${bonusPrize.toFixed(2).padEnd(20)} ,,,,,${workedHours}h ${remainingMinutes}m\n`;
-        csvContent += `Feriados             ,,,,\n`;
-        csvContent += `$${holidayCost.toFixed(2).padEnd(20)} ,,,,\n`;
-        csvContent += `Excedente Bono       ,,,,\n`;
-        csvContent += `$${excedenteCost.toFixed(2).padEnd(20)} ,,,,\n`;
-        csvContent += `Total                ,,,,\n`;
-        csvContent += `$${totalFinal.toFixed(2).padEnd(20)} ,,,,\n`;
+        csvContent += `\nValor Hora,Viaticos,Premio,Feriados, Excedente Bono, Total,,Horas Bono\n`;
+        csvContent += `$${hourlyFee.toFixed(2).padEnd(20)} , $${travelCost.toFixed(2).padEnd(20)} , $${bonusPrize.toFixed(2).padEnd(20)} , $${holidayCost.toFixed(2).padEnd(20)} , $${excedenteCost.toFixed(2).padEnd(20)} , $${totalFinal.toFixed(2).padEnd(20)} ,, ${declared_hs}\n`;
+        csvContent += `             ,,,,,,,Horas Excedente Bono\n`;
+        csvContent += ` ,,,,,,,${excedenteHM.padEnd(20)}\n`;
+        csvContent += `               ,,,,,,,Horas Totales\n`;
+        csvContent += ` ,,,,,,,${workedHours}h ${remainingMinutes}m\n`;
   
       } catch (error) {
         console.error(
