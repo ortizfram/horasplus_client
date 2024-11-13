@@ -418,16 +418,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   titleContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'center', // Center the contents horizontally
+    alignItems: 'center', // Vertically center the content if needed
     marginBottom: 15,
   },
+  
   smallImage: {
-    width: 600, // Ajusta el tamaño
+    width: '100%', // Makes the image take full width of the container
+    maxWidth: 600, // Set a max width to prevent it from becoming too large
     height: 240,
-    marginRight: 10, // Espacio entre la imagen y el texto
+    alignSelf: 'center', // Center the image horizontally
+    marginBottom: 15, // Optional: Add spacing below the image
   },
+  
   star: {
     width: 30,
     height: 30,
@@ -498,8 +502,9 @@ const styles = StyleSheet.create({
     padding: 15, // Reduced padding
     backgroundColor: "#f5f5f5",
     marginBottom: 80,
-    marginTop: "2%",
-    marginHorizontal: "8%",
+    marginTop: "8%",
+    marginHorizontal: "5%",
+    marginStart: "8%",
   },
   title: {
     fontSize: 24,
