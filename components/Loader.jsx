@@ -1,10 +1,13 @@
 import React from "react";
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
 
 const Loader = () => (
   <View style={styles.loaderContainer}>
-    <ActivityIndicator size="large" color="#007BFF" />
-    <Text style={styles.loadingText}>Cargando...</Text>
+    <ActivityIndicator size="large" color="#007BFF" style={{marginVertical:20}}/>
+    <Image
+      source={{ uri: "../assets/images/app_logo_rectangle.jpg" }}
+      style={styles.smallImage}
+    />
   </View>
 );
 
@@ -18,11 +21,13 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  loadingText: {
-    color: "#fff",
-    marginTop: 10,
+  smallImage: {
+    width: "100%", // Makes the image take full width of the container
+    maxWidth: 500, // Set a max width to prevent it from becoming too large
+    height: 300,
+    alignSelf: "center", // Center the image horizontally
+    marginBottom: 15, // Optional: Add spacing below the image
   },
 });
 

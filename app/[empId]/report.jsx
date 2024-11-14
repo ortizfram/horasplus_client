@@ -263,7 +263,7 @@ const fEndDate = formatDate(new Date(endDate));
         <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
         <View style={styles.titleContainer}>
         <Image
-          source={require("../../assets/images/app_logo_rectangle.png")} // URL de la imagen o ruta local
+          source={require("../../assets/images/app_logo_rectangle.jpg")} // URL de la imagen o ruta local
           style={styles.smallImage}
         />
         {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}

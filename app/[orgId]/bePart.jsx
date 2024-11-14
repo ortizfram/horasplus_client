@@ -4,6 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import axios from "axios";
 import { RESP_URL } from "../../config";
 import { AuthContext } from "../../context/AuthContext";
+import Loader from "../../components/Loader";
 
 const BePart = () => {
   const { orgId } = useLocalSearchParams();
@@ -34,12 +35,18 @@ const BePart = () => {
       );
 
       if (res.status === 200 || res.status === 201) {
-        console.log("User successfully associated with the organization:", res.data);
+        console.log(
+          "User successfully associated with the organization:",
+          res.data
+        );
         router.push(`/${orgId}/bePartSent`);
       }
     } catch (error) {
       if (error.response && error.response.status === 400) {
-        console.error("User is already associated with the organization:", error);
+        console.error(
+          "User is already associated with the organization:",
+          error
+        );
         router.push("/");
       } else {
         console.error("Error during association:", error);
@@ -50,7 +57,9 @@ const BePart = () => {
   useEffect(() => {
     const fetchOrganization = async () => {
       try {
-        const response = await axios.get(`${RESP_URL}/api/organization/${orgId}`);
+        const response = await axios.get(
+          `${RESP_URL}/api/organization/${orgId}`
+        );
         setOrganization(response.data);
       } catch (error) {
         console.error("Error fetching organization:", error);
@@ -63,7 +72,9 @@ const BePart = () => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <Text style={styles.loading}>Cargando ...</Text>
+        <View>
+          <Loader />
+        </View>
       ) : (
         organization && (
           <View style={styles.content}>
