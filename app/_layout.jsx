@@ -1,4 +1,4 @@
-import { router, Stack, useRouter } from "expo-router";
+import { router, Slot, Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useContext } from "react";
@@ -99,6 +99,7 @@ function Layout() {
       )}
 
       <Stack.Screen name="+not-found" />
+      <Slot /> {/* This Slot will render the dynamic route based on the navigation */}
     </Stack>
   );
 }

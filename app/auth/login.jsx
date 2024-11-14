@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 
 const Login = () => {
   const { login, loginWithGoogle, loginWithFacebook, isLoading } =
@@ -19,10 +19,15 @@ const Login = () => {
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false); // State to toggle password visibility
 
+  const { next } = useLocalSearchParams();
+  useEffect(() => {
+    console.log("next: ", next);
+  });
+
   const handleLogin = async () => {
     setError(""); // Reset error before attempting to login
     try {
-      await login(email, password);
+      await login(email, password, next);
     } catch (e) {
       setError(e.message); // Set error message if login fails
     }

@@ -1,6 +1,6 @@
 import { AuthContext } from "../../context/AuthContext";
-import { useRouter } from "expo-router";
-import React, { useContext, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Text,
@@ -9,7 +9,7 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import Spinner from "react-native-loading-spinner-overlay";   
+import Spinner from "react-native-loading-spinner-overlay";
 
 const Signup = () => {
   const [email, setEmail] = useState(null);
@@ -19,6 +19,10 @@ const Signup = () => {
 
   const { register, isLoading } = useContext(AuthContext) || {};
   const router = useRouter();
+  const { next } = useLocalSearchParams();
+  useEffect(() => {
+    console.log("next: ", next);
+  });
 
   return (
     <View style={styles.container}>
@@ -55,14 +59,14 @@ const Signup = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          register(email, password, firstname, lastname);
+          register(email, password, firstname, lastname,next);
         }}
       >
         <Text style={styles.textButton}>Registro</Text>
       </TouchableOpacity>
       <View style={styles.linkContainer}>
         <Text>Ya tienes cuenta? </Text>
-        <TouchableOpacity onPress={() => router.push("/auth/login")}>
+        <TouchableOpacity onPress={() => router.push(`/auth/login?next=${next}`)}>
           <Text style={styles.link}>Ingresar</Text>
         </TouchableOpacity>
       </View>

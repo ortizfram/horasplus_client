@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     AsyncStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
   };
 
-  const register = async (email, password, firstname, lastname) => {
+  const register = async (email, password, firstname, lastname, next) => {
     console.log("Handling signup");
     setIsLoading(true);
     try {
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         console.log(userInfo);
         setUserInfo(userInfo);
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        router.push("/");
+        next ? router.push(next) : router.push("/");
       } else {
         console.log("Unexpected status code:", res.status);
       }
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (email, password, next) => {
     setIsLoading(true);
     try {
       console.log("Sending login request");
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
         setUserInfo(userInfo);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         setIsLoading(false);
-        router.push("/");
+        next ? router.push(next) : router.push("/");
       }
     } catch (error) {
       setIsLoading(false);
@@ -148,7 +148,6 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
-
 
   const isLoggedIn = async () => {
     try {
