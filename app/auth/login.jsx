@@ -10,6 +10,7 @@ import {
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Link, useLocalSearchParams } from "expo-router";
+import Logo from "../../components/Logo";
 
 const Login = () => {
   const { login, loginWithGoogle, loginWithFacebook, isLoading } =
@@ -17,7 +18,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to toggle password visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const { next } = useLocalSearchParams();
   useEffect(() => {
@@ -25,18 +26,20 @@ const Login = () => {
   });
 
   const handleLogin = async () => {
-    setError(""); // Reset error before attempting to login
+    setError("");
     try {
       await login(email, password, next);
     } catch (e) {
-      setError(e.message); // Set error message if login fails
+      setError(e.message);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.appname}>HORAS PLUS</Text>
-      <Text style={styles.header}>Ingreso</Text>
+      <View style={styles.headerContainer}>
+        <Logo />
+        <Text style={styles.header}>Ingreso</Text>
+      </View>
       <Spinner visible={isLoading} />
       <TextInput
         style={styles.input}
@@ -52,7 +55,7 @@ const Login = () => {
           placeholder="Contraseña"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry={!passwordVisible} // Toggle password visibility
+          secureTextEntry={!passwordVisible}
         />
         <Pressable onPress={() => setPasswordVisible(!passwordVisible)}>
           <Text style={styles.toggleText}>
@@ -61,25 +64,10 @@ const Login = () => {
         </Pressable>
       </View>
       {error ? <Text style={styles.error}>{error}</Text> : null}
-      {/* Display error if exists */}
 
       <Pressable onPress={handleLogin} style={styles.button}>
         <Text style={styles.textButton}>Ingresar</Text>
       </Pressable>
-
-      {/* <Pressable
-        onPress={loginWithGoogle}
-        style={[styles.button, styles.googleButton]}
-      >
-        <Text style={styles.textButton}>Ingresar con Google</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={loginWithFacebook}
-        style={[styles.button, styles.facebookButton]}
-      >
-        <Text style={styles.textButton}>Ingresar con Facebook</Text>
-      </Pressable> */}
 
       <Pressable style={styles.link}>
         <Link href="/auth/signup">
@@ -108,13 +96,13 @@ const styles = StyleSheet.create({
     padding: 16,
     marginHorizontal: "10%",
   },
+  headerContainer: {
+    alignItems: "center",
+    marginBottom: 5,
+  },
   header: {
     fontSize: 24,
-    marginBottom: 24,
-  },
-  appname: {
-    fontSize: 30,
-    marginBottom: 15,
+    fontWeight: "bold",
   },
   input: {
     width: "100%",
@@ -140,12 +128,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     borderRadius: 5,
-  },
-  googleButton: {
-    backgroundColor: "red",
-  },
-  facebookButton: {
-    backgroundColor: "#3b5998",
   },
   textButton: {
     color: "#e3e3e3",

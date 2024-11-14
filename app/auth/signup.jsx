@@ -1,5 +1,3 @@
-import { AuthContext } from "../../context/AuthContext";
-import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
@@ -9,7 +7,10 @@ import {
   View,
   StyleSheet,
 } from "react-native";
+import { AuthContext } from "../../context/AuthContext";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import Spinner from "react-native-loading-spinner-overlay";
+import Logo from "../../components/Logo";
 
 const Signup = () => {
   const [email, setEmail] = useState(null);
@@ -20,14 +21,17 @@ const Signup = () => {
   const { register, isLoading } = useContext(AuthContext) || {};
   const router = useRouter();
   const { next } = useLocalSearchParams();
+  
   useEffect(() => {
     console.log("next: ", next);
-  });
+  }, [next]);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.appname}>HORAS PLUS</Text>
-      <Text style={styles.header}>Registro</Text>
+      <View style={styles.headerContainer}>
+        <Logo />
+        <Text style={styles.header}>Registro</Text>
+      </View>
       <Spinner visible={isLoading} />
       <TextInput
         style={styles.input}
@@ -59,7 +63,7 @@ const Signup = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          register(email, password, firstname, lastname,next);
+          register(email, password, firstname, lastname, next);
         }}
       >
         <Text style={styles.textButton}>Registro</Text>
@@ -81,13 +85,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
   },
+  headerContainer: {
+    alignItems: "center",
+    marginBottom: 5,
+  },
   header: {
     fontSize: 24,
-    marginBottom: 24,
-  },
-  appname: {
-    fontSize: 30,
-    marginBottom: 15,
+    fontWeight: "bold",
   },
   input: {
     width: "100%",
