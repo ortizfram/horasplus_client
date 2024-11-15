@@ -6,26 +6,21 @@ const Logo = () => (
     <Image
       source={require("../assets/images/app_logo_no_description.png")}
       style={styles.smallImage}
+      resizeMode="contain" // Ensure the image maintains aspect ratio
     />
   </View>
 );
 
 const styles = StyleSheet.create({
   logoContainer: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    marginTop: 3, // Add margin from the top
   },
   smallImage: {
-    width: 650, // Makes the image take full width of the container
-    height: 375,
-    alignSelf: "center", // Center the image horizontally
-    marginBottom: 150, // Optional: Add spacing below the image
+    width: 400, // Adjusted width for better fit
+    height: 150, // Adjusted height for aspect ratio
+    marginBottom: 0, // Optional: Add spacing below the image
   },
 });
 

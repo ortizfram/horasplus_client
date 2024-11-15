@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     AsyncStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
   };
 
-  const register = async (email, password, firstname, lastname, next) => {
+  const register = async (email, password, firstname, lastname, next, onError) => {
     console.log("Handling signup");
     setIsLoading(true);
     try {
@@ -37,84 +37,71 @@ export const AuthProvider = ({ children }) => {
         { email, password, firstname, lastname },
         { withCredentials: true }
       );
-
+  
       if (res.status === 201) {
         let userInfo = res.data;
         console.log(userInfo);
         setUserInfo(userInfo);
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        next ? router.push(next) : router.push("/");
+        next ? router.push(`/auth/login?next=${next}`) : router.push("/auth/login");
       } else {
         console.log("Unexpected status code:", res.status);
       }
     } catch (error) {
       console.error("Signup error:", error);
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          console.error("Response error:", error.response.data);
-          if (error.response.status === 409) {
-            alert("User already exists");
-          } else if (error.response.status === 400) {
-            alert("All fields are required");
-          } else {
-            alert("Error signing up");
-          }
+      if (axios.isAxiosError(error) && error.response) {
+        const { status, data } = error.response;
+        if (status === 409) {
+          onError("El usuario ya existe");
+        } else if (status === 400) {
+          onError("Todos los campos son obligatorios");
         } else {
-          alert("Error signing up");
+          onError(data.message || "Error al registrarse");
         }
       } else {
-        alert("Error signing up");
+        onError("Error de conexión. Inténtalo de nuevo.");
       }
     } finally {
       setIsLoading(false);
     }
   };
+  
 
-  const login = async (email, password, next) => {
+  const login = async (email, password, next, onError) => {
     setIsLoading(true);
     try {
       console.log("Sending login request");
       const res = await axios.post(
         `${RESP_URL}/api/users/login`,
-        {
-          email,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
+        { email, password },
+        { withCredentials: true }
       );
-
+  
       if (res.status === 200) {
         console.log("Response received, setting token");
         let userInfo = res.data;
-        console.log(userInfo);
         setUserInfo(userInfo);
-        AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        setIsLoading(false);
+        await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         next ? router.push(next) : router.push("/");
       }
     } catch (error) {
-      setIsLoading(false);
-      let errorMessage = "An unexpected error occurred";
-
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          if (error.response.status === 401) {
-            errorMessage =
-              "Invalid credentials. Please check your email and password.";
-          } else {
-            errorMessage = error.response.data.message || errorMessage;
-          }
-        } else if (error.request) {
-          errorMessage = "No response from the server. Please try again later.";
+      console.error("Login error:", error);
+      if (axios.isAxiosError(error) && error.response) {
+        const { status, data } = error.response;
+        if (status === 401) {
+          onError("Credenciales inválidas. Verifica tu email y contraseña.");
+        } else {
+          onError(data.message || "Error inesperado al iniciar sesión.");
         }
+      } else {
+        onError("Error de conexión. Inténtalo de nuevo.");
       }
-
-      alert(errorMessage); // Display the error message as an alert
-      console.log(`login error: ${error}`);
+    } finally {
+      setIsLoading(false);
     }
   };
+  
+  
 
   const logout = async () => {
     setIsLoading(true);

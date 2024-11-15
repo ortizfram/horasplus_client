@@ -5,6 +5,7 @@ import axios from "axios";
 import { RESP_URL } from "../../config";
 import { AuthContext } from "../../context/AuthContext";
 import Loader from "../../components/Loader";
+import Logo from "../../components/Logo";
 
 const BePart = () => {
   const { orgId } = useLocalSearchParams();
@@ -78,6 +79,7 @@ const BePart = () => {
       ) : (
         organization && (
           <View style={styles.content}>
+            <Logo />
             <Text style={styles.title}>Se parte de :</Text>
             <View style={styles.header}>
               <Image
@@ -105,51 +107,53 @@ export default BePart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
     backgroundColor: "#f5f5f5",
     justifyContent: "center",
-    marginBottom: 80,
+    alignItems: "center",
+    padding: 20,
   },
   content: {
     alignItems: "center",
+    justifyContent: "center", // Ensure vertical alignment within content
+    flex: 1,
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
     color: "#333",
+    textAlign: "center",
   },
   header: {
-    flexDirection: "row",
+    flexDirection: "column", // Adjusted to column for better centering
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
   },
   image: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    marginRight: 10,
+    width: 80, // Increased size for better visibility
+    height: 80,
+    borderRadius: 40, // Maintain circular shape
+    marginBottom: 10, // Add spacing below the image
   },
   orgName: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#555",
+    textAlign: "center",
   },
   button: {
     backgroundColor: "#007bff",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
     borderRadius: 5,
+    marginTop: 20, // Add spacing from other elements
   },
   buttonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
-  },
-  loading: {
     textAlign: "center",
-    color: "#888",
-    fontSize: 16,
   },
 });
+

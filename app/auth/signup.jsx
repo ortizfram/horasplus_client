@@ -17,14 +17,20 @@ const Signup = () => {
   const [password, setPassword] = useState(null);
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const { register, isLoading } = useContext(AuthContext) || {};
   const router = useRouter();
   const { next } = useLocalSearchParams();
-  
+
   useEffect(() => {
     console.log("next: ", next);
   }, [next]);
+
+  const handleSignup = () => {
+    setErrorMessage(null); // Clear previous errors
+    register(email, password, firstname, lastname, next, setErrorMessage);
+  };
 
   return (
     <View style={styles.container}>
@@ -33,6 +39,7 @@ const Signup = () => {
         <Text style={styles.header}>Registro</Text>
       </View>
       <Spinner visible={isLoading} />
+      {errorMessage && <Text style={styles.error}>{errorMessage}</Text>}
       <TextInput
         style={styles.input}
         value={email}
@@ -60,12 +67,7 @@ const Signup = () => {
         value={lastname}
         onChangeText={(text) => setLastname(text)}
       />
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          register(email, password, firstname, lastname, next);
-        }}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
         <Text style={styles.textButton}>Registro</Text>
       </TouchableOpacity>
       <View style={styles.linkContainer}>
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+    marginHorizontal: "10%",
   },
   headerContainer: {
     alignItems: "center",
@@ -112,6 +115,10 @@ const styles = StyleSheet.create({
   textButton: {
     color: "#e3e3e3",
     fontSize: 16,
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
   },
   linkContainer: {
     flexDirection: "row",

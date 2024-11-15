@@ -12,6 +12,7 @@ import SearchOrganization from "../../components/searchOrganization";
 import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
 import axios from "axios";
+import Logo from "../../components/Logo";
 
 export default function OrganizationList() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};
@@ -69,6 +70,7 @@ export default function OrganizationList() {
 
   return (
     <View style={styles.container}>
+        <Logo/>
       <Text style={styles.welcome}>
         Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
@@ -172,7 +174,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   welcome: {
-    marginTop: 15,
     color: "blue",
     fontSize: 20,
   },
