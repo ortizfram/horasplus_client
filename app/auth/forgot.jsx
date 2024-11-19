@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginBottom: 80,
     marginTop: "2%",
   },
-  title: { fontSize: 24, marginBottom: 20 },
+  title: { fontSize: 24, marginBottom: 20,fontWeight:"bold" },
   input: { borderColor: "#ccc", borderWidth: 1, padding: 10, marginBottom: 20 },
   button: { backgroundColor: "#007BFF", padding: 15, alignItems: "center" },
   buttonText: { color: "#fff", fontSize: 16 },

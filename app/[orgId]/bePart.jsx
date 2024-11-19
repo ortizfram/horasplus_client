@@ -12,21 +12,26 @@ const BePart = () => {
   const [organization, setOrganization] = useState(null);
   const [loading, setLoading] = useState(true); // New state to manage loading
   const router = useRouter();
-  const { userInfo, splashLoading } = useContext(AuthContext); // Ensure splashLoading is available
+  const { userInfo, splashLoading, isAuth } = useContext(AuthContext); // Ensure splashLoading is available
 
   useEffect(() => {
-    if (!splashLoading && !userInfo?.user?._id) {
-      console.log("No userInfo found, redirecting to signup...");
-      // Adding a 4-second delay before redirection
-      setTimeout(() => {
-        setLoading(false); // Hide loading screen after 4 seconds
-        router.push(`/auth/signup?next=/${orgId}/bePart`);
-      }, 4000); // 4 seconds delay
-    } else if (!splashLoading) {
-      console.log("userInfo found:", userInfo?.user?._id);
-      setLoading(false); // Hide loading screen if user is found
+    if (!splashLoading) {
+      // Show loader for 4 seconds before checking for userInfo
+      const timeoutId = setTimeout(() => {
+        if (!isAuth) {
+          console.log("No userInfo found, redirecting to signup...");
+          setLoading(false); // Hide loading screen after timeout
+          router.push(`/auth/signup?next=/${orgId}/bePart`);
+        } else {
+          console.log("userInfo found:", userInfo?.user?._id);
+          setLoading(false); // Proceed if userInfo exists
+        }
+      }, 4000); // Timeout after 4 seconds
+
+      // Cleanup timeout if component is unmounted
+      return () => clearTimeout(timeoutId);
     }
-  }, [userInfo, router, orgId, splashLoading]);
+  }, [isAuth, splashLoading, router, orgId]);
 
   const associate = async () => {
     try {
@@ -73,14 +78,18 @@ const BePart = () => {
   return (
     <View style={styles.container}>
       {loading ? (
-        <View>
-          <Loader />
-        </View>
+        <Loader />
       ) : (
         organization && (
           <View style={styles.content}>
             <Logo />
-            <Text style={styles.title}>Se parte de :</Text>
+            <Text style={styles.title}>
+              Hola{" "}
+              {userInfo?.user?.data?.firstname
+                ? userInfo?.user?.data?.firstname
+                : userInfo?.user?.email}{" "}
+              Se parte de :
+            </Text>
             <View style={styles.header}>
               <Image
                 source={
@@ -156,4 +165,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-

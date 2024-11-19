@@ -1,11 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 import Spinner from "react-native-loading-spinner-overlay";
 import { Link, useLocalSearchParams } from "expo-router";
@@ -17,12 +11,15 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const { isIn, userInfo } = useContext(AuthContext); // Ensure splashLoading is available
 
   const { next } = useLocalSearchParams();
-  
+
   useEffect(() => {
-    console.log("next: ", next);
-  }, [next]);
+    console.log("login screen| userInfo ", userInfo?._id);
+    console.log("isIn ", isIn);
+    console.log("next: ", next, "\n\n");
+  }, [next, isIn]);
 
   const handleLogin = async () => {
     setError(""); // Reset error state before login
@@ -33,7 +30,6 @@ const Login = () => {
       setError(e.message || "Error inesperado al iniciar sesión.");
     }
   };
-  
 
   return (
     <View style={styles.container}>
@@ -41,7 +37,6 @@ const Login = () => {
         <Logo />
         <Text style={styles.header}>Ingreso</Text>
         {error ? <Text style={styles.error}>{error}</Text> : null}
-
       </View>
       <Spinner visible={isLoading} />
       <TextInput
@@ -66,7 +61,7 @@ const Login = () => {
           </Text>
         </Pressable>
       </View>
-    
+
       <Pressable onPress={handleLogin} style={styles.button}>
         <Text style={styles.textButton}>Ingresar</Text>
       </Pressable>

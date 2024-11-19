@@ -18,14 +18,24 @@ const Signup = () => {
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const { isIn, userInfo } = useContext(AuthContext); // Ensure splashLoading is available
+
 
   const { register, isLoading } = useContext(AuthContext) || {};
   const router = useRouter();
   const { next } = useLocalSearchParams();
 
   useEffect(() => {
-    console.log("next: ", next);
-  }, [next]);
+    console.log("Current userInfo:", userInfo?._id);
+
+    if (isIn && next) {
+      console.log("Redirecting to next:", next);
+      if (next !== "/auth/signup") {
+        router.push(next);
+      }
+    }
+  }, [isIn, next, router]);
+  
 
   const handleSignup = () => {
     setErrorMessage(null); // Clear previous errors

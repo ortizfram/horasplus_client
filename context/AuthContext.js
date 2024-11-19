@@ -28,7 +28,14 @@ export const AuthProvider = ({ children }) => {
     AsyncStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
   };
 
-  const register = async (email, password, firstname, lastname, next, onError) => {
+  const register = async (
+    email,
+    password,
+    firstname,
+    lastname,
+    next,
+    onError
+  ) => {
     console.log("Handling signup");
     setIsLoading(true);
     try {
@@ -40,10 +47,15 @@ export const AuthProvider = ({ children }) => {
   
       if (res.status === 201) {
         let userInfo = res.data;
-        console.log(userInfo);
+        console.log("User registered successfully:", userInfo);
+  
         setUserInfo(userInfo);
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        next ? router.push(`/auth/login?next=${next}`) : router.push("/auth/login");
+  
+        // Wait briefly before redirecting to ensure `userInfo` updates
+        setTimeout(() => {
+          router.push(`/auth/login?next=${next}`);
+        }, 500);
       } else {
         console.log("Unexpected status code:", res.status);
       }
@@ -76,7 +88,7 @@ export const AuthProvider = ({ children }) => {
         { email, password },
         { withCredentials: true }
       );
-  
+
       if (res.status === 200) {
         console.log("Response received, setting token");
         let userInfo = res.data;
@@ -100,8 +112,6 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
-  
-  
 
   const logout = async () => {
     setIsLoading(true);
@@ -135,22 +145,30 @@ export const AuthProvider = ({ children }) => {
       }
     }
   };
-
   const isLoggedIn = async () => {
     try {
-      setSplashLoading(true);
+      setSplashLoading(true); // Begin splash screen
       let userInfo = await AsyncStorage.getItem("userInfo");
-      userInfo = JSON.parse(userInfo);
+  
       if (userInfo) {
+        // Parse the stored user info if it exists
+        userInfo = JSON.parse(userInfo);
         setUserInfo(userInfo);
+      } else {
+        // Explicitly set to null if nothing is stored
+        setUserInfo(null);
       }
-
-      setSplashLoading(false);
     } catch (e) {
-      setSplashLoading(false);
-      console.log(`is logged in error: ${e}`);
+      console.log(`isLoggedIn error: ${e}`);
+      setUserInfo(null); // Fallback in case of an error
+    } finally {
+      setSplashLoading(false); // End splash screen
     }
   };
+  
+  // Derived boolean value
+  const isAuth = Boolean(userInfo);
+  
 
   useEffect(() => {
     isLoggedIn();
@@ -164,6 +182,8 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         isLoading,
+        isLoggedIn,
+        isAuth,
         userInfo,
         splashLoading,
       }}
