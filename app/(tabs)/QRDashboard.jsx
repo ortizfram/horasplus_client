@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
-import SearchOrganization from "../../components/searchOrganization";
+import SearchOrganizationQR from "../../components/searchOrganizationQR";
 import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
 import axios from "axios";
@@ -83,7 +83,7 @@ export default function QRDasboard() {
 
       {/* Check if showSearch is true */}
       {showSearch ? (
-        <SearchOrganization
+        <SearchOrganizationQR
           userId={userInfo?._id}
           token={userInfo.token}
           onSelectOrg={handleSelectOrg}
@@ -98,7 +98,7 @@ export default function QRDasboard() {
               <Text style={styles.blue}>Toca cada organizacion para ir a generar y descargar su
               codigo QR</Text>
 
-              <SearchOrganization
+              <SearchOrganizationQR
                 userId={userInfo?._id}
                 token={userInfo.token}
                 onSelectOrg={handleSelectOrg}
@@ -127,7 +127,7 @@ export default function QRDasboard() {
                     </Text>
                   )}
 
-                  <SearchOrganization
+                  <SearchOrganizationQR
                     userId={userInfo?._id}
                     token={userInfo.token}
                     onSelectOrg={handleSelectOrg}
