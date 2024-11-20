@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
     marginTop: 3, // Add margin from the top
   },
   smallImage: {
-    width: 400, // Adjusted width for better fit
-    height: 150, // Adjusted height for aspect ratio
-    marginBottom: 0, // Optional: Add spacing below the image
+    width: 450, // Adjusted width for better fit
+    height: 200, // Adjusted height for aspect ratio
+    marginBottom: -50, // Optional: Add spacing below the image
   },
 });
 
