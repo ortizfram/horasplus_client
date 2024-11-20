@@ -7,6 +7,7 @@ import Settings from "./settings";
 import { AuthContext } from "../../context/AuthContext";
 import Roles from "./roles";
 import { View, Animated, Platform } from "react-native";
+import QRDashboard from "./QRDashboard";
 
 const Tab = createBottomTabNavigator();
 
@@ -94,6 +95,15 @@ export default function TabsLayout() {
             title: "Roles",
             headerShown: false,
             tabBarIcon: ({ focused }) => renderIcon("flag", focused),
+          }}
+        />
+        <Tab.Screen
+          name="QR"
+          component={QRDashboard}
+          options={{
+            title: "Gererar QR",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => renderIcon("qr-code", focused),
           }}
         />
         <Tab.Screen
