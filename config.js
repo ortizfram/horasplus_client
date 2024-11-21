@@ -1,2 +1,5 @@
-export const RESP_URL = "http://localhost:8000";//10.0.2.2 for android //localhost for browser
-export const REQ_URL = "http://localhost:8081";//10.0.2.2 for android //localhost for browser
+import dotenv from 'dotenv';
+dotenv.config();
+
+export const RESP_URL = process.env.RESP_URL || "http://localhost:8000";
+export const REQ_URL = process.env.REQ_URL || "http://localhost:8081";
