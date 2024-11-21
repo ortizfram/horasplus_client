@@ -71,7 +71,7 @@ export default function TabsLayout() {
     );
   };
 
-  if (userInfo?.user?.isSuperAdmin) {
+  if (userInfo?.user?.isSuperAdmin || userInfo?.user?.isAdmin) {
     return (
       <Tab.Navigator
         screenOptions={{
