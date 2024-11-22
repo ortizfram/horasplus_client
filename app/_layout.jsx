@@ -37,6 +37,7 @@ export default function RootLayout() {
   return (
     <AuthProvider style={styles.container}>
       <Layout />
+      <Slot /> {/* This Slot will render the dynamic route based on the navigation */}
       <BackButtonLayout />
     </AuthProvider>
   );
@@ -99,7 +100,6 @@ function Layout() {
       )}
 
       <Stack.Screen name="+not-found" />
-      <Slot /> {/* This Slot will render the dynamic route based on the navigation */}
     </Stack>
   );
 }
