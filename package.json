@@ -47,6 +47,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.74.5",
     "react-native-date-picker": "^5.0.7",
+    "react-native-dotenv": "^3.4.11",
     "react-native-fbsdk-next": "^13.0.0",
     "react-native-gesture-handler": "~2.16.1",
     "react-native-loading-spinner-overlay": "^3.0.1",
