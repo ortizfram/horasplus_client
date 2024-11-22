@@ -37,7 +37,6 @@ export default function RootLayout() {
   return (
     <AuthProvider style={styles.container}>
       <Layout />
-      <Slot /> {/* This Slot will render the dynamic route based on the navigation */}
       <BackButtonLayout />
     </AuthProvider>
   );
@@ -53,54 +52,58 @@ function Layout() {
   }, [splashLoading, userInfo]);
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      {splashLoading ? (
-        <Stack.Screen
-          name="splashScreen"
-          screenOptions={{ headerShown: false, title: "" }}
-        />
-      ) : userInfo?.token ? (
-        <>
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        {splashLoading ? (
           <Stack.Screen
-            name="(tabs)"
+            name="splashScreen"
             screenOptions={{ headerShown: false, title: "" }}
           />
-          <Stack.Screen
-            name="organization"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-        </>
-      ) : (
-        <>
-          <Stack.Screen
-            name="auth/signup"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/login"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/forgot"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/sent"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/reset"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/changed"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-        </>
-      )}
+        ) : userInfo?.token ? (
+          <>
+            <Stack.Screen
+              name="(tabs)"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="organization"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="auth/signup"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/login"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/forgot"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/sent"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/reset"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/changed"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+          </>
+        )}
 
-      <Stack.Screen name="+not-found" />
-    </Stack>
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <Slot />{" "}
+      {/* This Slot will render the dynamic route based on the navigation */}
+    </>
   );
 }
 
