@@ -109,7 +109,7 @@ export default function SearchOrganization({
         contentContainerStyle={styles.listContainer}
         style={styles.listBg}
         data={filteredOrganizations}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => (
           <Pressable
             onPress={() => onSelectOrg(item._id)}
@@ -146,7 +146,6 @@ export default function SearchOrganization({
 }
 
 const styles = StyleSheet.create({
-  
   searchInput: {
     flex: 1,
     fontSize: 16,

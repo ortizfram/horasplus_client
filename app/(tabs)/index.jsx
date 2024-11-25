@@ -43,25 +43,27 @@ export default function OrganizationList() {
     return <ActivityIndicator size="large" color="#0000ff" />;
 
   const handleSelectOrg = async (orgId) => {
+    if (!orgId) {
+      console.error("Organization ID is missing");
+      return;
+    }
+  
     try {
-      const response = await axios.get(
-        `${RESP_URL}/api/organization/${orgId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-
+      const response = await axios.get(`${RESP_URL}/api/organization/${orgId}`, {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+  
       if (!response.data || !response.data._id) {
         throw new Error("Invalid organization data");
       }
+  
       const orgData = response.data;
-
-      setOrganization(orgData); // Update state with the organization data
-
+      setOrganization(orgData);
+  
       if (
         orgData?.user_id === userInfo?.user?._id ||
         userInfo?.user?.isAdmin ||
@@ -75,6 +77,7 @@ export default function OrganizationList() {
       console.error("Failed to fetch organization details:", error);
     }
   };
+  
 
   if (authLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
