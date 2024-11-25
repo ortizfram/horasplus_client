@@ -55,15 +55,21 @@ export default function OrganizationList() {
         }
       );
 
-      const organization = setOrganization(response.data);
+      if (!response.data || !response.data._id) {
+        throw new Error("Invalid organization data");
+      }
+      const orgData = response.data;
+
+      setOrganization(orgData); // Update state with the organization data
+
       if (
-        organization?.user_id === userInfo?.user?._id ||
+        orgData?.user_id === userInfo?.user?._id ||
         userInfo?.user?.isAdmin ||
         userInfo?.user?.isSuperAdmin
       ) {
-        router.push(`/${organization?._id}/dashboard`);
+        router.push(`/${orgData?._id}/dashboard`);
       } else {
-        router.push(`/${organization?._id}/bePart`);
+        router.push(`/${orgData?._id}/bePart`);
       }
     } catch (error) {
       console.error("Failed to fetch organization details:", error);
