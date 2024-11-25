@@ -33,10 +33,8 @@ export default function OrganizationList() {
     }
   }, [userInfo, isMounted]);
 
-  if (!userInfo?.user?._id || authLoading) {
-    // Return loading indicator until userInfo is available
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+  if (!userInfo?.user) return <ActivityIndicator size="large" color="#0000ff" />;
+
 
   const handleSelectOrg = async (orgId) => {
     try {
