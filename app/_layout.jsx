@@ -5,10 +5,11 @@ import { useEffect, useContext } from "react";
 import "react-native-reanimated";
 
 import { AuthContext, AuthProvider } from "../context/AuthContext";
-import { Text } from "react-native-web";
-import { Pressable, StyleSheet } from "react-native";
+import { ActivityIndicator, Text } from "react-native-web";
+import { Pressable, StyleSheet, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import BackButtonLayout from "../components/GoBackButton";
+import Loader from "../components/Loader";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,7 +32,7 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    return null;
+    < Loader />
   }
 
   return (
