@@ -21,6 +21,7 @@ export default function OrganizationList() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    console.log(userInfo.user)
     console.log("index screen")
     setIsMounted(true); // Set mounted to true when the component mounts
   }, []);
