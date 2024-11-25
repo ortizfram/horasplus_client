@@ -1,2 +1,6 @@
-export const RESP_URL = "http://localhost:8000";//10.0.2.2 for android //localhost for browser
-export const REQ_URL = "http://localhost:8081";//10.0.2.2 for android //localhost for browser
+
+
+import { RESP_URL_ENV, REQ_URL_ENV } from '@env';//react native dotenv y babel config
+
+export const RESP_URL = RESP_URL_ENV || "http://localhost:8000";
+export const REQ_URL = REQ_URL_ENV || "http://localhost:8081";

@@ -5,10 +5,11 @@ import { useEffect, useContext } from "react";
 import "react-native-reanimated";
 
 import { AuthContext, AuthProvider } from "../context/AuthContext";
-import { Text } from "react-native-web";
-import { Pressable, StyleSheet } from "react-native";
+import { ActivityIndicator, Text } from "react-native-web";
+import { Pressable, StyleSheet, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import BackButtonLayout from "../components/GoBackButton";
+import Loader from "../components/Loader";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -31,7 +32,7 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    return null;
+    < Loader />
   }
 
   return (
@@ -52,55 +53,58 @@ function Layout() {
   }, [splashLoading, userInfo]);
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      {splashLoading ? (
-        <Stack.Screen
-          name="splashScreen"
-          screenOptions={{ headerShown: false, title: "" }}
-        />
-      ) : userInfo?.token ? (
-        <>
+    <>
+      <Stack screenOptions={{ headerShown: false }}>
+        {splashLoading ? (
           <Stack.Screen
-            name="(tabs)"
+            name="splashScreen"
             screenOptions={{ headerShown: false, title: "" }}
           />
-          <Stack.Screen
-            name="organization"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-        </>
-      ) : (
-        <>
-          <Stack.Screen
-            name="auth/signup"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/login"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/forgot"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/sent"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/reset"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-          <Stack.Screen
-            name="auth/changed"
-            screenOptions={{ headerShown: false, title: "" }}
-          />
-        </>
-      )}
+        ) : userInfo?.token ? (
+          <>
+            <Stack.Screen
+              name="(tabs)"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="organization"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+          </>
+        ) : (
+          <>
+            <Stack.Screen
+              name="auth/signup"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/login"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/forgot"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/sent"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/reset"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="auth/changed"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+          </>
+        )}
 
-      <Stack.Screen name="+not-found" />
-      <Slot /> {/* This Slot will render the dynamic route based on the navigation */}
-    </Stack>
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      {/* <Slot />{" "} */}
+      {/* This Slot will render the dynamic route based on the navigation */}
+    </>
   );
 }
 
