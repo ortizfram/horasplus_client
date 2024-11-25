@@ -70,6 +70,10 @@ function Layout() {
               name="organization"
               screenOptions={{ headerShown: false, title: "" }}
             />
+            <Stack.Screen
+              name="[orgId]"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
           </>
         ) : (
           <>
