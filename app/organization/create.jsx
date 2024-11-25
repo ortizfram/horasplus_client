@@ -39,20 +39,19 @@ const CreateOrganizationView = () => {
       Alert.alert("Validation Error", "Organization name is required");
       return;
     }
-
-    // Prepare data for submission
+  
     const formData = new FormData();
     formData.append("name", name);
     formData.append("userId", userInfo?.user?._id);
-
+  
     if (imageUri) {
       formData.append("image", {
         uri: imageUri,
-        type: "image/jpeg", // Adjust the type according to your image format
+        type: "image/jpeg",
         name: "organization-image.jpg",
       });
     }
-
+  
     try {
       const response = await axios.post(
         `${RESP_URL}/api/organization`,
@@ -64,12 +63,25 @@ const CreateOrganizationView = () => {
           },
         }
       );
-
+  
       if (response.status === 201) {
+        const newOrgId = response.data.organization._id;
+  
+        // Update userInfo with the new organization_id
+        const updatedUserInfo = {
+          ...userInfo.user,
+          data: {
+            ...userInfo.user.data,
+            organization_id: newOrgId,
+          },
+        };
+  
+        updateUserInfo(updatedUserInfo); // Update AuthContext
+  
         Alert.alert("Success", "Organization created successfully");
         setName("");
         setImageUri(null);
-        router.push("/");
+        router.push("/"); // Navigate to the home or relevant page
       } else {
         Alert.alert("Error", response.data.message || "Something went wrong");
       }
@@ -78,6 +90,7 @@ const CreateOrganizationView = () => {
       Alert.alert("Error", "Failed to create organization");
     }
   };
+  
 
   return (
     <View style={styles.container}>
