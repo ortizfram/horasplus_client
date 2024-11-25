@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
-import  AuthContext  from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import SearchOrganization from "../../components/searchOrganization";
 import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
