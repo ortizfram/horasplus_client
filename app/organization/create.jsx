@@ -65,7 +65,7 @@ const CreateOrganizationView = () => {
       );
   
       if (response.status === 201) {
-        const newOrgId = response.data.organization._id;
+        const newOrgId = response.data._id;
   
         // Update userInfo with the new organization_id
         const updatedUserInfo = {
