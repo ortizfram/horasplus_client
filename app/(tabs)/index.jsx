@@ -19,11 +19,17 @@ export default function OrganizationList() {
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [organization, setOrganization] = useState(null);
 
   useEffect(() => {
-    console.log(userInfo.user)
-    console.log("index screen")
+    console.log(userInfo.user);
+    console.log("index screen");
     setIsMounted(true); // Set mounted to true when the component mounts
+
+    organization?.user_id === userInfo?.user?._id &&
+      console.log("organization owner");
+    userInfo?.user?.isAdmin && console.log("isAdmin");
+    userInfo?.user?.isSuperAdmin && console.log("isSuperAdmin");
   }, []);
 
   useEffect(() => {
@@ -33,8 +39,8 @@ export default function OrganizationList() {
     }
   }, [userInfo, isMounted]);
 
-  if (!userInfo?.user) return <ActivityIndicator size="large" color="#0000ff" />;
-
+  if (!userInfo?.user)
+    return <ActivityIndicator size="large" color="#0000ff" />;
 
   const handleSelectOrg = async (orgId) => {
     try {
@@ -49,7 +55,7 @@ export default function OrganizationList() {
         }
       );
 
-      const organization = response.data;
+      const organization = setOrganization(response.data);
       if (
         organization?.user_id === userInfo?.user?._id ||
         userInfo?.user?.isAdmin ||
@@ -70,7 +76,7 @@ export default function OrganizationList() {
 
   return (
     <View style={styles.container}>
-        <Logo/>
+      <Logo />
       <Text style={styles.welcome}>
         Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
