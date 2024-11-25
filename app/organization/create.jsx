@@ -19,7 +19,7 @@ const CreateOrganizationView = () => {
   const router = useRouter();
   const [name, setName] = useState("");
   const [imageUri, setImageUri] = useState(null);
-  const { userInfo } = useContext(AuthContext);
+  const { userInfo, updateUserInfo } = useContext(AuthContext);
 
   const handleChooseImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
