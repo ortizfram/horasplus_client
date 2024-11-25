@@ -1,19 +1,44 @@
 import { Stack } from "expo-router";
 
-export default function HomeLayout() {
+export default function OrgLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor: "#f4511e",
-        },
-        headerTintColor: "#fff",
-        headerTitleStyle: {
-          fontWeight: "bold",
-        },
+        headerShown: false,
       }}
     >
-      <Stack.Screen name="dashboard" />
+      <Stack.Screen
+        name="bePart"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="bePartSent"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="dashboard"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="downloadQR"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="downloadReports"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="employees"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+       <Stack.Screen
+        name="fixRecord"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+       <Stack.Screen
+        name="settings"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
     </Stack>
   );
 }
