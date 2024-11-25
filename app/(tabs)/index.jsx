@@ -57,9 +57,9 @@ export default function OrganizationList() {
         userInfo?.user?.isAdmin ||
         userInfo?.user?.isSuperAdmin
       ) {
-        router.push(`/${orgId}/dashboard`);
+        router.push(`/${organization?._id}/dashboard`);
       } else {
-        router.push(`/${orgId}/bePart`);
+        router.push(`/${organization?._id}/bePart`);
       }
     } catch (error) {
       console.error("Failed to fetch organization details:", error);
