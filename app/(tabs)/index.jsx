@@ -22,7 +22,8 @@ export default function OrganizationList() {
   const [organization, setOrganization] = useState(null);
 
   useEffect(() => {
-    console.log(userInfo.user);
+    console.log("User Info:", userInfo);
+    console.log("Selected Organization:", organization);
     console.log("index screen");
     setIsMounted(true); // Set mounted to true when the component mounts
 
@@ -30,7 +31,8 @@ export default function OrganizationList() {
       console.log("organization owner");
     userInfo?.user?.isAdmin && console.log("isAdmin");
     userInfo?.user?.isSuperAdmin && console.log("isSuperAdmin");
-  }, []);
+
+  }, [userInfo, organization]);
 
   useEffect(() => {
     if (isMounted && !userInfo?.user?._id) {
