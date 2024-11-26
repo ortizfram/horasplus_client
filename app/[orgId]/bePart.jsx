@@ -12,13 +12,15 @@ const BePart = () => {
   const [organization, setOrganization] = useState(null);
   const [loading, setLoading] = useState(true); // New state to manage loading
   const router = useRouter();
-  const { userInfo, splashLoading, isAuth } = useContext(AuthContext); // Ensure splashLoading is available
+  const { userInfo, splashLoading } = useContext(AuthContext); // Ensure splashLoading is available
 
   useEffect(() => {
+    console.log("orgId ", orgId);
+    console.log("userInfo ", userInfo?.user?._id);
     if (!splashLoading) {
       // Show loader for 4 seconds before checking for userInfo
       const timeoutId = setTimeout(() => {
-        if (!isAuth) {
+        if (!userInfo?.user?._id) {
           console.log("No userInfo found, redirecting to signup...");
           setLoading(false); // Hide loading screen after timeout
           router.push(`/auth/signup?next=/${orgId}/bePart`);
@@ -31,7 +33,7 @@ const BePart = () => {
       // Cleanup timeout if component is unmounted
       return () => clearTimeout(timeoutId);
     }
-  }, [isAuth, splashLoading, router, orgId]);
+  }, [userInfo, splashLoading, router, orgId]);
 
   const associate = async () => {
     try {
