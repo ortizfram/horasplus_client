@@ -15,6 +15,7 @@ const BePart = () => {
   const { userInfo, splashLoading } = useContext(AuthContext);
 
   useEffect(() => {
+    console.log("RESP_URL",RESP_URL)
     if (!splashLoading) {
       if (!userInfo?.user?._id) {
         console.log("Redirecting to signup...");
@@ -27,25 +28,28 @@ const BePart = () => {
   }, [userInfo, splashLoading, router, orgId]);
 
   const associate = async () => {
+    if (!RESP_URL || !orgId) {
+      console.error("Missing RESP_URL or Organization ID");
+      return;
+    }
     try {
-      const res = await axios.post(
-        `${RESP_URL}/api/organization/${orgId}/bePart`,
-        { uid: userInfo.user._id }
-      );
-
+      const res = await axios.post(`${RESP_URL}/api/organization/${orgId}/bePart`, {
+        uid: userInfo.user._id,
+      });
       if (res.status === 200 || res.status === 201) {
-        console.log("User associated with organization:", res.data);
+        console.log("Association successful:", res.data);
         router.push(`/${orgId}/bePartSent`);
       }
     } catch (error) {
       if (error.response?.status === 400) {
-        console.error("Already associated with organization:", error.response.data);
+        console.error("Already associated:", error.response.data);
         router.push("/");
       } else {
         console.error("Error during association:", error);
       }
     }
   };
+  
 
   useEffect(() => {
     const fetchOrganization = async () => {
