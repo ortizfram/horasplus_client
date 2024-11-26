@@ -10,28 +10,19 @@ import Logo from "../../components/Logo";
 const BePart = () => {
   const { orgId } = useLocalSearchParams();
   const [organization, setOrganization] = useState(null);
-  const [loading, setLoading] = useState(true); // New state to manage loading
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const { userInfo, splashLoading } = useContext(AuthContext); // Ensure splashLoading is available
+  const { userInfo, splashLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log("orgId ", orgId);
-    console.log("userInfo ", userInfo?.user?._id);
     if (!splashLoading) {
-      // Show loader for 4 seconds before checking for userInfo
-      const timeoutId = setTimeout(() => {
-        if (!userInfo?.user?._id) {
-          console.log("No userInfo found, redirecting to signup...");
-          setLoading(false); // Hide loading screen after timeout
-          router.push(`/auth/signup?next=/${orgId}/bePart`);
-        } else {
-          console.log("userInfo found:", userInfo?.user?._id);
-          setLoading(false); // Proceed if userInfo exists
-        }
-      }, 4000); // Timeout after 4 seconds
-
-      // Cleanup timeout if component is unmounted
-      return () => clearTimeout(timeoutId);
+      if (!userInfo?.user?._id) {
+        console.log("Redirecting to signup...");
+        router.push(`/auth/signup?next=/${orgId}/bePart`);
+      } else {
+        console.log("User info found:", userInfo.user._id);
+        setLoading(false);
+      }
     }
   }, [userInfo, splashLoading, router, orgId]);
 
@@ -43,18 +34,12 @@ const BePart = () => {
       );
 
       if (res.status === 200 || res.status === 201) {
-        console.log(
-          "User successfully associated with the organization:",
-          res.data
-        );
+        console.log("User associated with organization:", res.data);
         router.push(`/${orgId}/bePartSent`);
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        console.error(
-          "User is already associated with the organization:",
-          error
-        );
+      if (error.response?.status === 400) {
+        console.error("Already associated with organization:", error.response.data);
         router.push("/");
       } else {
         console.error("Error during association:", error);
@@ -74,44 +59,43 @@ const BePart = () => {
       }
     };
 
-    fetchOrganization();
+    if (orgId) fetchOrganization();
   }, [orgId]);
 
   return (
     <View style={styles.container}>
       {loading ? (
         <Loader />
-      ) : (
-        organization && (
-          <View style={styles.content}>
-            <Logo />
-            <Text style={styles.title}>
-              Hola{" "}
-              {userInfo?.user?.data?.firstname
-                ? userInfo?.user?.data?.firstname
-                : userInfo?.user?.email}{" "}
-              Se parte de :
-            </Text>
-            <View style={styles.header}>
-              <Image
-                source={
-                  organization.image
-                    ? { uri: `${RESP_URL}/${organization.image}` }
-                    : require("../../assets/images/org_placeholder.jpg")
-                }
-                style={styles.image}
-              />
-              <Text style={styles.orgName}>{organization.name}</Text>
-            </View>
-            <Pressable style={styles.button} onPress={associate}>
-              <Text style={styles.buttonText}>Enviar solicitud</Text>
-            </Pressable>
+      ) : organization ? (
+        <View style={styles.content}>
+          <Logo />
+          <Text style={styles.title}>
+            Hola{" "}
+            {userInfo?.user?.data?.firstname || userInfo?.user?.email}{" "}
+            Se parte de:
+          </Text>
+          <View style={styles.header}>
+            <Image
+              source={
+                organization.image
+                  ? { uri: `${RESP_URL}/${organization.image}` }
+                  : require("../../assets/images/org_placeholder.jpg")
+              }
+              style={styles.image}
+            />
+            <Text style={styles.orgName}>{organization.name}</Text>
           </View>
-        )
+          <Pressable style={styles.button} onPress={associate}>
+            <Text style={styles.buttonText}>Enviar solicitud</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <Text>Organización no encontrada</Text>
       )}
     </View>
   );
 };
+
 
 export default BePart;
 

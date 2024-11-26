@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+import BePart from "./bePart";
 
 export default function OrgLayout() {
   return (
@@ -9,6 +10,7 @@ export default function OrgLayout() {
     >
       <Stack.Screen
         name="bePart"
+        component={BePart}
         screenOptions={{ headerShown: false, title: "" }}
       />
       <Stack.Screen
