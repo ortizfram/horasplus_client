@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AuthContext } from "../../context/AuthContext";
-import Settings from "../(tabs)/settings";
-import OrganizationList from "../(tabs)";
 import Loader from "../../components/Loader";
+import Index from "./index";
+import Profile from "./profile";
+import Report from "./report";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,28 +17,21 @@ export default function EmpLayout() {
   }
 
   return (
-    <Tab.Navigator
-      screenOptions={{
-        title: "",
-        tabBarShowLabel: false,
-        headerShown: false,
-      }}
-    >
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
-        name="OrganizationList"
-        component={OrganizationList}
-        options={{
-          title: "",
-          headerShown: false,
-        }}
+        name="index"
+        component={Index}
+        screenOptions={{ headerShown: false, title: "" }}
       />
       <Tab.Screen
-        name="settings"
-        component={Settings}
-        options={{
-          title: "",
-          headerShown: false,
-        }}
+        name="profile"
+        component={Profile}
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Tab.Screen
+        name="report"
+        component={Report}
+        screenOptions={{ headerShown: false, title: "" }}
       />
     </Tab.Navigator>
   );
