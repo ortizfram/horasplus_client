@@ -20,17 +20,14 @@ export default function EmpLayout() {
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen
         name="index"
-        component={Index}
         screenOptions={{ headerShown: false, title: "" }}
       />
       <Tab.Screen
         name="profile"
-        component={Profile}
         screenOptions={{ headerShown: false, title: "" }}
       />
       <Tab.Screen
         name="report"
-        component={Report}
         screenOptions={{ headerShown: false, title: "" }}
       />
     </Tab.Navigator>
