@@ -10,23 +10,37 @@ import Logo from "../../components/Logo";
 const BePart = () => {
   const { orgId } = useLocalSearchParams();
   const [organization, setOrganization] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state default to true
+  const [loading, setLoading] = useState(true); // Default loader for initialization
   const router = useRouter();
   const { userInfo, splashLoading } = useContext(AuthContext);
 
-  useEffect(() => {
-    // Always show loader if splashLoading is true
-    if (splashLoading) {
-      setLoading(true);
+  // Fetch organization details
+  const fetchOrganization = async () => {
+    if (!orgId) {
+      console.error("Organization ID is missing");
+      setLoading(false); // Allow rendering fallback
       return;
     }
+    try {
+      const response = await axios.get(`${RESP_URL}/api/organization/${orgId}`);
+      setOrganization(response.data);
+    } catch (error) {
+      console.error("Error fetching organization:", error);
+    } finally {
+      setLoading(false); // Stop loader regardless of success
+    }
+  };
+
+  useEffect(() => {
+    // Ensure splashLoading completes before handling redirects or data fetching
+    if (splashLoading) return;
 
     if (!userInfo?.user?._id) {
       console.log("Redirecting to signup...");
       router.push(`/auth/signup?next=/${orgId || ""}/bePart`);
     } else {
       console.log("User info found:", userInfo.user._id);
-      setLoading(false); // Stop loader once user is validated
+      fetchOrganization(); // Fetch organization once user is validated
     }
   }, [splashLoading, userInfo, router, orgId]);
 
@@ -56,36 +70,16 @@ const BePart = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchOrganization = async () => {
-      if (!orgId) {
-        console.error("Organization ID is missing");
-        return;
-      }
-      try {
-        const response = await axios.get(
-          `${RESP_URL}/api/organization/${orgId}`
-        );
-        setOrganization(response.data);
-      } catch (error) {
-        console.error("Error fetching organization:", error);
-      }
-    };
-
-    if (userInfo?.user?._id) fetchOrganization();
-  }, [userInfo, orgId]);
-
   return (
     <View style={styles.container}>
       {loading ? (
-        <Loader /> // Always display loader during initialization
+        <Loader /> // Always display loader until data is ready
       ) : userInfo?.user?._id ? (
         organization ? (
           <View style={styles.content}>
             <Logo />
             <Text style={styles.title}>
-              Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email} Se
-              parte de:
+              Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email}, sé parte de:
             </Text>
             <View style={styles.header}>
               <Image
@@ -124,7 +118,7 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: "center",
-    justifyContent: "center", // Ensure vertical alignment within content
+    justifyContent: "center",
     flex: 1,
   },
   title: {
@@ -135,16 +129,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   header: {
-    flexDirection: "column", // Adjusted to column for better centering
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
   },
   image: {
-    width: 80, // Increased size for better visibility
+    width: 80,
     height: 80,
-    borderRadius: 40, // Maintain circular shape
-    marginBottom: 10, // Add spacing below the image
+    borderRadius: 40,
+    marginBottom: 10,
   },
   orgName: {
     fontSize: 18,
@@ -157,7 +151,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 5,
-    marginTop: 20, // Add spacing from other elements
+    marginTop: 20,
   },
   buttonText: {
     color: "#fff",
