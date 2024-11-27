@@ -15,17 +15,15 @@ const BePart = () => {
   const { userInfo, splashLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log("RESP_URL",RESP_URL)
-    if (!splashLoading) {
-      if (!userInfo?.user?._id) {
-        console.log("Redirecting to signup...");
-        router.push(`/auth/signup?next=/${orgId}/bePart`);
-      } else {
-        console.log("User info found:", userInfo.user._id);
-        setLoading(false);
-      }
+    if (splashLoading) return; // Wait until splash loading is done
+    if (!userInfo?.user?._id) {
+      console.log("Redirecting to signup...");
+      router.push(`/auth/signup?next=/${orgId || ""}/bePart`);
+    } else {
+      console.log("User info found:", userInfo.user._id);
+      setLoading(false);
     }
-  }, [userInfo, splashLoading, router, orgId]);
+  }, [splashLoading, userInfo, router, orgId]);
 
   const associate = async () => {
     if (!RESP_URL || !orgId) {
@@ -33,9 +31,12 @@ const BePart = () => {
       return;
     }
     try {
-      const res = await axios.post(`${RESP_URL}/api/organization/${orgId}/bePart`, {
-        uid: userInfo.user._id,
-      });
+      const res = await axios.post(
+        `${RESP_URL}/api/organization/${orgId}/bePart`,
+        {
+          uid: userInfo.user._id,
+        }
+      );
       if (res.status === 200 || res.status === 201) {
         console.log("Association successful:", res.data);
         router.push(`/${orgId}/bePartSent`);
@@ -49,10 +50,13 @@ const BePart = () => {
       }
     }
   };
-  
 
   useEffect(() => {
     const fetchOrganization = async () => {
+      if (!orgId) {
+        console.error("Organization ID is missing");
+        return;
+      }
       try {
         const response = await axios.get(
           `${RESP_URL}/api/organization/${orgId}`
@@ -63,43 +67,45 @@ const BePart = () => {
       }
     };
 
-    if (orgId) fetchOrganization();
-  }, [orgId]);
+    if (userInfo?.user?._id) fetchOrganization();
+  }, [userInfo, orgId]);
 
   return (
     <View style={styles.container}>
-      {loading ? (
+      {splashLoading || loading ? (
         <Loader />
-      ) : organization ? (
-        <View style={styles.content}>
-          <Logo />
-          <Text style={styles.title}>
-            Hola{" "}
-            {userInfo?.user?.data?.firstname || userInfo?.user?.email}{" "}
-            Se parte de:
-          </Text>
-          <View style={styles.header}>
-            <Image
-              source={
-                organization.image
-                  ? { uri: `${RESP_URL}/${organization.image}` }
-                  : require("../../assets/images/org_placeholder.jpg")
-              }
-              style={styles.image}
-            />
-            <Text style={styles.orgName}>{organization.name}</Text>
+      ) : userInfo?.user?._id ? (
+        organization ? (
+          <View style={styles.content}>
+            <Logo />
+            <Text style={styles.title}>
+              Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email} Se
+              parte de:
+            </Text>
+            <View style={styles.header}>
+              <Image
+                source={
+                  organization.image
+                    ? { uri: `${RESP_URL}/${organization.image}` }
+                    : require("../../assets/images/org_placeholder.jpg")
+                }
+                style={styles.image}
+              />
+              <Text style={styles.orgName}>{organization.name}</Text>
+            </View>
+            <Pressable style={styles.button} onPress={associate}>
+              <Text style={styles.buttonText}>Enviar solicitud</Text>
+            </Pressable>
           </View>
-          <Pressable style={styles.button} onPress={associate}>
-            <Text style={styles.buttonText}>Enviar solicitud</Text>
-          </Pressable>
-        </View>
+        ) : (
+          <Text>Organización no encontrada</Text>
+        )
       ) : (
-        <Text>Organización no encontrada</Text>
+        <Text>Redirigiendo a la página de inicio de sesión...</Text>
       )}
     </View>
   );
 };
-
 
 export default BePart;
 
