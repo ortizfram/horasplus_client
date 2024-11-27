@@ -10,18 +10,23 @@ import Logo from "../../components/Logo";
 const BePart = () => {
   const { orgId } = useLocalSearchParams();
   const [organization, setOrganization] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Loading state default to true
   const router = useRouter();
   const { userInfo, splashLoading } = useContext(AuthContext);
 
   useEffect(() => {
-    if (splashLoading) return; // Wait until splash loading is done
+    // Always show loader if splashLoading is true
+    if (splashLoading) {
+      setLoading(true);
+      return;
+    }
+
     if (!userInfo?.user?._id) {
       console.log("Redirecting to signup...");
       router.push(`/auth/signup?next=/${orgId || ""}/bePart`);
     } else {
       console.log("User info found:", userInfo.user._id);
-      setLoading(false);
+      setLoading(false); // Stop loader once user is validated
     }
   }, [splashLoading, userInfo, router, orgId]);
 
@@ -72,8 +77,8 @@ const BePart = () => {
 
   return (
     <View style={styles.container}>
-      {splashLoading || loading ? (
-        <Loader />
+      {loading ? (
+        <Loader /> // Always display loader during initialization
       ) : userInfo?.user?._id ? (
         organization ? (
           <View style={styles.content}>
