@@ -10,17 +10,12 @@ import Logo from "../../components/Logo";
 const BePart = () => {
   const { orgId } = useLocalSearchParams();
   const [organization, setOrganization] = useState(null);
-  const [loading, setLoading] = useState(true); // Default loader for initialization
+  const [loading, setLoading] = useState(true); // Handles initial loader
   const router = useRouter();
   const { userInfo, splashLoading } = useContext(AuthContext);
 
   // Fetch organization details
   const fetchOrganization = async () => {
-    if (!orgId) {
-      console.error("Organization ID is missing");
-      setLoading(false); // Allow rendering fallback
-      return;
-    }
     try {
       const response = await axios.get(`${RESP_URL}/api/organization/${orgId}`);
       setOrganization(response.data);
@@ -32,29 +27,28 @@ const BePart = () => {
   };
 
   useEffect(() => {
-    // Ensure splashLoading completes before handling redirects or data fetching
+    // Wait for `splashLoading` and ensure `orgId` is valid
     if (splashLoading) return;
+
+    if (!orgId) {
+      console.error("Organization ID is missing");
+      setLoading(false);
+      return;
+    }
 
     if (!userInfo?.user?._id) {
       console.log("Redirecting to signup...");
-      router.push(`/auth/signup?next=/${orgId || ""}/bePart`);
+      router.push(`/auth/signup?next=/${orgId}/bePart`);
     } else {
-      console.log("User info found:", userInfo.user._id);
-      fetchOrganization(); // Fetch organization once user is validated
+      fetchOrganization(); // Fetch organization once user and orgId are ready
     }
-  }, [splashLoading, userInfo, router, orgId]);
+  }, [splashLoading, userInfo, orgId]);
 
   const associate = async () => {
-    if (!RESP_URL || !orgId) {
-      console.error("Missing RESP_URL or Organization ID");
-      return;
-    }
     try {
       const res = await axios.post(
         `${RESP_URL}/api/organization/${orgId}/bePart`,
-        {
-          uid: userInfo.user._id,
-        }
+        { uid: userInfo.user._id }
       );
       if (res.status === 200 || res.status === 201) {
         console.log("Association successful:", res.data);
@@ -70,37 +64,35 @@ const BePart = () => {
     }
   };
 
+  if (loading || splashLoading || !orgId || !userInfo) {
+    return <Loader />; // Show loader until everything is ready
+  }
+
   return (
     <View style={styles.container}>
-      {loading ? (
-        <Loader /> // Always display loader until data is ready
-      ) : userInfo?.user?._id ? (
-        organization ? (
-          <View style={styles.content}>
-            <Logo />
-            <Text style={styles.title}>
-              Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email}, sé parte de:
-            </Text>
-            <View style={styles.header}>
-              <Image
-                source={
-                  organization.image
-                    ? { uri: `${RESP_URL}/${organization.image}` }
-                    : require("../../assets/images/org_placeholder.jpg")
-                }
-                style={styles.image}
-              />
-              <Text style={styles.orgName}>{organization.name}</Text>
-            </View>
-            <Pressable style={styles.button} onPress={associate}>
-              <Text style={styles.buttonText}>Enviar solicitud</Text>
-            </Pressable>
+      {organization ? (
+        <View style={styles.content}>
+          <Logo />
+          <Text style={styles.title}>
+            Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email}, sé parte de:
+          </Text>
+          <View style={styles.header}>
+            <Image
+              source={
+                organization.image
+                  ? { uri: `${RESP_URL}/${organization.image}` }
+                  : require("../../assets/images/org_placeholder.jpg")
+              }
+              style={styles.image}
+            />
+            <Text style={styles.orgName}>{organization.name}</Text>
           </View>
-        ) : (
-          <Text>Organización no encontrada</Text>
-        )
+          <Pressable style={styles.button} onPress={associate}>
+            <Text style={styles.buttonText}>Enviar solicitud</Text>
+          </Pressable>
+        </View>
       ) : (
-        <Text>Redirigiendo a la página de inicio de sesión...</Text>
+        <Text>Organización no encontrada</Text>
       )}
     </View>
   );
