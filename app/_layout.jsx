@@ -32,7 +32,7 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    < Loader />
+    <Loader />;
   }
 
   return (
@@ -103,10 +103,9 @@ function Layout() {
             />
           </>
         )}
-
         <Stack.Screen name="+not-found" />
+        <Slot />
       </Stack>
-      <Slot />
       {/* This Slot will render the dynamic route based on the navigation */}
     </>
   );
