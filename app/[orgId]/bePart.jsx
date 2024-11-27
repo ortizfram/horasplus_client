@@ -27,16 +27,13 @@ const BePart = () => {
   };
 
   useEffect(() => {
-    if (!splashLoading && userInfo && orgId) {
-      if (!userInfo?.user?._id) {
-        console.log("Redirecting to signup...");
-        router.push(`/auth/signup?next=/${orgId}/bePart`);
-      } else {
-        fetchOrganization();
-      }
+    if (!userInfo == null || !orgId) {
+      console.log("Redirecting to signup...");
+      router.replace(`/auth/signup?next=/${orgId}/bePart`);
+    } else {
+      fetchOrganization();
     }
   }, [splashLoading, userInfo, orgId]);
-  
 
   const associate = async () => {
     try {
@@ -68,7 +65,8 @@ const BePart = () => {
         <View style={styles.content}>
           <Logo />
           <Text style={styles.title}>
-            Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email}, sé parte de:
+            Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email}, sé
+            parte de:
           </Text>
           <View style={styles.header}>
             <Image
