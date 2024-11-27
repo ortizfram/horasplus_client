@@ -27,22 +27,16 @@ const BePart = () => {
   };
 
   useEffect(() => {
-    // Wait for `splashLoading` and ensure `orgId` is valid
-    if (splashLoading) return;
-
-    if (!orgId) {
-      console.error("Organization ID is missing");
-      setLoading(false);
-      return;
-    }
-
-    if (!userInfo?.user?._id) {
-      console.log("Redirecting to signup...");
-      router.push(`/auth/signup?next=/${orgId}/bePart`);
-    } else {
-      fetchOrganization(); // Fetch organization once user and orgId are ready
+    if (!splashLoading && userInfo && orgId) {
+      if (!userInfo?.user?._id) {
+        console.log("Redirecting to signup...");
+        router.push(`/auth/signup?next=/${orgId}/bePart`);
+      } else {
+        fetchOrganization();
+      }
     }
   }, [splashLoading, userInfo, orgId]);
+  
 
   const associate = async () => {
     try {

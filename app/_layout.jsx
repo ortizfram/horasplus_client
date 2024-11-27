@@ -106,7 +106,7 @@ function Layout() {
 
         <Stack.Screen name="+not-found" />
       </Stack>
-      {/* <Slot />{" "} */}
+      <Slot />
       {/* This Slot will render the dynamic route based on the navigation */}
     </>
   );
