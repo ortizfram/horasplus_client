@@ -59,7 +59,11 @@ const BePart = () => {
     <View style={styles.container}>
       {organization ? (
         <View style={styles.content}>
-          <Logo />
+          <Logo style={{  width: "100%", // Makes the image take full width of the container
+          maxWidth: 600, // Set a max width to prevent it from becoming too large
+          height: 240,
+          alignSelf: "center", // Center the image horizontally
+          marginBottom: 15}}/>
           <Text style={styles.title}>
             Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email}, sé
             parte de:

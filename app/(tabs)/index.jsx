@@ -95,7 +95,7 @@ export default function OrganizationList() {
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
           alignSelf: "center", // Center the image horizontally
-          marginBottom: 15,
+          marginBottom: 15
         }}
       />
       <Text style={styles.welcome}>
