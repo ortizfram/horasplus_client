@@ -19,6 +19,9 @@ import ViewShot, { captureRef } from "react-native-view-shot";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
+import Logo from "../../components/Logo";
+
+
 
 const Report = () => {
   const viewRef = useRef();
@@ -262,10 +265,7 @@ const fEndDate = formatDate(new Date(endDate));
         <Text style={styles.title}>Reporte de Horas</Text>
         <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
         <View style={styles.titleContainer}>
-        <Image
-          source={require("../../assets/images/app_logo_rectangle_appbanner.jpg")} // URL de la imagen o ruta local
-          style={styles.smallImage}
-        />
+        <Logo/>
         {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}
       </View>
         <Text style={styles.title}>
