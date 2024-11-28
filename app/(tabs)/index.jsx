@@ -13,6 +13,7 @@ import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
 import axios from "axios";
 import Logo from "../../components/Logo";
+import { ScrollView } from "react-native-web";
 
 export default function OrganizationList() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};
@@ -31,7 +32,6 @@ export default function OrganizationList() {
       console.log("organization owner");
     userInfo?.user?.isAdmin && console.log("isAdmin");
     userInfo?.user?.isSuperAdmin && console.log("isSuperAdmin");
-
   }, [userInfo, organization]);
 
   useEffect(() => {
@@ -49,23 +49,26 @@ export default function OrganizationList() {
       console.error("Organization ID is missing");
       return;
     }
-  
+
     try {
-      const response = await axios.get(`${RESP_URL}/api/organization/${orgId}`, {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
-  
+      const response = await axios.get(
+        `${RESP_URL}/api/organization/${orgId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
       if (!response.data || !response.data._id) {
         throw new Error("Invalid organization data");
       }
-  
+
       const orgData = response.data;
       setOrganization(orgData);
-  
+
       if (
         orgData?.user_id === userInfo?.user?._id ||
         userInfo?.user?.isAdmin ||
@@ -79,15 +82,22 @@ export default function OrganizationList() {
       console.error("Failed to fetch organization details:", error);
     }
   };
-  
 
   if (authLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
   return (
-    <View style={styles.container}>
-      <Logo />
+    <ScrollView style={styles.container}>
+      <Logo
+        style={{
+          width: "100%", // Makes the image take full width of the container
+          maxWidth: 600, // Set a max width to prevent it from becoming too large
+          height: 240,
+          alignSelf: "center", // Center the image horizontally
+          marginBottom: 15,
+        }}
+      />
       <Text style={styles.welcome}>
         Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
@@ -174,7 +184,7 @@ export default function OrganizationList() {
           )}
         </>
       )}
-    </View>
+    </ScrollView>
   );
 }
 

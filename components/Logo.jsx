@@ -2,27 +2,31 @@ import React from "react";
 import { View, StyleSheet, Image, Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
-const logoWidth = width * 0.8; // The width will be 80% of the screen.
-const logoHeight = logoWidth / 2.85; // Maintains the original aspect ratio of the image.
+const defaultLogoWidth = width * 0.8; // Default width (80% of screen width).
+const defaultLogoHeight = defaultLogoWidth / 2.85; // Default height maintains aspect ratio.
 
-const Logo = () => {
+const Logo = ({ style }) => {
+  // Extract custom width and height if provided
+  const customWidth = style?.width || defaultLogoWidth;
+  const customHeight = style?.height || defaultLogoHeight;
+
   return (
     <View style={styles.logoContainer}>
       <Image
         source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
-        style={{ width: logoWidth, height: logoHeight }}
+        style={[{ width: customWidth, height: customHeight }, style]} // Apply custom dimensions and other styles
         resizeMode="contain"
       />
     </View>
   );
 };
 
-const LogoBanner = () => {
+const LogoBanner = ({ style }) => {
   return (
     <View style={styles.logoContainer}>
       <Image
         source={require("../assets/images/app_logo_rectangle_appbanner.jpg")}
-        style={{ width: logoWidth, height: logoHeight }}
+        style={[{ width: logoWidth, height: logoHeight }, style]} // Combine default styles with custom styles
         resizeMode="contain"
       />
     </View>
