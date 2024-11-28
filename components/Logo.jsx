@@ -4,7 +4,7 @@ import { View, StyleSheet, Image } from "react-native";
 const Logo = () => (
   <View style={styles.logoContainer}>
     <Image
-      source={require("../assets/images/app_logo_no_description.png")}
+      source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
       style={styles.smallImage}
       resizeMode="contain" // Ensure the image maintains aspect ratio
     />

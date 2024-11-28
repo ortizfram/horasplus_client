@@ -5,7 +5,7 @@ const Loader = () => (
   <View style={styles.loaderContainer}>
     <ActivityIndicator size="large" color="#007BFF" style={{marginVertical:20}}/>
     <Image
-      source={{ uri: "../assets/images/app_logo_rectangle.jpg" }}
+      source={{ uri: "../assets/images/app_logo_rectangle_appbanner.jpg" }}
       style={styles.smallImage}
     />
   </View>
