@@ -93,7 +93,7 @@ function decimalToHM(declaredMinutes = 0, padding = 20) {
 
   const handleDownloadClick = async () => {
     for (let employee of employees) {
-      let csvContent = `${"INFORMACION PRIVADA EMPLEADOR"}\n${"----------HORAS PLUS----------"}\n\n${
+      let csvContent = `${"INFORMACION PRIVADA EMPLEADOR"}\n${"----------HORAS MAS----------"}\n\n${
         employee.firstname
       } ${employee.lastname}\n\n`;
   

@@ -1,27 +1,41 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image, Dimensions } from "react-native";
 
-const Logo = () => (
-  <View style={styles.logoContainer}>
-    <Image
-      source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
-      style={styles.smallImage}
-      resizeMode="contain" // Ensure the image maintains aspect ratio
-    />
-  </View>
-);
+const { width } = Dimensions.get("window");
+const logoWidth = width * 0.8; // The width will be 80% of the screen.
+const logoHeight = logoWidth / 2.85; // Maintains the original aspect ratio of the image.
+
+const Logo = () => {
+  return (
+    <View style={styles.logoContainer}>
+      <Image
+        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
+        style={{ width: logoWidth, height: logoHeight }}
+        resizeMode="contain"
+      />
+    </View>
+  );
+};
+
+const LogoBanner = () => {
+  return (
+    <View style={styles.logoContainer}>
+      <Image
+        source={require("../assets/images/app_logo_rectangle_appbanner.jpg")}
+        style={{ width: logoWidth, height: logoHeight }}
+        resizeMode="contain"
+      />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 3, // Add margin from the top
-  },
-  smallImage: {
-    width: 450, // Adjusted width for better fit
-    height: 200, // Adjusted height for aspect ratio
-    marginBottom: -50, // Optional: Add spacing below the image
+    marginBottom: 20, // Spacing below the logo.
   },
 });
 
-export default Logo;
+// Use named exports
+export { Logo, LogoBanner };
