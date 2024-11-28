@@ -34,7 +34,11 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Logo />
+        <Logo style={{  width: "100%", // Makes the image take full width of the container
+          maxWidth: 600, // Set a max width to prevent it from becoming too large
+          height: 240,
+          alignSelf: "center", // Center the image horizontally
+          marginBottom: 15,}}/>
         <Text style={styles.header}>Ingreso</Text>
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </View>

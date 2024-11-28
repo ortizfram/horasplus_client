@@ -71,7 +71,13 @@ export default function QRDasboard() {
 
   return (
     <View style={styles.container}>
-      <Logo />
+      <Logo  style={{
+          width: "100%", // Makes the image take full width of the container
+          maxWidth: 600, // Set a max width to prevent it from becoming too large
+          height: 240,
+          alignSelf: "center", // Center the image horizontally
+          marginBottom: 15,
+        }} />
       <Text style={styles.header}>Generar QR de Ingreso</Text>
       <Text style={styles.welcome}>
         Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
