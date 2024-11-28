@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
 });
 
 // Use named exports
-export { Logo, LogoBanner };
+export default Logo;

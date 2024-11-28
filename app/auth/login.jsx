@@ -87,46 +87,52 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+    marginHorizontal: "10%",
   },
   headerContainer: {
     alignItems: "center",
-    marginBottom: 20, // Espaciado más generoso debajo del header.
+    marginBottom: 5,
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    textAlign: "center",
-    marginVertical: 10,
   },
   input: {
-    width: "90%", // Mejor adaptación a distintos tamaños de pantalla.
-    padding: 12,
-    marginVertical: 8,
+    width: "100%",
+    padding: 10,
+    marginVertical: 10,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 8,
+    borderRadius: 5,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+  toggleText: {
+    color: "#007BFF",
+    marginLeft: 10,
   },
   button: {
-    width: "90%", // Igual que los inputs.
+    width: "100%",
     padding: 15,
     backgroundColor: "blue",
     alignItems: "center",
-    marginTop: 20,
-    borderRadius: 8,
+    marginTop: 10,
+    borderRadius: 5,
   },
   textButton: {
     color: "#e3e3e3",
     fontSize: 16,
-    fontWeight: "bold",
   },
   link: {
     marginTop: 20,
   },
   error: {
     color: "red",
-    marginVertical: 10,
+    marginVertical: 20,
     textAlign: "center",
     fontSize: 16,
   },
 });
-
