@@ -17,6 +17,13 @@ const Logo = ({ style }) => {
         style={[{ width: customWidth, height: customHeight }, style]} // Apply custom dimensions and other styles
         resizeMode="contain"
       />
+      <Image
+        source={{
+          uri: "https://via.placeholder.com/600x240.png", // Use a placeholder to test
+        }}
+        style={[{ width: 600, height: 240 }, style]}
+        resizeMode="contain"
+      />
     </View>
   );
 };
