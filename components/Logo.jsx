@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Image, Dimensions } from "react-native";
 
-const { width } = Dimensions.get("window");
-const defaultLogoWidth = width * 0.8; // Default width (80% of screen width).
-const defaultLogoHeight = defaultLogoWidth / 2.85; // Default height maintains aspect ratio.
-
 const Logo = ({ style }) => {
-  // Extract custom width and height if provided
-  const customWidth = style?.width || defaultLogoWidth;
-  const customHeight = style?.height || defaultLogoHeight;
+  const [screenSize, setScreenSize] = useState(Dimensions.get("window"));
+
+  useEffect(() => {
+    const onChange = ({ window }) => setScreenSize(window);
+    Dimensions.addEventListener("change", onChange);
+
+    return () => Dimensions.removeEventListener("change", onChange);
+  }, []);
+
+  const isMobile = screenSize.width < 768;
+
+  const logoWidth = isMobile ? 465 * 0.8 : 465;
+  const logoHeight = isMobile ? 186 * 0.8 : 186;
 
   return (
     <View style={styles.logoContainer}>
@@ -16,8 +22,8 @@ const Logo = ({ style }) => {
         source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
         style={[
           {
-            width: 465, //537,//600,
-            height: 186, //215,//240,
+            width: logoWidth,
+            height: logoHeight,
             alignSelf: "center",
             marginBottom: 15,
             borderWidth: 1,
@@ -39,5 +45,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// Use named exports
 export default Logo;
