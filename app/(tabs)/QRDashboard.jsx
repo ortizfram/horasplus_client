@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
@@ -14,11 +15,12 @@ import { RESP_URL } from "../../config";
 import axios from "axios";
 import Logo from "../../components/Logo";
 
-export default function QRDasboard() {
+export default function QRDashboard() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 
   useEffect(() => {
     console.log("index screen");
@@ -31,6 +33,14 @@ export default function QRDasboard() {
       router.push("/auth/login");
     }
   }, [userInfo, isMounted]);
+
+  // Update screen width on dimension changes
+  useEffect(() => {
+    const onChange = ({ window }) => setScreenWidth(window.width);
+    Dimensions.addEventListener("change", onChange);
+
+    return () => Dimensions.removeEventListener("change", onChange);
+  }, []);
 
   if (!userInfo?.user?._id || authLoading) {
     // Return loading indicator until userInfo is available
@@ -65,12 +75,11 @@ export default function QRDasboard() {
     }
   };
 
-  if (authLoading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+  // Determine if screen is mobile-sized
+  const isMobile = screenWidth < 768;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}>
       <Logo />
       <Text style={styles.header}>Generar QR de Ingreso</Text>
       <Text style={styles.welcome}>
@@ -156,7 +165,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     marginHorizontal: "10%",
-    marginBottom:80
   },
   header: {
     fontSize: 24,

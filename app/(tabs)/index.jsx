@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
@@ -21,6 +22,7 @@ export default function OrganizationList() {
   const [showSearch, setShowSearch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [organization, setOrganization] = useState(null);
+  const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 
   useEffect(() => {
     console.log(
@@ -90,8 +92,10 @@ export default function OrganizationList() {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
+  const isMobile = screenWidth <= 600; // Assuming 600px is the threshold for mobile screens
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}>
       <Logo />
 
       <Text style={styles.welcome}>
@@ -171,9 +175,7 @@ export default function OrganizationList() {
                     onSelectOrg={handleSelectOrg}
                     isAdmin={userInfo?.user?.isAdmin}
                     isSuperAdmin={userInfo?.user?.isSuperAdmin}
-                    organizationIds={
-                      userInfo?.user?.data?.organization_id || []
-                    }
+                    organizationIds={userInfo?.user?.data?.organization_id || []}
                   />
                 </View>
               )}
@@ -192,7 +194,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     marginHorizontal: "10%",
-    marginBottom:80
   },
   header: {
     fontSize: 24,
