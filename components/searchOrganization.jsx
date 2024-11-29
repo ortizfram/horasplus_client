@@ -139,16 +139,10 @@ export default function SearchOrganization({
 }
 
 const styles = StyleSheet.create({
-  searchInput: {
+  container: {
     flex: 1,
-    fontSize: 16,
-    backgroundColor: "#F0F0F0", // Same as container to blend
-    borderRadius: 25,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-  },
-  icon: {
-    marginRight: 8,
+    justifyContent: "flex-start", // Aligns content to the top
+    width: "100%",
   },
   searchContainer: {
     flexDirection: "row",
@@ -165,15 +159,21 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
-  container: {
+  searchInput: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    fontSize: 16,
+    backgroundColor: "#F0F0F0",
+    borderRadius: 25,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
   },
   listBg: {
+    flexGrow: 0, // Ensures it does not expand indefinitely
+    maxHeight: 300, // Sets a fixed height for the scrollable list area
     width: "100%",
   },
   listContainer: {
+    paddingBottom: 10,
     alignItems: "center",
   },
   itemContainer: {
@@ -190,3 +190,4 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
+

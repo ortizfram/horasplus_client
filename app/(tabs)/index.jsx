@@ -191,9 +191,7 @@ export default function OrganizationList() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
+    padding: 20, // Adds white space around the container
     marginBottom: 80,
   },
   blue: {
@@ -203,6 +201,7 @@ const styles = StyleSheet.create({
   welcome: {
     color: "blue",
     fontSize: 20,
+    marginBottom: 20, // Adds space below the welcome text
   },
   createBtn: {
     padding: 10,
@@ -221,3 +220,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
