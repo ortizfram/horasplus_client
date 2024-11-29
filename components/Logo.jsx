@@ -14,12 +14,13 @@ const Logo = ({ style }) => {
     <View style={styles.logoContainer}>
       <Image
         source={{
-          uri: "../assets/images/app_logo_no_description_appbannerlogo.png",
+          //uri: "../assets/images/app_logo_no_description_appbannerlogo.png",
+          uri: "https://via.placeholder.com/465x186",
         }}
         style={[
           {
-            width: 600,
-            height: 240,
+            width: 465,//537,//600,
+            height: 186,//215,//240,
             alignSelf: "center",
             marginBottom: 15,
             borderWidth: 1,
