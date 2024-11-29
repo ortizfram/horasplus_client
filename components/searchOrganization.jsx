@@ -33,7 +33,7 @@ export default function SearchOrganization({
     const fetchOrganizations = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${RESP_URL}/api/organization`, {
+        const response = await axios.get(`${RESP_URL}/api/organization?userId=${userId}&isAdmin=${isAdmin}&isSuperAdmin=${isSuperAdmin}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -43,6 +43,7 @@ export default function SearchOrganization({
 
         let organizationsData = response.data;
 
+        // owners only see their orgs isAdmin
         if (isAdmin && !isSuperAdmin) {
           // Admins see only organizations they "own" (user_id matches their ID)
           organizationsData = organizationsData.filter(
@@ -50,7 +51,7 @@ export default function SearchOrganization({
           );
         }
         
-        // Super admins see all organizations (no filtering)
+        // isSuperAdmin see all organizations (no filtering)
 
         setOrganizations(organizationsData);
         setFilteredOrganizations(organizationsData); // Show all initially
