@@ -180,6 +180,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   listBg: {
+    flexGrow: 0, // Ensures it does not expand indefinitely
+    maxHeight: 300, // Sets a fixed height for the scrollable list area
     width: "100%",
   },
   listContainer: {

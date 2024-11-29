@@ -23,7 +23,10 @@ export default function OrganizationList() {
   const [organization, setOrganization] = useState(null);
 
   useEffect(() => {
-    console.log("User ID being passed to SearchOrganization:", userInfo?.user?._id);
+    console.log(
+      "User ID being passed to SearchOrganization:",
+      userInfo?.user?._id
+    );
     console.log("Selected Organization:", organization);
     console.log("index screen");
     setIsMounted(true); // Set mounted to true when the component mounts
@@ -190,13 +193,11 @@ export default function OrganizationList() {
 
 const styles = StyleSheet.create({
   container: {
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      padding: 10,
-      marginBottom: 80,
-    },
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    marginBottom: 80,
   },
   blue: {
     color: "blue",
@@ -224,4 +225,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-

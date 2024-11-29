@@ -13,9 +13,7 @@ const Logo = ({ style }) => {
   return (
     <View style={styles.logoContainer}>
       <Image
-        source={{
-          uri: "../assets/images/app_logo_no_description_appbannerlogo.png",
-        }}
+        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
         style={[{ width: customWidth, height: customHeight }, style]} // Apply custom dimensions and other styles
         resizeMode="contain"
       />
