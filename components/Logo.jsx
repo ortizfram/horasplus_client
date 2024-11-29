@@ -13,21 +13,18 @@ const Logo = ({ style }) => {
   return (
     <View style={styles.logoContainer}>
       <Image
-        source={{
-          //uri: "../assets/images/app_logo_no_description_appbannerlogo.png",
-          uri: "https://via.placeholder.com/465x186",
-        }}
+        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
         style={[
           {
-            width: 465,//537,//600,
-            height: 186,//215,//240,
+            width: 465, //537,//600,
+            height: 186, //215,//240,
             alignSelf: "center",
             marginBottom: 15,
             borderWidth: 1,
             borderColor: "red",
           },
           style,
-        ]} // Apply custom dimensions and other styles
+        ]}
         resizeMode="contain"
       />
     </View>
@@ -38,7 +35,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20, // Spacing below the logo.
+    paddingVertical: 20,
   },
 });
 
