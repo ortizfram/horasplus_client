@@ -17,7 +17,12 @@ const Logo = ({ style }) => {
   const logoHeight = isMobile ? 186 * 0.8 : 186;
 
   return (
-    <View style={styles.logoContainer}>
+    <View
+      style={[
+        styles.logoContainer,
+        { marginTop: isMobile ? 40 : 0 }, // Add marginTop based on screen size
+      ]}
+    >
       <Image
         source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
         style={[
@@ -41,7 +46,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 20,
+    paddingBottom: 10,
   },
 });
 
