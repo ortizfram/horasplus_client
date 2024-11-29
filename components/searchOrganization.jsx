@@ -33,7 +33,8 @@ export default function SearchOrganization({
     const fetchOrganizations = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${RESP_URL}/api/organization?userId=${userId}&isAdmin=${isAdmin}&isSuperAdmin=${isSuperAdmin}`, {
+        const response = await axios.get(`${RESP_URL}/api/organization`, {
+          params: { userId, isAdmin, isSuperAdmin },
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -50,7 +51,7 @@ export default function SearchOrganization({
             (org) => org.user_id.toString() === userId.toString() // Compare IDs as strings
           );
         }
-        
+
         // isSuperAdmin see all organizations (no filtering)
 
         setOrganizations(organizationsData);
