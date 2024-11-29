@@ -17,7 +17,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 export default function SearchOrganizationQR({
   userId,
   token,
-  organizationIds, // IDs of organizations the admin has access to
+  onSelectOrg,
+  isAdmin,
+  isSuperAdmin,
+  organizationIds, // Pass organization IDs the admin has access to
 }) {
   const [organizations, setOrganizations] = useState([]);
   const [filteredOrganizations, setFilteredOrganizations] = useState([]);
@@ -26,40 +29,34 @@ export default function SearchOrganizationQR({
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
+  const fetchOrganizations = async () => {
+    setLoading(true);
+    console.log("User ID being sent to API:", userId); // Debug log
+    try {
+      const response = await axios.get(`${RESP_URL}/api/organization`, {
+        params: { userId, isAdmin, isSuperAdmin },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      const organizationsData = response.data;
+      setOrganizations(organizationsData);
+      setFilteredOrganizations(organizationsData); // Show all initially
+    } catch (error) {
+      console.error("Failed to fetch organizations:", error);
+      setError("Failed to fetch organizations");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrganizations = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${RESP_URL}/api/organization`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        });
-
-        let organizationsData = response.data;
-
-        // Filter organizations based on organizationIds
-        if (organizationIds?.length) {
-          organizationsData = organizationsData.filter((org) =>
-            organizationIds.includes(org._id)
-          );
-        }
-
-        setOrganizations(organizationsData);
-        setFilteredOrganizations(organizationsData); // Show all initially
-      } catch (error) {
-        console.error("Failed to fetch organizations:", error);
-        setError("Failed to fetch organizations");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrganizations();
-  }, [userId, token, organizationIds]);
+  }, [userId, token, isAdmin, isSuperAdmin]);
 
+  // lupa
   useEffect(() => {
     if (searchQuery) {
       const filtered = organizations.filter((org) =>

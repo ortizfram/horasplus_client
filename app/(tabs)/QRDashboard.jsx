@@ -12,7 +12,7 @@ import SearchOrganizationQR from "../../components/searchOrganizationQR";
 import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
 import axios from "axios";
-import Logo from "../../components/Logo"
+import Logo from "../../components/Logo";
 
 export default function QRDasboard() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};
@@ -71,13 +71,13 @@ export default function QRDasboard() {
 
   return (
     <View style={styles.container}>
-        <Logo
+      <Logo
         style={{
           width: "75%", // Makes the image take full width of the container
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
           alignSelf: "center", // Center the image horizontally
-          marginBottom: 15
+          marginBottom: 15,
         }}
       />
       <Text style={styles.header}>Generar QR de Ingreso</Text>
@@ -92,22 +92,24 @@ export default function QRDasboard() {
       {/* Check if showSearch is true */}
       {showSearch ? (
         <SearchOrganizationQR
-          userId={userInfo?._id}
-          token={userInfo.token}
-          onSelectOrg={handleSelectOrg}
-          isAdmin={userInfo?.user?.isAdmin}
-          isSuperAdmin={userInfo?.user?.isSuperAdmin}
-          organizationIds={userInfo?.user?.data?.organization_id || []}
+        userId={userInfo?.user?.data?._id}
+        token={userInfo.token}
+        onSelectOrg={handleSelectOrg}
+        isAdmin={userInfo?.user?.isAdmin}
+        isSuperAdmin={userInfo?.user?.isSuperAdmin}
+        organizationIds={userInfo?.user?.data?.organization_id || []}
         />
       ) : (
         <>
           {userInfo?.user?.isAdmin ? (
             <View>
-              <Text style={styles.blue}>Toca cada organizacion para ir a generar y descargar su
-              codigo QR</Text>
+              <Text style={styles.blue}>
+                Toca cada organizacion para ir a generar y descargar su codigo
+                QR
+              </Text>
 
               <SearchOrganizationQR
-                userId={userInfo?._id}
+                userId={userInfo?.user?.data?._id}
                 token={userInfo.token}
                 onSelectOrg={handleSelectOrg}
                 isAdmin={userInfo?.user?.isAdmin}
@@ -136,14 +138,12 @@ export default function QRDasboard() {
                   )}
 
                   <SearchOrganizationQR
-                    userId={userInfo?._id}
+                    userId={userInfo?.user?.data?._id}
                     token={userInfo.token}
                     onSelectOrg={handleSelectOrg}
                     isAdmin={userInfo?.user?.isAdmin}
                     isSuperAdmin={userInfo?.user?.isSuperAdmin}
-                    organizationIds={
-                      userInfo?.user?.data?.organization_id || []
-                    }
+                    organizationIds={userInfo?.user?.data?.organization_id || []}
                   />
                 </View>
               )}
@@ -164,9 +164,9 @@ const styles = StyleSheet.create({
     marginBottom: 80,
   },
   header: {
-   fontSize: 24,
-   fontWeight: "bold",
- },
+    fontSize: 24,
+    fontWeight: "bold",
+  },
   blue: {
     color: "blue",
     marginBottom: 10,

@@ -128,7 +128,7 @@ export default function OrganizationList() {
                     router.push("/organization/create");
                   }}
                 >
-                  (+) Crea un nuevo establecimiento
+                  Crea un nuevo establecimiento
                 </Text>
               </Pressable>
               <SearchOrganization
