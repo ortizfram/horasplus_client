@@ -29,35 +29,32 @@ export default function SearchOrganization({
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
+  const fetchOrganizations = async () => {
+    setLoading(true);
+    console.log("User ID being sent to API:", userId); // Debug log
+    try {
+      const response = await axios.get(`${RESP_URL}/api/organization`, {
+        params: { userId, isAdmin, isSuperAdmin },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      const organizationsData = response.data;
+      setOrganizations(organizationsData);
+      setFilteredOrganizations(organizationsData); // Show all initially
+    } catch (error) {
+      console.error("Failed to fetch organizations:", error);
+      setError("Failed to fetch organizations");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrganizations = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${RESP_URL}/api/organization`, {
-          params: { userId, isAdmin, isSuperAdmin },
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        });
-  
-        const organizationsData = response.data;
-  
-        // Set directly the fetched organizations
-        setOrganizations(organizationsData);
-        setFilteredOrganizations(organizationsData); // Show all initially
-      } catch (error) {
-        console.error("Failed to fetch organizations:", error);
-        setError("Failed to fetch organizations");
-      } finally {
-        setLoading(false);
-      }
-    };
-  
     fetchOrganizations();
   }, [userId, token, isAdmin, isSuperAdmin]);
-  
 
   // lupa
   useEffect(() => {

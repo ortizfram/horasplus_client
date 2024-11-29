@@ -23,7 +23,7 @@ export default function OrganizationList() {
   const [organization, setOrganization] = useState(null);
 
   useEffect(() => {
-    console.log("User Info:", userInfo);
+    console.log("User ID being passed to SearchOrganization:", userInfo?.user?._id);
     console.log("Selected Organization:", organization);
     console.log("index screen");
     setIsMounted(true); // Set mounted to true when the component mounts
@@ -95,7 +95,7 @@ export default function OrganizationList() {
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
           alignSelf: "center", // Center the image horizontally
-          marginBottom: 15
+          marginBottom: 15,
         }}
       />
       <Text style={styles.welcome}>
@@ -109,7 +109,7 @@ export default function OrganizationList() {
       {/* Check if showSearch is true */}
       {showSearch ? (
         <SearchOrganization
-          userId={userInfo?.user?._id}
+          userId={userInfo?.user?.data?._id}
           token={userInfo.token}
           onSelectOrg={handleSelectOrg}
           isAdmin={userInfo?.user?.isAdmin}
@@ -132,7 +132,7 @@ export default function OrganizationList() {
                 </Text>
               </Pressable>
               <SearchOrganization
-                userId={userInfo?._id}
+                userId={userInfo?.user?.data?._id}
                 token={userInfo.token}
                 onSelectOrg={handleSelectOrg}
                 isAdmin={userInfo?.user?.isAdmin}
@@ -169,7 +169,7 @@ export default function OrganizationList() {
                   )}
 
                   <SearchOrganization
-                    userId={userInfo?._id}
+                    userId={userInfo?.user?.data?._id}
                     token={userInfo.token}
                     onSelectOrg={handleSelectOrg}
                     isAdmin={userInfo?.user?.isAdmin}
