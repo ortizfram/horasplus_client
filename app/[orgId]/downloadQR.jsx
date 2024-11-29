@@ -102,7 +102,7 @@ const downloadQr = () => {
             maxWidth: 600, // Set a max width to prevent it from becoming too large
             height: 240,
             alignSelf: "center", // Center the image horizontally
-            marginBottom: 15,
+            marginBottom: 2,
           }}
         />
         <Text style={styles.header}>QR de Ingreso a {organization?.name}</Text>
