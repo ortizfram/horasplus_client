@@ -96,15 +96,7 @@ const downloadQr = () => {
       ]}
     >
       <View ref={viewRef} style={styles.headerContainer}>
-        <Logo
-          style={{
-            width: "50%", // Makes the image take full width of the container
-            maxWidth: 600, // Set a max width to prevent it from becoming too large
-            height: 240,
-            alignSelf: "center", // Center the image horizontally
-            marginBottom: 2,
-          }}
-        />
+        <Logo />
         <Text style={styles.header}>QR de Ingreso a {organization?.name}</Text>
         <Pressable onPress={() => router.push(`${orgId}/bePart`)}>
           <Text style={{ color: "#2793d5", marginTop: 10 }}>Link</Text>

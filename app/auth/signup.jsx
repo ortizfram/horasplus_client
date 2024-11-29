@@ -20,7 +20,6 @@ const Signup = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const { isIn, userInfo } = useContext(AuthContext); // Ensure splashLoading is available
 
-
   const { register, isLoading } = useContext(AuthContext) || {};
   const router = useRouter();
   const { next } = useLocalSearchParams();
@@ -35,7 +34,6 @@ const Signup = () => {
       }
     }
   }, [isIn, next, router]);
-  
 
   const handleSignup = () => {
     setErrorMessage(null); // Clear previous errors
@@ -45,15 +43,7 @@ const Signup = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-      <Logo
-        style={{
-          width: "100%", // Makes the image take full width of the container
-          maxWidth: 600, // Set a max width to prevent it from becoming too large
-          height: 240,
-          alignSelf: "center", // Center the image horizontally
-          marginBottom: 15
-        }}
-      />
+        <Logo />
         <Text style={styles.header}>Registro</Text>
       </View>
       <Spinner visible={isLoading} />
@@ -90,7 +80,9 @@ const Signup = () => {
       </TouchableOpacity>
       <View style={styles.linkContainer}>
         <Text>Ya tienes cuenta? </Text>
-        <TouchableOpacity onPress={() => router.push(`/auth/login?next=${next}`)}>
+        <TouchableOpacity
+          onPress={() => router.push(`/auth/login?next=${next}`)}
+        >
           <Text style={styles.link}>Ingresar</Text>
         </TouchableOpacity>
       </View>

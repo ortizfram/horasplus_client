@@ -13,15 +13,20 @@ const Logo = ({ style }) => {
   return (
     <View style={styles.logoContainer}>
       <Image
-        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
-        style={[{ width: customWidth, height: customHeight }, style]} // Apply custom dimensions and other styles
-        resizeMode="contain"
-      />
-      <Image
         source={{
-          uri: "https://via.placeholder.com/600x240.png", // Use a placeholder to test
+          uri: "../assets/images/app_logo_no_description_appbannerlogo.png",
         }}
-        style={[{ width: 600, height: 240 }, style]}
+        style={[
+          {
+            width: 600,
+            height: 240,
+            alignSelf: "center",
+            marginBottom: 15,
+            borderWidth: 1,
+            borderColor: "red",
+          },
+          style,
+        ]} // Apply custom dimensions and other styles
         resizeMode="contain"
       />
     </View>

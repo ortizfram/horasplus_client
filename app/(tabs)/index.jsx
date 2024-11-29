@@ -92,15 +92,7 @@ export default function OrganizationList() {
 
   return (
     <View style={styles.container}>
-      <Logo
-        style={{
-          width: "100%", // Makes the image take full width of the container
-          maxWidth: 600, // Set a max width to prevent it from becoming too large
-          height: 240,
-          alignSelf: "center",
-          marginBottom: 15,
-        }}
-      />
+      <Logo />
 
       <Text style={styles.welcome}>
         <Text style={styles.header}>Bienvenid@</Text>
