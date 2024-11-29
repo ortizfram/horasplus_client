@@ -12,7 +12,7 @@ import SearchOrganizationQR from "../../components/searchOrganizationQR";
 import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
 import axios from "axios";
-import Logo from "../../components/Loader"
+import Logo from "../../components/Logo"
 
 export default function QRDasboard() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};

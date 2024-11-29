@@ -41,19 +41,10 @@ export default function SearchOrganization({
           },
           withCredentials: true,
         });
-
-        let organizationsData = response.data;
-
-        // owners only see their orgs isAdmin
-        if (isAdmin && !isSuperAdmin) {
-          // Admins see only organizations they "own" (user_id matches their ID)
-          organizationsData = organizationsData.filter(
-            (org) => org.user_id.toString() === userId.toString() // Compare IDs as strings
-          );
-        }
-
-        // isSuperAdmin see all organizations (no filtering)
-
+  
+        const organizationsData = response.data;
+  
+        // Set directly the fetched organizations
         setOrganizations(organizationsData);
         setFilteredOrganizations(organizationsData); // Show all initially
       } catch (error) {
@@ -63,10 +54,12 @@ export default function SearchOrganization({
         setLoading(false);
       }
     };
-
+  
     fetchOrganizations();
-  }, [userId, token, isAdmin, isSuperAdmin, organizationIds, userId]);
+  }, [userId, token, isAdmin, isSuperAdmin]);
+  
 
+  // lupa
   useEffect(() => {
     if (searchQuery) {
       const filtered = organizations.filter((org) =>
