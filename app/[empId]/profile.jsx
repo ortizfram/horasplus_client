@@ -120,7 +120,7 @@ const Profile = () => {
           onChangeText={(text) => handleInputChange("firstname", text)}
         />
       ) : (
-        <Text style={styles.text}>{userInfo?.user?.firstname || "N/A"}</Text>
+        <Text style={styles.text}>{userInfo?.user?.data?.firstname || "N/A"}</Text>
       )}
 
       <View style={styles.editRow}>
@@ -136,7 +136,7 @@ const Profile = () => {
           onChangeText={(text) => handleInputChange("lastname", text)}
         />
       ) : (
-        <Text style={styles.text}>{userInfo?.user?.lastname || "N/A"}</Text>
+        <Text style={styles.text}>{userInfo?.user?.data?.lastname || "N/A"}</Text>
       )}
 
       {editable && (

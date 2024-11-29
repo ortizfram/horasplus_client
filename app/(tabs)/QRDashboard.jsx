@@ -12,7 +12,7 @@ import SearchOrganizationQR from "../../components/searchOrganizationQR";
 import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
 import axios from "axios";
-import Logo from "../../components/Logo";
+import Logo from "../../components/Loader"
 
 export default function QRDasboard() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};
@@ -71,13 +71,13 @@ export default function QRDasboard() {
 
   return (
     <View style={styles.container}>
-      <Logo
+        <Logo
         style={{
-          width: "100%", // Makes the image take full width of the container
+          width: "75%", // Makes the image take full width of the container
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
           alignSelf: "center", // Center the image horizontally
-          marginBottom: 15,
+          marginBottom: 15
         }}
       />
       <Text style={styles.header}>Generar QR de Ingreso</Text>
