@@ -43,12 +43,13 @@ export default function SearchOrganization({
 
         let organizationsData = response.data;
 
-        if (isAdmin && !isSuperAdmin && organizationIds?.length) {
-          // Admins only see organizations with IDs in organizationIds
-          organizationsData = organizationsData.filter((org) =>
-            organizationIds.includes(org._id.toString())
+        if (isAdmin && !isSuperAdmin) {
+          // Admins see only organizations they "own" (user_id matches their ID)
+          organizationsData = organizationsData.filter(
+            (org) => org.user_id.toString() === userId // Compare IDs as strings
           );
         }
+        
         // Super admins see all organizations (no filtering)
 
         setOrganizations(organizationsData);
