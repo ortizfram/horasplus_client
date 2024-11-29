@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import Logo from "../../components/Logo";
 import fetchOrganization from "../../services/organization/fetchOrganization";
 import QRCode from "react-qr-code";
 import { REQ_URL } from "../../config";
 import { captureScreen } from "react-native-view-shot"; // Import view-shot for capturing the screen
 import * as FileSystem from "expo-file-system"; // For mobile saving the image
+import Logo from "../../components/Logo";
 
 const downloadQr = () => {
   const { orgId } = useLocalSearchParams();

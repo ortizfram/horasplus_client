@@ -21,18 +21,6 @@ const Logo = ({ style }) => {
   );
 };
 
-const LogoBanner = ({ style }) => {
-  return (
-    <View style={styles.logoContainer}>
-      <Image
-        source={require("../assets/images/app_logo_rectangle_appbanner.jpg")}
-        style={[{ width: logoWidth, height: logoHeight }, style]} // Combine default styles with custom styles
-        resizeMode="contain"
-      />
-    </View>
-  );
-};
-
 const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: "center",

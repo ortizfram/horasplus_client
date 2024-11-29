@@ -92,12 +92,12 @@ export default function QRDasboard() {
       {/* Check if showSearch is true */}
       {showSearch ? (
         <SearchOrganizationQR
-        userId={userInfo?.user?.data?._id}
-        token={userInfo.token}
-        onSelectOrg={handleSelectOrg}
-        isAdmin={userInfo?.user?.isAdmin}
-        isSuperAdmin={userInfo?.user?.isSuperAdmin}
-        organizationIds={userInfo?.user?.data?.organization_id || []}
+          userId={userInfo?.user?.data?._id}
+          token={userInfo.token}
+          onSelectOrg={handleSelectOrg}
+          isAdmin={userInfo?.user?.isAdmin}
+          isSuperAdmin={userInfo?.user?.isSuperAdmin}
+          organizationIds={userInfo?.user?.data?.organization_id || []}
         />
       ) : (
         <>
@@ -143,7 +143,9 @@ export default function QRDasboard() {
                     onSelectOrg={handleSelectOrg}
                     isAdmin={userInfo?.user?.isAdmin}
                     isSuperAdmin={userInfo?.user?.isSuperAdmin}
-                    organizationIds={userInfo?.user?.data?.organization_id || []}
+                    organizationIds={
+                      userInfo?.user?.data?.organization_id || []
+                    }
                   />
                 </View>
               )}

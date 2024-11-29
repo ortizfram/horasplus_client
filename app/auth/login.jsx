@@ -35,14 +35,16 @@ const Login = () => {
     <View style={styles.container}>
       <View style={styles.headerContainer}>
       <Logo
-        style={{
-          width: "100%", // Makes the image take full width of the container
-          maxWidth: 600, // Set a max width to prevent it from becoming too large
-          height: 240,
-          alignSelf: "center", // Center the image horizontally
-          marginBottom: 15
-        }}
-      />
+  style={{
+    width: "100%", // Makes the image take full width of the container
+    maxWidth: 600, // Set a max width to prevent it from becoming too large
+    height: 240,
+    alignSelf: "center",
+    marginBottom: 15,
+    borderWidth: 1, // Debugging border
+    borderColor: "red", // Debugging border
+  }}
+/>
         <Text style={styles.header}>Ingreso</Text>
         {error ? <Text style={styles.error}>{error}</Text> : null}
       </View>

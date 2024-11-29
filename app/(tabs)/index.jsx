@@ -91,18 +91,20 @@ export default function OrganizationList() {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <Logo
         style={{
-          width: "50%", // Makes the image take full width of the container
+          width: "100%", // Makes the image take full width of the container
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
-          alignSelf: "center", // Center the image horizontally
+          alignSelf: "center",
           marginBottom: 15,
         }}
       />
+
       <Text style={styles.welcome}>
-        Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
+        <Text style={styles.header}>Bienvenid@</Text>
+        {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
         {userInfo?.user?.data?.firstname
           ? userInfo?.user?.data?.firstname
@@ -187,7 +189,7 @@ export default function OrganizationList() {
           )}
         </>
       )}
-    </ScrollView>
+    </View>
   );
 }
 
@@ -198,6 +200,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     marginBottom: 80,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
   },
   blue: {
     color: "blue",
