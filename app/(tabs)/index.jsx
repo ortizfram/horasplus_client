@@ -91,7 +91,7 @@ export default function OrganizationList() {
     <ScrollView style={styles.container}>
       <Logo
         style={{
-          width: "100%", // Makes the image take full width of the container
+          width: "50%", // Makes the image take full width of the container
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
           alignSelf: "center", // Center the image horizontally
@@ -109,7 +109,7 @@ export default function OrganizationList() {
       {/* Check if showSearch is true */}
       {showSearch ? (
         <SearchOrganization
-          userId={userInfo?._id}
+          userId={userInfo?.user?._id}
           token={userInfo.token}
           onSelectOrg={handleSelectOrg}
           isAdmin={userInfo?.user?.isAdmin}

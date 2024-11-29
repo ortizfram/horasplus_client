@@ -47,7 +47,7 @@ export default function SearchOrganization({
         if (isAdmin && !isSuperAdmin) {
           // Admins see only organizations they "own" (user_id matches their ID)
           organizationsData = organizationsData.filter(
-            (org) => org.user_id.toString() === userId // Compare IDs as strings
+            (org) => org.user_id.toString() === userId.toString() // Compare IDs as strings
           );
         }
         
@@ -64,7 +64,7 @@ export default function SearchOrganization({
     };
 
     fetchOrganizations();
-  }, [userId, token, isAdmin, isSuperAdmin, organizationIds]);
+  }, [userId, token, isAdmin, isSuperAdmin, organizationIds, userId]);
 
   useEffect(() => {
     if (searchQuery) {
