@@ -20,7 +20,7 @@ const Logo = ({ style }) => {
     <View
       style={[
         styles.logoContainer,
-        { marginTop: isMobile ? 40 : 0 }, // Add marginTop based on screen size
+        { marginTop: isMobile ? 55 : 0 }, // Add marginTop based on screen size
       ]}
     >
       <Image
