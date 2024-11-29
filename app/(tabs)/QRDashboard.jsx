@@ -73,7 +73,7 @@ export default function QRDasboard() {
     <View style={styles.container}>
       <Logo
         style={{
-          width: "75%", // Makes the image take full width of the container
+          width: "50%", // Makes the image take full width of the container
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
           alignSelf: "center", // Center the image horizontally

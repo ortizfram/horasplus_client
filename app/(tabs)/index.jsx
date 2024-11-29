@@ -91,7 +91,7 @@ export default function OrganizationList() {
     <ScrollView style={styles.container}>
       <Logo
         style={{
-          width: "75%", // Makes the image take full width of the container
+          width: "50%", // Makes the image take full width of the container
           maxWidth: 600, // Set a max width to prevent it from becoming too large
           height: 240,
           alignSelf: "center", // Center the image horizontally
@@ -190,9 +190,13 @@ export default function OrganizationList() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 20, // Adds white space around the container
-    marginBottom: 80,
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 10,
+      marginBottom: 80,
+    },
   },
   blue: {
     color: "blue",

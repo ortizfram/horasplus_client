@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start", // Aligns content to the top
     width: "100%",
+    paddingHorizontal:10
   },
   searchContainer: {
     flexDirection: "row",
