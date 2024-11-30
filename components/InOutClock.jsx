@@ -50,8 +50,8 @@ const InOutClock = ({ orgId }) => {
         setWasIn(true);
       } else if (shiftData?.in == null && shiftData.out === null) {
         setWasIn(false); // Optional: to reset if `in` is null
-      } else {
-        setWasIn(false); // Optional: to reset if `in` is null
+      } else if(!shiftData){
+        console.error("no shift yet");
       }
     } catch (error) {
       console.error("Error fetching shifts:", error);
@@ -104,6 +104,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK");
+        window.location.reload();
 
         // setIsEgresoVisible(true);
         // setIsIngresoVisible(false);
@@ -143,6 +144,8 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
+        window.location.reload();
+
         // setIsEgresoVisible(true);
         // setIsIngresoVisible(false);
         // setIsIngresoFeriadoVisible(false); // Hide holiday button after holiday clock in
@@ -182,6 +185,8 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 200) {
         console.log("Egresaste OK");
+        window.location.reload();
+
         // setIsEgresoVisible(false);
         // setIsIngresoVisible(true);
         // setIsIngresoFeriadoVisible(true); // Show holiday button again after clocking out
