@@ -5,7 +5,10 @@ import { RESP_URL } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { Alert } from "react-native-web";
 import { format } from "date-fns-tz";
-import { fetchLastShiftUid, fetchShift } from "../services/userShift/fetchShifts";
+import {
+  fetchLastShiftUid,
+  fetchShift,
+} from "../services/userShift/fetchShifts";
 
 const InOutClock = ({ orgId }) => {
   const { userInfo } = useContext(AuthContext);
@@ -40,11 +43,13 @@ const InOutClock = ({ orgId }) => {
   const loadCurrentShift = async () => {
     try {
       const shiftData = await fetchLastShiftUid(
-        userInfo?.user?.data?._id, //uid
+        userInfo?.user?.data?._id //uid
       );
-      console.log("shiftData ", shiftData)
+      console.log("shiftData ", shiftData);
       if (shiftData?.in !== null && shiftData.out === null) {
         setWasIn(true);
+      } else if (shiftData?.in == null && shiftData.out === null) {
+        setWasIn(false); // Optional: to reset if `in` is null
       } else {
         setWasIn(false); // Optional: to reset if `in` is null
       }
@@ -98,7 +103,7 @@ const InOutClock = ({ orgId }) => {
       );
 
       if (response.status === 201) {
-        console.log("Ingresaste OK")
+        console.log("Ingresaste OK");
 
         // setIsEgresoVisible(true);
         // setIsIngresoVisible(false);
@@ -137,7 +142,7 @@ const InOutClock = ({ orgId }) => {
       );
 
       if (response.status === 201) {
-        console.log("IngresasteFeriado OK")
+        console.log("IngresasteFeriado OK");
         // setIsEgresoVisible(true);
         // setIsIngresoVisible(false);
         // setIsIngresoFeriadoVisible(false); // Hide holiday button after holiday clock in
@@ -176,7 +181,7 @@ const InOutClock = ({ orgId }) => {
       );
 
       if (response.status === 200) {
-        console.log("Egresaste OK")
+        console.log("Egresaste OK");
         // setIsEgresoVisible(false);
         // setIsIngresoVisible(true);
         // setIsIngresoFeriadoVisible(true); // Show holiday button again after clocking out
