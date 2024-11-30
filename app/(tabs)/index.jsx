@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
@@ -14,7 +15,6 @@ import InOutClock from "../../components/InOutClock";
 import { RESP_URL } from "../../config";
 import axios from "axios";
 import Logo from "../../components/Logo";
-import { ScrollView } from "react-native-web";
 
 export default function OrganizationList() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};
@@ -95,7 +95,7 @@ export default function OrganizationList() {
   const isMobile = screenWidth <= 600; // Assuming 600px is the threshold for mobile screens
 
   return (
-    <View style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}>
+    <ScrollView style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}>
       <Logo />
 
       <Text style={styles.welcome}>
@@ -183,7 +183,7 @@ export default function OrganizationList() {
           )}
         </>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
