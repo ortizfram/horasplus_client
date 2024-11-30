@@ -31,9 +31,16 @@ const BePart = () => {
       console.log("Redirecting to signup...");
       router.push(`/auth/signup?next=/${orgId}/bePart`);
     } else if (!splashLoading && orgId && userInfo?.user?._id) {
-      fetchOrganization();
+      fetchOrganization().then(() => {
+        // After fetching organization, check if the organization_id matches
+        if (userInfo?.user?.data?.organization_id?.toString() === orgId.toString()) {
+          console.log("Redirecting to home...");
+          router.push("/"); // Redirect to home if the organization ID matches
+        }
+      });
     }
   }, [splashLoading, userInfo, orgId]);
+  
 
   const associate = async () => {
     try {
