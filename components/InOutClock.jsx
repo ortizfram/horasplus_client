@@ -5,7 +5,7 @@ import { RESP_URL } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { Alert } from "react-native-web";
 import { format } from "date-fns-tz";
-import { fetchShift } from "../services/userShift/fetchShifts";
+import { fetchLastShiftUid, fetchShift } from "../services/userShift/fetchShifts";
 
 const InOutClock = ({ orgId }) => {
   const { userInfo } = useContext(AuthContext);
@@ -38,11 +38,9 @@ const InOutClock = ({ orgId }) => {
   };
 
   const loadCurrentShift = async () => {
-    const today = new Date().toISOString().split("T")[0];
     try {
-      const shiftData = await fetchShift(
+      const shiftData = await fetchLastShiftUid(
         userInfo?.user?.data?._id, //uid
-        today
       );
       console.log("shiftData ", shiftData)
       if (shiftData?.in !== null && shiftData.out === null) {
@@ -101,6 +99,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK")
+
         // setIsEgresoVisible(true);
         // setIsIngresoVisible(false);
         // setIsIngresoFeriadoVisible(false); // Hide holiday button after regular clock in
