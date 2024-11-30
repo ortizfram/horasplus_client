@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -22,7 +22,9 @@ const downloadQr = () => {
   const [organization, setOrganization] = useState(null);
   const viewRef = useRef(); // Reference to the container view
 
-  const [isMobile, setIsMobile] = useState(Dimensions.get("window").width < 768); // Track if screen is mobile-sized
+  const [isMobile, setIsMobile] = useState(
+    Dimensions.get("window").width < 768
+  ); // Track if screen is mobile-sized
   const [showDownloadButton, setShowDownloadButton] = useState(false); // State to control the visibility of the download button
 
   useEffect(() => {
@@ -119,7 +121,8 @@ const downloadQr = () => {
     >
       <View ref={viewRef} style={getContainerStyle()}>
         <Logo />
-        <Text style={styles.header}>QR de Ingreso a {organization?.name}</Text>
+        <Text>QR de Ingreso y salida:</Text>
+        <Text style={styles.header}>{organization?.name}</Text>
         <Pressable onPress={() => router.push(`${orgId}/bePart`)}>
           <Text style={{ color: "#2793d5", marginTop: 10 }}>Link</Text>
         </Pressable>
