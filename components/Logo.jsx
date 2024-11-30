@@ -31,8 +31,8 @@ const Logo = ({ style }) => {
             height: logoHeight,
             alignSelf: "center",
             marginBottom: 15,
-            borderWidth: 1,
-            borderColor: "red",
+            // borderWidth: 1,
+            // borderColor: "red",
           },
           style,
         ]}
