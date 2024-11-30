@@ -45,7 +45,7 @@ const InOutClock = ({ orgId }) => {
         today
       );
       console.log("shiftData ", shiftData)
-      if (shiftData?.in !== null) {
+      if (shiftData?.in !== null && shiftData.out === null) {
         setWasIn(true);
       } else {
         setWasIn(false); // Optional: to reset if `in` is null
