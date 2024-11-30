@@ -23,6 +23,7 @@ const downloadQr = () => {
   const viewRef = useRef(); // Reference to the container view
 
   const [isMobile, setIsMobile] = useState(Dimensions.get("window").width < 768); // Track if screen is mobile-sized
+  const [showDownloadButton, setShowDownloadButton] = useState(false); // State to control the visibility of the download button
 
   useEffect(() => {
     const loadOrganization = async () => {
@@ -73,30 +74,34 @@ const downloadQr = () => {
   // Function to capture the headerContainer and download the image
   const handleDownload = async () => {
     try {
-      const uri = await captureScreen({
-        format: "png", // Save as PNG
-        quality: 0.8,
-        transparent: true, // Make the background transparent
-        result: "tmpfile",
-        captureRef: viewRef, // Capture the content of the referenced view
-      });
-
-      if (Platform.OS === "web") {
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = `${organization?.name}_qr_code.png`;
-        link.click();
-      } else {
-        const fileUri = FileSystem.documentDirectory + `${orgId}_qr_code.png`;
-        await FileSystem.moveAsync({
-          from: uri,
-          to: fileUri,
+      setShowDownloadButton(false); // Hide the download button for 10 seconds before capturing
+      setTimeout(async () => {
+        // Capture only the headerContainer and download the image
+        const uri = await captureScreen({
+          format: "png", // Save as PNG
+          quality: 0.8,
+          transparent: true, // Make the background transparent
+          result: "tmpfile",
+          captureRef: viewRef, // Capture the content of the referenced view
         });
-        console.log("File saved to:", fileUri);
-        alert("QR code image downloaded!");
-      }
+
+        if (Platform.OS === "web") {
+          const response = await fetch(uri);
+          const blob = await response.blob();
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = `${organization?.name}_qr_code.png`;
+          link.click();
+        } else {
+          const fileUri = FileSystem.documentDirectory + `${orgId}_qr_code.png`;
+          await FileSystem.moveAsync({
+            from: uri,
+            to: fileUri,
+          });
+          console.log("File saved to:", fileUri);
+          alert("QR code image downloaded!");
+        }
+      }, 10000); // Wait for 10 seconds before capturing the screen
     } catch (error) {
       console.error("Failed to capture screen:", error);
     }
@@ -128,9 +133,11 @@ const downloadQr = () => {
             bgColor="#ffffff"
           />
         </View>
-        <Pressable onPress={handleDownload} style={styles.downloadButton}>
-          <Text style={styles.downloadText}>Descargar Imagen</Text>
-        </Pressable>
+        {showDownloadButton && (
+          <Pressable onPress={handleDownload} style={styles.downloadButton}>
+            <Text style={styles.downloadText}>Descargar Imagen</Text>
+          </Pressable>
+        )}
       </View>
     </ScrollView>
   );
@@ -153,6 +160,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 24,
     fontWeight: "bold",
+    textAlign: "center", // Center align the header text
   },
   qrContainer: {
     height: "auto",
