@@ -41,6 +41,9 @@ const InOutClock = ({ orgId }) => {
   };
 
   const loadCurrentShift = async () => {
+    setIsEgresoVisible(false);
+      setIsIngresoVisible(false);
+      setIsIngresoFeriadoVisible(false);
     try {
       const shiftData = await fetchLastShiftUid(
         userInfo?.user?.data?._id //uid
@@ -106,9 +109,9 @@ const InOutClock = ({ orgId }) => {
         console.log("Ingresaste OK");
         window.location.reload();
 
-        setIsEgresoVisible(true);
-        setIsIngresoVisible(false);
-        setIsIngresoFeriadoVisible(false); // Hide holiday button after regular clock in
+        // setIsEgresoVisible(true);
+        // setIsIngresoVisible(false);
+        // setIsIngresoFeriadoVisible(false); // Hide holiday button after regular clock in
       } else {
         console.log("Failed to create shift");
         Alert.alert("Error", "Failed to clock in. Please try again.");
@@ -146,9 +149,9 @@ const InOutClock = ({ orgId }) => {
         console.log("IngresasteFeriado OK");
         window.location.reload();
 
-        setIsEgresoVisible(true);
-        setIsIngresoVisible(false);
-        setIsIngresoFeriadoVisible(false); // Hide holiday button after holiday clock in
+        // setIsEgresoVisible(true);
+        // setIsIngresoVisible(false);
+        // setIsIngresoFeriadoVisible(false); // Hide holiday button after holiday clock in
       } else {
         console.log("Failed to create holiday shift");
         Alert.alert("Error", "Failed to clock in (holiday). Please try again.");
@@ -187,9 +190,9 @@ const InOutClock = ({ orgId }) => {
         console.log("Egresaste OK");
         window.location.reload();
 
-        setIsEgresoVisible(false);
-        setIsIngresoVisible(true);
-        setIsIngresoFeriadoVisible(true); // Show holiday button again after clocking out
+        // setIsEgresoVisible(false);
+        // setIsIngresoVisible(true);
+        // setIsIngresoFeriadoVisible(true); // Show holiday button again after clocking out
         setInTime(null);
         setOutTime(null);
       } else {
