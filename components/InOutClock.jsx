@@ -44,6 +44,7 @@ const InOutClock = ({ orgId }) => {
         userInfo?.user?.data?._id, //uid
         today
       );
+      console.log("shiftData ", shiftData)
       if (shiftData?.in !== null) {
         setWasIn(true);
       } else {
