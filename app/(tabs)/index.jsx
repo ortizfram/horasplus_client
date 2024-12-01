@@ -23,7 +23,6 @@ export default function OrganizationList() {
   const [isMounted, setIsMounted] = useState(false);
   const [organization, setOrganization] = useState(null);
   const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
-  const isMobile = screenWidth <= 600; // Assuming 600px is the threshold for mobile screens
 
 
 
@@ -94,6 +93,17 @@ export default function OrganizationList() {
   if (authLoading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
+
+  useEffect(() => {
+    const updateScreenWidth = () => setScreenWidth(Dimensions.get("window").width);
+  
+    Dimensions.addEventListener("change", updateScreenWidth);
+  
+    return () => Dimensions.removeEventListener("change", updateScreenWidth);
+  }, []);
+  
+  const isMobile = screenWidth < 768; // Define this after screenWidth
+  
 
 
   return (
@@ -195,7 +205,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginHorizontal: isMobile ? width * 0.02 : width * 0.1, // 2% for mobile, 10% for larger screens
+    marginHorizontal:"10%" 
   },
   header: {
     fontSize: 24,
