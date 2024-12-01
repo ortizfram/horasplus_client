@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   welcome: {
+    textAlign:"center",
     color: "blue",
     fontSize: 20,
     marginBottom: 20, // Adds space below the welcome text
