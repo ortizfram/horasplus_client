@@ -3,19 +3,12 @@ import { Pressable, StyleSheet, Text, View, Image } from "react-native";
 import axios from "axios";
 import { RESP_URL } from "../config";
 import { AuthContext } from "../context/AuthContext";
-import { Alert } from "react-native-web";
 import { format } from "date-fns-tz";
-import {
-  fetchLastShiftUid,
-  fetchShift,
-} from "../services/userShift/fetchShifts";
+import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
 
 const InOutClock = ({ orgId }) => {
   const { userInfo } = useContext(AuthContext);
   const [org, setOrg] = useState(null);
-  const [isEgresoVisible, setIsEgresoVisible] = useState(false);
-  const [isIngresoVisible, setIsIngresoVisible] = useState(true);
-  const [isIngresoFeriadoVisible, setIsIngresoFeriadoVisible] = useState(true); // State for holiday button
   const [inTime, setInTime] = useState(null);
   const [outTime, setOutTime] = useState(null);
   const [wasIn, setWasIn] = useState(false);
@@ -41,20 +34,15 @@ const InOutClock = ({ orgId }) => {
   };
 
   const loadCurrentShift = async () => {
-    setIsEgresoVisible(false);
-      setIsIngresoVisible(false);
-      setIsIngresoFeriadoVisible(false);
     try {
-      const shiftData = await fetchLastShiftUid(
-        userInfo?.user?.data?._id //uid
-      );
+      const shiftData = await fetchLastShiftUid(userInfo?.user?.data?._id); // uid
       console.log("shiftData ", shiftData);
       if (shiftData?.in !== null && shiftData.out === null) {
         setWasIn(true);
       } else if (shiftData?.in == null && shiftData.out === null) {
-        setWasIn(false); // Optional: to reset if `in` is null
-      } else if(!shiftData){
-        console.error("no shift yet");
+        setWasIn(false);
+      } else if (!shiftData) {
+        console.error("no current shift found"); // Log en caso de que no haya turno
       }
     } catch (error) {
       console.error("Error fetching shifts:", error);
@@ -69,19 +57,6 @@ const InOutClock = ({ orgId }) => {
 
     initialize();
   }, []);
-
-  useEffect(() => {
-    // Adjust visibility based on `wasIn`
-    if (wasIn) {
-      setIsEgresoVisible(true);
-      setIsIngresoVisible(false);
-      setIsIngresoFeriadoVisible(false);
-    } else {
-      setIsEgresoVisible(false);
-      setIsIngresoVisible(true);
-      setIsIngresoFeriadoVisible(true);
-    }
-  }, [wasIn]);
 
   const timeZone = "America/Argentina/Buenos_Aires";
 
@@ -108,10 +83,6 @@ const InOutClock = ({ orgId }) => {
       if (response.status === 201) {
         console.log("Ingresaste OK");
         window.location.reload();
-
-        // setIsEgresoVisible(true);
-        // setIsIngresoVisible(false);
-        // setIsIngresoFeriadoVisible(false); // Hide holiday button after regular clock in
       } else {
         console.log("Failed to create shift");
         Alert.alert("Error", "Failed to clock in. Please try again.");
@@ -148,10 +119,6 @@ const InOutClock = ({ orgId }) => {
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
         window.location.reload();
-
-        // setIsEgresoVisible(true);
-        // setIsIngresoVisible(false);
-        // setIsIngresoFeriadoVisible(false); // Hide holiday button after holiday clock in
       } else {
         console.log("Failed to create holiday shift");
         Alert.alert("Error", "Failed to clock in (holiday). Please try again.");
@@ -190,9 +157,6 @@ const InOutClock = ({ orgId }) => {
         console.log("Egresaste OK");
         window.location.reload();
 
-        // setIsEgresoVisible(false);
-        // setIsIngresoVisible(true);
-        // setIsIngresoFeriadoVisible(true); // Show holiday button again after clocking out
         setInTime(null);
         setOutTime(null);
       } else {
@@ -227,21 +191,25 @@ const InOutClock = ({ orgId }) => {
         <Text>cargando detalles...</Text>
       )}
       <Text>{new Date().toLocaleString()}</Text>
-      {isIngresoVisible && (
-        <Pressable style={styles.actionBtn} onPress={handleIngresoPress}>
-          <Text style={styles.actionText}>Ingreso</Text>
-        </Pressable>
+      {wasIn === false && (
+        <View>
+          <Pressable style={styles.actionBtn} onPress={handleIngresoPress}>
+            <Text style={styles.actionText}>Ingreso</Text>
+          </Pressable>
+          <Pressable
+            style={styles.actionBtn}
+            onPress={handleIngresoFeriadoPress}
+          >
+            <Text style={styles.actionText}>Ingreso Feriado</Text>
+          </Pressable>
+        </View>
       )}
-      {isIngresoFeriadoVisible && (
-        <Pressable style={styles.actionBtn} onPress={handleIngresoFeriadoPress}>
-          <Text style={styles.actionText}>Ingreso Feriado</Text>
-        </Pressable>
-      )}
-      {isEgresoVisible && (
-        <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
-          <Text style={styles.actionText}>Egreso</Text>
-        </Pressable>
-      )}
+      {wasIn ===
+        true(
+          <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
+            <Text style={styles.actionText}>Egreso</Text>
+          </Pressable>
+        )}
     </View>
   );
 };
