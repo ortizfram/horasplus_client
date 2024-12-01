@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View, Image } from "react-native";
+import { Pressable, StyleSheet, Text, View, Image, Alert } from "react-native";
 import axios from "axios";
 import { RESP_URL } from "../config";
 import { AuthContext } from "../context/AuthContext";
