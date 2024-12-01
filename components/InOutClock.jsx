@@ -82,7 +82,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK");
-        window.location.reload();
+        setWasIn(true)
       } else {
         console.log("Failed to create shift");
         Alert.alert("Error", "Failed to clock in. Please try again.");
@@ -118,7 +118,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
-        window.location.reload();
+        setWasIn(true)
       } else {
         console.log("Failed to create holiday shift");
         Alert.alert("Error", "Failed to clock in (holiday). Please try again.");
@@ -155,7 +155,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 200) {
         console.log("Egresaste OK");
-        window.location.reload();
+        setWasIn(false)
 
         setInTime(null);
         setOutTime(null);
