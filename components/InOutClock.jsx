@@ -35,19 +35,24 @@ const InOutClock = ({ orgId }) => {
 
   const loadCurrentShift = async () => {
     try {
-      const shiftData = await fetchLastShiftUid(userInfo?.user?.data?._id); // uid
-      console.log("shiftData ", shiftData);
-      if (shiftData?.in !== null && shiftData.out === null) {
+      const shiftData = await fetchLastShiftUid(userInfo?.user?.data?._id);
+  
+      console.log("Shift Data:", shiftData);
+      if (shiftData?.in && !shiftData?.out) {
         setWasIn(true);
-      } else if (shiftData?.in == null && shiftData.out === null) {
+      } else if (!shiftData?.in && !shiftData?.out) {
         setWasIn(false);
-      } else if (!shiftData) {
-        console.error("no current shift found"); // Log en caso de que no haya turno
+      }
+  
+      // Log total_hours
+      if (shiftData?.total_hours) {
+        console.log("Total Hours:", shiftData.total_hours);
       }
     } catch (error) {
       console.error("Error fetching shifts:", error);
     }
   };
+  
 
   useEffect(() => {
     const initialize = async () => {
