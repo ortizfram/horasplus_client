@@ -24,6 +24,7 @@ export default function OrganizationList() {
   const [organization, setOrganization] = useState(null);
   const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
 
+
   useEffect(() => {
     console.log(
       "User ID being passed to SearchOrganization:",
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginHorizontal: "10%",
+    marginHorizontal: isMobile ? width * 0.02 : width * 0.1, // 2% for mobile, 10% for larger screens
   },
   header: {
     fontSize: 24,
