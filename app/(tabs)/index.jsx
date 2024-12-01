@@ -23,6 +23,8 @@ export default function OrganizationList() {
   const [isMounted, setIsMounted] = useState(false);
   const [organization, setOrganization] = useState(null);
   const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
+  const isMobile = screenWidth <= 600; // Assuming 600px is the threshold for mobile screens
+
 
 
   useEffect(() => {
@@ -93,7 +95,6 @@ export default function OrganizationList() {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
-  const isMobile = screenWidth <= 600; // Assuming 600px is the threshold for mobile screens
 
   return (
     <ScrollView style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}>
