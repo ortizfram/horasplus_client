@@ -204,12 +204,11 @@ const InOutClock = ({ orgId }) => {
           </Pressable>
         </View>
       )}
-      {wasIn ===
-        true(
-          <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
-            <Text style={styles.actionText}>Egreso</Text>
-          </Pressable>
-        )}
+      {wasIn === true && (
+        <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
+          <Text style={styles.actionText}>Egreso</Text>
+        </Pressable>
+      )}
     </View>
   );
 };
