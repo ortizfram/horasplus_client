@@ -258,16 +258,16 @@ const DownloadReports = () => {
 
             {Platform.OS === "web" && (
               <View style={styles.datePickerContainer}>
-                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
                 <View style={styles.datePickerWrapper}>
+                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
                   <DatePicker
                     selected={startDate}
                     onChange={onStartDateChange}
                     style={styles.datePicker}
                   />
                 </View>
-                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
                 <View style={styles.datePickerWrapper}>
+                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
                   <DatePicker
                     selected={endDate}
                     onChange={onEndDateChange}
@@ -304,30 +304,26 @@ const styles = StyleSheet.create({
   // date pickers
   datePickerContainer: {
     marginVertical: 10,
+    width: "100%",
   },
   datePickerWrapper: {
     position: "relative",
   },
   datePicker: {
-    position: "absolute",
-    top: 0, // Adjust as needed
-    left: 0,
-    zIndex: 1, // Keep above other content when open
+    alignSelf: "center",
+    width: "100%",
   },
   downloadButton: {
-    marginTop: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    marginTop: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 25,
     backgroundColor: "#4caf50",
-    justifyContent: "center",
-    alignItems: "center",
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 4,
-    alignSelf: "center",
   },
   downloadButtonText: {
     fontSize: 16,
@@ -339,6 +335,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#333",
+    marginBottom: 20,
+    textAlign: "center",
   },
   buttonContainer: {
     flexDirection: "row",
@@ -357,5 +355,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginVertical: 5,
+    color: "#555",
   },
 });
