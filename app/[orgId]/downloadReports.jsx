@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Pressable,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -15,6 +16,7 @@ import { fetchShiftWithId } from "../../services/userShift/fetchShifts";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import ViewShot from "react-native-view-shot";
 
 const DownloadReports = () => {
   const { orgId } = useLocalSearchParams();
@@ -28,23 +30,22 @@ const DownloadReports = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
 
   // Función para formatear las fechas
-function formatDate(date) {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
-  const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
-}
+  function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses en JavaScript son de 0 a 11
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
-// Formatear fechas de inicio y fin
-const fStartDate = formatDate(new Date(startDate));
-const fEndDate = formatDate(new Date(endDate));
+  // Formatear fechas de inicio y fin
+  const fStartDate = formatDate(new Date(startDate));
+  const fEndDate = formatDate(new Date(endDate));
 
-function decimalToHM(declaredMinutes = 0, padding = 20) {
-  const hours = Math.floor(declaredMinutes / 60);
-  const minutes = declaredMinutes % 60;
-  return `${hours}h ${minutes}m`.padEnd(padding, " ");
-}
-
+  function decimalToHM(declaredMinutes = 0, padding = 20) {
+    const hours = Math.floor(declaredMinutes / 60);
+    const minutes = declaredMinutes % 60;
+    return `${hours}h ${minutes}m`.padEnd(padding, " ");
+  }
 
   useEffect(() => {
     const loadOrganization = async () => {
@@ -96,54 +97,58 @@ function decimalToHM(declaredMinutes = 0, padding = 20) {
       let csvContent = `${"INFORMACION PRIVADA EMPLEADOR"}\n${"----------HORAS MAS----------"}\n\n${
         employee.firstname
       } ${employee.lastname}\n\n`;
-  
+
       // Add headers with padding to ensure left alignment in CSV
-      csvContent += "Fecha, Feriado                ,Entrada            ,Salida            ,Horas              \n"; 
+      csvContent +=
+        "Fecha, Feriado                ,Entrada            ,Salida            ,Horas              \n";
 
       const declared_hs = decimalToHM(employee.declared_hours);
 
-  
       try {
         const shiftsData = await fetchShiftWithId(
           employee._id,
           startDate.toISOString().split("T")[0],
           endDate.toISOString().split("T")[0]
         );
-  
+
         let totalWorkedMinutes = 0;
         let holidayCost = 0;
-  
+
         shiftsData.forEach((shift) => {
           const [h, m] = shift.total_hours.split(" ");
           const hours = parseInt(h.replace("h", ""), 10) || 0;
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
-  
+
           // Increment the day in shift.date
           const [day, month, year] = shift.date.split("/");
           const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
           const updatedDate = `${incrementedDay}/${month}/${year}`;
-  
+
           const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
-  
+
           const shiftCost =
             shift.shift_mode === "holiday"
               ? hours * (employee.hourly_fee || 0)
               : 0;
           holidayCost += shiftCost;
-  
+
           // Add shift data with padding for left alignment
-          csvContent += `${updatedDate.padEnd(20)}${shiftMode.padEnd(20)}${shift.in.padEnd(20)}${shift.out.padEnd(20)}${shift.total_hours.padEnd(20)}\n`;
+          csvContent += `${updatedDate.padEnd(20)}${shiftMode.padEnd(
+            20
+          )}${shift.in.padEnd(20)}${shift.out.padEnd(
+            20
+          )}${shift.total_hours.padEnd(20)}\n`;
         });
-  
+
         // Totals and final calculations
         const workedHours = Math.floor(totalWorkedMinutes / 60);
         const remainingMinutes = totalWorkedMinutes % 60;
         const hourlyFee = employee.hourly_fee || 0;
         const travelCost = employee.travel_cost || 0;
         const bonusPrize = employee.bonus_prize || 0;
-  
+
         const declaredMinutes = employee.declared_hours || 0;
         const excedenteMinutes = Math.max(
           0,
@@ -154,30 +159,35 @@ function decimalToHM(declaredMinutes = 0, padding = 20) {
         );
         const excedenteHours = Math.floor(excedenteMinutes / 60); // Get the integer number of hours
         const excedenteRemainingMinutes = Math.round(excedenteMinutes % 60); // Get the remaining minutes
-  
+
         const excedenteHM = `${excedenteHours}h ${excedenteRemainingMinutes}m`;
-  
+
         const totalFinal =
           (totalWorkedMinutes / 60) * hourlyFee +
           holidayCost +
           travelCost +
           parseFloat(bonusPrize);
-  
+
         // Summary line with padding for left alignment
         csvContent += `\nValor Hora,Viaticos,Premio,Feriados, Excedente Bono, Total,,Horas Bono\n`;
-        csvContent += `$${hourlyFee.toFixed(2).padEnd(20)} , $${travelCost.toFixed(2).padEnd(20)} , $${bonusPrize.toFixed(2).padEnd(20)} , $${holidayCost.toFixed(2).padEnd(20)} , $${excedenteCost.toFixed(2).padEnd(20)} , $${totalFinal.toFixed(2).padEnd(20)} ,, ${declared_hs}\n`;
+        csvContent += `$${hourlyFee.toFixed(2).padEnd(20)} , $${travelCost
+          .toFixed(2)
+          .padEnd(20)} , $${bonusPrize.toFixed(2).padEnd(20)} , $${holidayCost
+          .toFixed(2)
+          .padEnd(20)} , $${excedenteCost.toFixed(2).padEnd(20)} , $${totalFinal
+          .toFixed(2)
+          .padEnd(20)} ,, ${declared_hs}\n`;
         csvContent += `             ,,,,,,,Horas Excedente Bono\n`;
         csvContent += ` ,,,,,,,${excedenteHM.padEnd(20)}\n`;
         csvContent += `               ,,,,,,,Horas Totales\n`;
         csvContent += ` ,,,,,,,${workedHours}h ${remainingMinutes}m\n`;
-  
       } catch (error) {
         console.error(
           `Error fetching shifts for employee ${employee._id}:`,
           error
         );
       }
-  
+
       // Download the CSV file
       const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
       const link = document.createElement("a");
@@ -185,109 +195,111 @@ function decimalToHM(declaredMinutes = 0, padding = 20) {
       link.setAttribute("href", url);
       link.setAttribute(
         "download",
-        `${employee.firstname}_${employee.lastname}_desde_${
-          fStartDate
-        }_hasta_${fEndDate}.csv`
+        `${employee.firstname}_${employee.lastname}_desde_${fStartDate}_hasta_${fEndDate}.csv`
       );
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     }
   };
-  
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Descargar reporte mensual de {organization?.name}
-      </Text>
-      <Text>
-        Selecciona las fechas para filtrar los reportes haciendo doble click
-        para mostrar el calendario
-      </Text>
-      {organization && (
-        <View style={{ marginTop: 10 }}>
-          {Platform.OS !== "web" && (
-            <View style={styles.buttonContainer}>
-              <Pressable
-                style={styles.button}
-                onPress={() => setShowStartDatePicker(true)}
-              >
-                <Text style={styles.buttonText}>
-                  Seleccionar Fecha de Inicio
-                </Text>
-              </Pressable>
-              <Pressable
-                style={styles.button}
-                onPress={() => setShowEndDatePicker(true)}
-              >
-                <Text style={styles.buttonText}>Seleccionar Fecha de Fin</Text>
-              </Pressable>
-            </View>
-          )}
-
-          {showStartDatePicker && Platform.OS !== "web" && (
-            <DateTimePicker
-              value={startDate}
-              mode="date"
-              display="default"
-              onChange={onStartDateChange}
-              style={styles.datePicker}
-            />
-          )}
-
-          {showEndDatePicker && Platform.OS !== "web" && (
-            <DateTimePicker
-              value={endDate}
-              mode="date"
-              display="default"
-              onChange={onEndDateChange}
-              style={styles.datePicker}
-            />
-          )}
-
-          {Platform.OS === "web" && (
-            <View style={styles.datePickerContainer}>
-              <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-              <View style={styles.datePickerWrapper}>
-                <DatePicker
-                  selected={startDate}
-                  onChange={onStartDateChange}
-                  style={styles.datePicker}
-                />
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          Descargar reporte mensual de {organization?.name}
+        </Text>
+        <Text>
+          Selecciona las fechas para filtrar los reportes haciendo doble click
+          para mostrar el calendario
+        </Text>
+        {organization && (
+          <View style={{ marginTop: 10 }}>
+            {Platform.OS !== "web" && (
+              <View style={styles.buttonContainer}>
+                <Pressable
+                  style={styles.button}
+                  onPress={() => setShowStartDatePicker(true)}
+                >
+                  <Text style={styles.buttonText}>
+                    Seleccionar Fecha de Inicio
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={styles.button}
+                  onPress={() => setShowEndDatePicker(true)}
+                >
+                  <Text style={styles.buttonText}>
+                    Seleccionar Fecha de Fin
+                  </Text>
+                </Pressable>
               </View>
-              <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-              <View style={styles.datePickerWrapper}>
-                <DatePicker
-                  selected={endDate}
-                  onChange={onEndDateChange}
-                  style={styles.datePicker}
-                />
-              </View>
-            </View>
-          )}
+            )}
 
-          <TouchableOpacity
-            style={styles.downloadButton}
-            onPress={handleDownloadClick}
-          >
-            <Text style={styles.downloadButtonText}>Descargar</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </View>
+            {showStartDatePicker && Platform.OS !== "web" && (
+              <DateTimePicker
+                value={startDate}
+                mode="date"
+                display="default"
+                onChange={onStartDateChange}
+                style={styles.datePicker}
+              />
+            )}
+
+            {showEndDatePicker && Platform.OS !== "web" && (
+              <DateTimePicker
+                value={endDate}
+                mode="date"
+                display="default"
+                onChange={onEndDateChange}
+                style={styles.datePicker}
+              />
+            )}
+
+            {Platform.OS === "web" && (
+              <View style={styles.datePickerContainer}>
+                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
+                <View style={styles.datePickerWrapper}>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={onStartDateChange}
+                    style={styles.datePicker}
+                  />
+                </View>
+                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
+                <View style={styles.datePickerWrapper}>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={onEndDateChange}
+                    style={styles.datePicker}
+                  />
+                </View>
+              </View>
+            )}
+
+            <TouchableOpacity
+              style={styles.downloadButton}
+              onPress={handleDownloadClick}
+            >
+              <Text style={styles.downloadButtonText}>Descargar</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 export default DownloadReports;
 
 const styles = StyleSheet.create({
+  scrollContainer: { flexGrow: 1 },
   container: {
-    flex: 1,
-    padding: 20,
+    padding: 16,
+    alignItems: "center",
     marginBottom: 80,
-    marginTop: "10%",
-    marginHorizontal: "15%",
+    marginTop: "5%",
+    marginHorizontal: "8%",
   },
   // date pickers
   datePickerContainer: {
