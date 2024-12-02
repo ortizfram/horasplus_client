@@ -20,7 +20,9 @@ export default function QRDashboard() {
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
 
   useEffect(() => {
     console.log("index screen");
@@ -83,10 +85,11 @@ export default function QRDashboard() {
       <Logo />
       <Text style={styles.header}>Generar QR de Ingreso</Text>
       <Text style={styles.welcome}>
-        Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
+        <Text style={styles.header}>Bienvenid@</Text>
+        {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
         {userInfo?.user?.data?.firstname
-          ? userInfo?.user?.data?.firstname
+          ? `${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname}`
           : userInfo?.user?.email || ""}
       </Text>
 

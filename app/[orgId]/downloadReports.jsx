@@ -315,17 +315,24 @@ const styles = StyleSheet.create({
     zIndex: 1, // Keep above other content when open
   },
   downloadButton: {
-    marginTop: 40, // Increase margin to ensure distance from date pickers
-    backgroundColor: "#28a745",
-    padding: 15,
-    borderRadius: 5,
+    marginTop: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "#FF4C4C",
+    justifyContent: "center",
     alignItems: "center",
-    width: "36%",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+    alignSelf: "center",
   },
   downloadButtonText: {
-    color: "#fff",
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
+    color: "#fff",
   },
   // date pickers end
   title: {

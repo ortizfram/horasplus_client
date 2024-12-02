@@ -22,9 +22,9 @@ export default function OrganizationList() {
   const [showSearch, setShowSearch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [organization, setOrganization] = useState(null);
-  const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
-
-
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
 
   useEffect(() => {
     console.log(
@@ -95,19 +95,20 @@ export default function OrganizationList() {
   }
 
   useEffect(() => {
-    const updateScreenWidth = () => setScreenWidth(Dimensions.get("window").width);
-  
+    const updateScreenWidth = () =>
+      setScreenWidth(Dimensions.get("window").width);
+
     Dimensions.addEventListener("change", updateScreenWidth);
-  
+
     return () => Dimensions.removeEventListener("change", updateScreenWidth);
   }, []);
-  
-  const isMobile = screenWidth < 768; // Define this after screenWidth
-  
 
+  const isMobile = screenWidth < 768; // Define this after screenWidth
 
   return (
-    <ScrollView style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}>
+    <ScrollView
+      style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}
+    >
       <Logo />
 
       <Text style={styles.welcome}>
@@ -115,7 +116,7 @@ export default function OrganizationList() {
         {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
         {userInfo?.user?.data?.firstname
-          ? userInfo?.user?.data?.firstname
+          ? `${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname}`
           : userInfo?.user?.email || ""}
       </Text>
 
@@ -187,7 +188,9 @@ export default function OrganizationList() {
                     onSelectOrg={handleSelectOrg}
                     isAdmin={userInfo?.user?.isAdmin}
                     isSuperAdmin={userInfo?.user?.isSuperAdmin}
-                    organizationIds={userInfo?.user?.data?.organization_id || []}
+                    organizationIds={
+                      userInfo?.user?.data?.organization_id || []
+                    }
                   />
                 </View>
               )}
@@ -205,25 +208,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginHorizontal:"2" 
+    marginHorizontal: "2",
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
-    textAlign:"center"
+    textAlign: "center",
   },
   blue: {
     color: "blue",
     marginBottom: 10,
   },
   welcome: {
-    textAlign:"center",
+    textAlign: "center",
     color: "blue",
     fontSize: 20,
     marginBottom: 20, // Adds space below the welcome text
   },
   createBtn: {
-    textAlign:"center",
+    textAlign: "center",
     padding: 10,
     backgroundColor: "blue",
     marginVertical: 10,
