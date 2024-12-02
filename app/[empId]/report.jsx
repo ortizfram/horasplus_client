@@ -409,6 +409,23 @@ const fEndDate = formatDate(new Date(endDate));
 
 export default Report;
 const styles = StyleSheet.create({
+  // container: {
+  //   flex: 1,
+  //   padding: 15, // Reduced padding
+  //   backgroundColor: "#f5f5f5",
+  //   marginBottom: 80,
+  //   marginTop: "8%",
+  //   marginHorizontal: "5%",
+  //   marginStart: "8%",
+  // },
+  scrollContainer: { flexGrow: 1 },
+  container: {
+    padding: 16,
+    alignItems: "center",
+    marginBottom: 80,
+    marginTop: "5%",
+    marginHorizontal: "8%",
+  },
   shiftContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -483,10 +500,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 10,
   },
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: "center",
-  },
   buttonContainer: {
     flexDirection: "column",
     alignItems: "center",
@@ -497,15 +510,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 5, // Reduced vertical space
   },
-  container: {
-    flex: 1,
-    padding: 15, // Reduced padding
-    backgroundColor: "#f5f5f5",
-    marginBottom: 80,
-    marginTop: "8%",
-    marginHorizontal: "5%",
-    marginStart: "8%",
-  },
+
   title: {
     fontSize: 24,
     fontWeight: "bold",
