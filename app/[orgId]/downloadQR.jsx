@@ -134,7 +134,7 @@ const downloadQr = () => {
             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
             value={`${REQ_URL}/${orgId}/bePart`}
             viewBox={`0 0 256 256`}
-            fgColor="#33a891"
+            fgColor="#000000"
             bgColor="#ffffff"
           />
         </View>
