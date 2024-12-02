@@ -17,7 +17,7 @@ export default function EmpLayout() {
   }
 
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator screenOptions={{ headerShown: false,tabBarShowLabel:false, tabBarStyle:{display:"none"} }}>
       <Tab.Screen
         name="index"
         component={Index}
