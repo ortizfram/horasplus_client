@@ -205,11 +205,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginHorizontal:"10%" 
+    marginHorizontal:"2" 
   },
   header: {
     fontSize: 24,
     fontWeight: "bold",
+    textAlign:"center"
   },
   blue: {
     color: "blue",
@@ -222,6 +223,7 @@ const styles = StyleSheet.create({
     marginBottom: 20, // Adds space below the welcome text
   },
   createBtn: {
+    textAlign:"center",
     padding: 10,
     backgroundColor: "blue",
     marginVertical: 10,
