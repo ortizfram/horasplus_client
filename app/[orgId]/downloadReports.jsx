@@ -7,6 +7,7 @@ import {
   View,
   Pressable,
   ScrollView,
+  useWindowDimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -28,6 +29,8 @@ const DownloadReports = () => {
 
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
+
+  const { width } = useWindowDimensions();
 
   // Función para formatear las fechas
   function formatDate(date) {
@@ -203,6 +206,8 @@ const DownloadReports = () => {
     }
   };
 
+  const isMobile = width <= 768;
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
@@ -215,7 +220,7 @@ const DownloadReports = () => {
         </Text>
         {organization && (
           <View style={{ marginTop: 10 }}>
-            {Platform.OS !== "web" && (
+            {/* {Platform.OS !== "web" && (
               <View style={styles.buttonContainer}>
                 <Pressable
                   style={styles.button}
@@ -254,35 +259,50 @@ const DownloadReports = () => {
                 onChange={onEndDateChange}
                 style={styles.datePicker}
               />
-            )}
-
-            {Platform.OS === "web" && (
-              <View style={styles.datePickerContainer}>
-                <View style={styles.datePickerWrapper}>
+            )} */}
+            <View
+              style={[
+                styles.datePickerContainer,
+                !isMobile && styles.datePickerContainerLarge,
+              ]}
+            >
+              <View
+                style={[
+                  styles.datePickerWrapper,
+                  !isMobile && styles.datePickerWrapperLarge,
+                ]}
+              >
                 <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-                  <DatePicker
-                    selected={startDate}
-                    onChange={onStartDateChange}
-                    style={styles.datePicker}
-                  />
-                </View>
-                <View style={styles.datePickerWrapper}>
-                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-                  <DatePicker
-                    selected={endDate}
-                    onChange={onEndDateChange}
-                    style={styles.datePicker}
-                  />
-                </View>
+                <DatePicker
+                  date={startDate}
+                  onDateChange={onStartDateChange}
+                  style={styles.datePicker}
+                />
               </View>
-            )}
-
+              <View
+                style={[
+                  styles.datePickerWrapper,
+                  !isMobile && styles.datePickerWrapperLarge,
+                ]}
+              >
+                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
+                <DatePicker
+                  date={endDate}
+                  onDateChange={onEndDateChange}
+                  style={styles.datePicker}
+                />
+              </View>
+            </View>
             <TouchableOpacity
-              style={styles.downloadButton}
+              style={[
+                styles.downloadButton,
+                !isMobile ? { marginTop: 60 } : { marginTop: 20 }, // Ajuste dinámico para pantallas grandes
+              ]}
               onPress={handleDownloadClick}
             >
               <Text style={styles.downloadButtonText}>Descargar</Text>
             </TouchableOpacity>
+            x
           </View>
         )}
       </View>
@@ -306,15 +326,24 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     width: "100%",
   },
+  datePickerContainerLarge: {
+    flexDirection: "row", // Para colocar los `DatePickers` lado a lado
+    justifyContent: "space-between",
+  },
   datePickerWrapper: {
     position: "relative",
+    marginBottom: 20,
+  },
+  datePickerWrapperLarge: {
+    flex: 1, // Ocupa igual espacio cuando están lado a lado
+    marginHorizontal: 10,
+    marginBottom: 0, // Elimina margen extra
   },
   datePicker: {
     alignSelf: "center",
     width: "100%",
   },
   downloadButton: {
-    marginTop: 20,
     paddingVertical: 12,
     paddingHorizontal: 25,
     backgroundColor: "#4caf50",

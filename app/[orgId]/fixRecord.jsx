@@ -244,6 +244,7 @@ const FixARecord = () => {
                 </Picker>
 
                 <Text style={styles.label}>Hora de Ingreso:</Text>
+                <Text style={styles.gray}>Si fuese AM, anteponer con 0.ej.01:00:00</Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails ? shiftDetails?.in : "00:00:00"}
@@ -286,6 +287,7 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     marginHorizontal: "8%",
   },
+  gray:{color:"gray"},
   dateContainer: {
     marginBottom: 16,
     alignItems: "center",
@@ -355,8 +357,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   label: {
-    fontSize: 16,
-    color: "#333",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "grey",
     marginBottom: 4,
   },
   input: {
