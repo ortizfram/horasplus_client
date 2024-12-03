@@ -21,8 +21,6 @@ import * as Sharing from "expo-sharing";
 import * as MediaLibrary from "expo-media-library";
 import Logo from "../../components/Logo";
 
-
-
 const Report = () => {
   const viewRef = useRef();
   const { empId } = useLocalSearchParams();
@@ -54,16 +52,16 @@ const Report = () => {
   };
 
   // Función para formatear las fechas
-function formatDate(date) {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11
-  const year = date.getFullYear();
-  return `${day}-${month}-${year}`;
-}
+  function formatDate(date) {
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Los meses en JavaScript son de 0 a 11
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
 
-// Formatear fechas de inicio y fin
-const fStartDate = formatDate(new Date(startDate));
-const fEndDate = formatDate(new Date(endDate));
+  // Formatear fechas de inicio y fin
+  const fStartDate = formatDate(new Date(startDate));
+  const fEndDate = formatDate(new Date(endDate));
 
   useEffect(() => {
     const loadEmployee = async () => {
@@ -188,10 +186,10 @@ const fEndDate = formatDate(new Date(endDate));
 
     setExcedenteCost(
       (
-          ((excedenteHours * 60) + excedenteRemainingMinutes) * (hourlyFee / 60) 
-          + travelCost
+        (excedenteHours * 60 + excedenteRemainingMinutes) * (hourlyFee / 60) +
+        travelCost
       ).toFixed(2)
-  );
+    );
   };
 
   // Método para descargar o compartir el reporte según la plataforma
@@ -265,9 +263,9 @@ const fEndDate = formatDate(new Date(endDate));
         <Text style={styles.title}>Reporte de Horas</Text>
         <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
         <View style={styles.titleContainer}>
-        <Logo/>
-        {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}
-      </View>
+          <Logo />
+          {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}
+        </View>
         <Text style={styles.title}>
           {employee?.firstname && employee?.lastname ? (
             <Text style={styles.employeeText}>
@@ -288,8 +286,8 @@ const fEndDate = formatDate(new Date(endDate));
               <Text style={styles.detailsText}>
                 Valor Hora: ${employee.hourly_fee || 0} | Viaticos: $
                 {employee.travel_cost || 0} | Premio: $
-                {employee.bonus_prize || 0} | Horas Bono :{" "}
-                {horasBono} | Horas Excedente Bono : {excedente} | Feriados: ${holidayCost || 0}
+                {employee.bonus_prize || 0} | Horas Bono : {horasBono} | Horas
+                Excedente Bono : {excedente} | Feriados: ${holidayCost || 0}
               </Text>
 
               <Text style={styles.excedenteText}>
@@ -435,20 +433,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center', // Center the contents horizontally
-    alignItems: 'center', // Vertically center the content if needed
+    flexDirection: "row",
+    justifyContent: "center", // Center the contents horizontally
+    alignItems: "center", // Vertically center the content if needed
     marginBottom: 15,
   },
-  
+
   smallImage: {
-    width: '100%', // Makes the image take full width of the container
+    width: "100%", // Makes the image take full width of the container
     maxWidth: 600, // Set a max width to prevent it from becoming too large
     height: 240,
-    alignSelf: 'center', // Center the image horizontally
+    alignSelf: "center", // Center the image horizontally
     marginBottom: 15, // Optional: Add spacing below the image
   },
-  
+
   star: {
     width: 30,
     height: 30,
@@ -459,11 +457,17 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   downloadButton: {
-    padding: 10,
-    backgroundColor: "green",
-    marginHorizontal: "20%",
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    backgroundColor: "#4caf50",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
   },
-  downloadButtonText: { color: "white" },
+  downloadButtonText: { fontSize: 16, fontWeight: "bold", color: "#fff" },
   circle: {
     width: 30,
     height: 30,
