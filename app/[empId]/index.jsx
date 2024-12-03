@@ -99,7 +99,9 @@ const Index = () => {
 
         <Text style={styles.sectionTitle}>Editar valores</Text>
 
-        <View style={[styles.inputContainer, { padding: inputContainerPadding }]}>
+        <View
+          style={[styles.inputContainer, { padding: inputContainerPadding }]}
+        >
           {/* Editable Fields */}
           <View style={styles.fieldGroup}>
             <Text style={styles.fieldTitle}>Nombre</Text>
@@ -225,7 +227,7 @@ const Index = () => {
           disabled={loading}
           style={styles.saveButton}
         >
-          <Text style={saveButtonText}>
+          <Text style={styles.saveButtonText}>
             {loading ? "Guardando..." : "Guardar"}
           </Text>
         </Pressable>
@@ -247,7 +249,7 @@ const Index = () => {
 export default Index;
 
 const styles = StyleSheet.create({
-  inputContainer:{},
+  inputContainer: {},
   saveButton: {
     paddingVertical: 12,
     paddingHorizontal: 25,
