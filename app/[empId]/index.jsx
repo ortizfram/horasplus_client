@@ -6,6 +6,7 @@ import {
   Pressable,
   Button,
   ScrollView,
+  useWindowDimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Picker } from "@react-native-picker/picker";
@@ -14,6 +15,8 @@ import { fetchEmployeeWithId } from "../../services/organization/fetchEmployees"
 import { updateEmployee } from "../../services/employee/employee";
 
 const Index = () => {
+  const { width } = useWindowDimensions();
+  const isMobile = width <= 768;
   const { empId } = useLocalSearchParams();
   const [employee, setEmployee] = useState({
     firstname: "",
@@ -73,6 +76,8 @@ const Index = () => {
     }, 2000);
   };
 
+  const inputWidth = isMobile ? "70%" : "100%"
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.formContainer}>
@@ -97,7 +102,10 @@ const Index = () => {
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Nombre</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input, // Base styles
+              { width: inputWidth }, // Dynamic width
+            ]}
             value={employee.firstname}
             onChangeText={(text) => handleInputChange("firstname", text)}
           />
@@ -106,7 +114,10 @@ const Index = () => {
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Apellido</Text>
           <TextInput
-            style={styles.input}
+           style={[
+            styles.input, // Base styles
+            { width: inputWidth }, // Dynamic width
+          ]}
             value={employee.lastname}
             onChangeText={(text) => handleInputChange("lastname", text)}
           />
@@ -115,7 +126,10 @@ const Index = () => {
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Email</Text>
           <TextInput
-            style={styles.input}
+           style={[
+            styles.input, // Base styles
+            { width: inputWidth }, // Dynamic width
+          ]}
             value={employee.email}
             onChangeText={(text) => handleInputChange("email", text)}
           />
@@ -124,7 +138,10 @@ const Index = () => {
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Precio Hora</Text>
           <TextInput
-            style={styles.input}
+           style={[
+            styles.input, // Base styles
+            { width: inputWidth }, // Dynamic width
+          ]}
             value={String(employee.hourly_fee)}
             keyboardType="numeric"
             onChangeText={(text) =>
@@ -141,7 +158,10 @@ const Index = () => {
             como 90.
           </Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input, // Base styles
+              { width: inputWidth }, // Dynamic width
+            ]}
             value={String(employee.declared_hours)}
             keyboardType="numeric"
             onChangeText={(text) =>
@@ -153,7 +173,10 @@ const Index = () => {
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Viáticos</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input, // Base styles
+              { width: inputWidth }, // Dynamic width
+            ]}
             value={String(employee.travel_cost)}
             keyboardType="numeric"
             onChangeText={(text) =>
@@ -165,7 +188,10 @@ const Index = () => {
         <View style={styles.fieldGroup}>
           <Text style={styles.fieldTitle}>Premio</Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input, // Base styles
+              { width: inputWidth }, // Dynamic width
+            ]}
             value={String(employee.bonus_prize)}
             keyboardType="numeric"
             onChangeText={(text) =>
@@ -180,7 +206,10 @@ const Index = () => {
           <Picker
             selectedValue={employee.role}
             onValueChange={(value) => handleInputChange("role", value)}
-            style={styles.input}
+            style={[
+              styles.input, // Base styles
+              { width: inputWidth }, // Dynamic width
+            ]}
           >
             <Picker.Item label="Adminstrador" value="Admin" />
             <Picker.Item label="Empleado" value="User" />
@@ -277,7 +306,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    width: "100%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
