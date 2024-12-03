@@ -220,90 +220,49 @@ const DownloadReports = () => {
         </Text>
         {organization && (
           <View style={{ marginTop: 10 }}>
-            {/* {Platform.OS !== "web" && (
-              <View style={styles.buttonContainer}>
-                <Pressable
-                  style={styles.button}
-                  onPress={() => setShowStartDatePicker(true)}
-                >
-                  <Text style={styles.buttonText}>
-                    Seleccionar Fecha de Inicio
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={styles.button}
-                  onPress={() => setShowEndDatePicker(true)}
-                >
-                  <Text style={styles.buttonText}>
-                    Seleccionar Fecha de Fin
-                  </Text>
-                </Pressable>
-              </View>
-            )}
-
-            {showStartDatePicker && Platform.OS !== "web" && (
-              <DateTimePicker
-                value={startDate}
-                mode="date"
-                display="default"
-                onChange={onStartDateChange}
-                style={styles.datePicker}
-              />
-            )}
-
-            {showEndDatePicker && Platform.OS !== "web" && (
-              <DateTimePicker
-                value={endDate}
-                mode="date"
-                display="default"
-                onChange={onEndDateChange}
-                style={styles.datePicker}
-              />
-            )} */}
+          <View
+            style={[
+              styles.datePickerContainer,
+              !isMobile && styles.datePickerContainerLarge,
+            ]}
+          >
             <View
               style={[
-                styles.datePickerContainer,
-                !isMobile && styles.datePickerContainerLarge,
+                styles.datePickerWrapper,
+                !isMobile && styles.datePickerWrapperLarge,
               ]}
             >
-              <View
-                style={[
-                  styles.datePickerWrapper,
-                  !isMobile && styles.datePickerWrapperLarge,
-                ]}
-              >
-                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-                <DatePicker
-                  date={startDate}
-                  onChange={onStartDateChange}
-                  style={styles.datePicker}
-                />
-              </View>
-              <View
-                style={[
-                  styles.datePickerWrapper,
-                  !isMobile && styles.datePickerWrapperLarge,
-                ]}
-              >
-                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-                <DatePicker
-                  date={endDate}
-                  onChange={onEndDateChange}
-                  style={styles.datePicker}
-                />
-              </View>
+              <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
+              <DatePicker
+                date={startDate} // Asegúrate de pasar el estado actualizado
+                onChange={onStartDateChange}
+                style={[styles.datePicker, !isMobile && styles.datePickerLarge]}
+              />
             </View>
-            <TouchableOpacity
+            <View
               style={[
-                styles.downloadButton,
-                !isMobile ? { marginTop: 60 } : { marginTop: 20 }, // Ajuste dinámico para pantallas grandes
+                styles.datePickerWrapper,
+                !isMobile && styles.datePickerWrapperLarge,
               ]}
-              onPress={handleDownloadClick}
             >
-              <Text style={styles.downloadButtonText}>Descargar</Text>
-            </TouchableOpacity>
-            x
+              <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
+              <DatePicker
+                date={endDate} // Asegúrate de pasar el estado actualizado
+                onChange={onEndDateChange}
+                style={[styles.datePicker, !isMobile && styles.datePickerLarge]}
+              />
+            </View>
           </View>
+          <TouchableOpacity
+            style={[
+              styles.downloadButton,
+              !isMobile ? { marginTop: 40, alignSelf: "center" } : { marginTop: 20 },
+            ]}
+            onPress={handleDownloadClick}
+          >
+            <Text style={styles.downloadButtonText}>Descargar</Text>
+          </TouchableOpacity>
+        </View>
         )}
       </View>
     </ScrollView>
