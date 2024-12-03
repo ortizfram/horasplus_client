@@ -254,8 +254,8 @@ export default Index;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    justifyContent: "center", // Centra verticalmente
-    alignItems: "center", // C
+    alignItems: "flex-start", // Align inputs to the left
+    width: "100%", // Full width inside the form container
   },
   saveButton: {
     paddingVertical: 12,
@@ -294,14 +294,15 @@ const styles = StyleSheet.create({
   },
   container: {
     flexGrow: 1,
-    padding: 10,
+    justifyContent: "center", // Center vertically
+    alignItems: "center", // Center horizontally
+    padding: 20,
     backgroundColor: "#f5f5f5",
-    marginBottom: 80,
-    marginTop: "2%",
-    marginHorizontal: "8%",
   },
   formContainer: {
-    padding: 10,
+    width: "100%", // Full width
+    maxWidth: 500, // Limit the max width for larger screens
+    padding: 20,
     backgroundColor: "#fff",
     borderRadius: 10,
     shadowColor: "#000",
@@ -335,12 +336,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
+    width: "100%", // Make each input span the full width of the input container
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
     fontSize: 14,
+    marginBottom: 10, // Add spacing between inputs
   },
   gridItem: {
     marginTop: 10,
