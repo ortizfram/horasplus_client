@@ -76,7 +76,8 @@ const Index = () => {
     }, 2000);
   };
 
-  const inputWidth = isMobile ? "70%" : "100%"
+  const inputWidth = isMobile ? "70%" : "100%";
+  const inputContainerPadding = !isMobile && 16;
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -98,130 +99,136 @@ const Index = () => {
 
         <Text style={styles.sectionTitle}>Editar valores</Text>
 
-        {/* Editable Fields */}
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Nombre</Text>
-          <TextInput
-            style={[
-              styles.input, // Base styles
-              { width: inputWidth }, // Dynamic width
-            ]}
-            value={employee.firstname}
-            onChangeText={(text) => handleInputChange("firstname", text)}
-          />
-        </View>
+        <View style={[styles.inputContainer, { padding: inputContainerPadding }]}>
+          {/* Editable Fields */}
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Nombre</Text>
+            <TextInput
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+              value={employee.firstname}
+              onChangeText={(text) => handleInputChange("firstname", text)}
+            />
+          </View>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Apellido</Text>
-          <TextInput
-           style={[
-            styles.input, // Base styles
-            { width: inputWidth }, // Dynamic width
-          ]}
-            value={employee.lastname}
-            onChangeText={(text) => handleInputChange("lastname", text)}
-          />
-        </View>
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Apellido</Text>
+            <TextInput
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+              value={employee.lastname}
+              onChangeText={(text) => handleInputChange("lastname", text)}
+            />
+          </View>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Email</Text>
-          <TextInput
-           style={[
-            styles.input, // Base styles
-            { width: inputWidth }, // Dynamic width
-          ]}
-            value={employee.email}
-            onChangeText={(text) => handleInputChange("email", text)}
-          />
-        </View>
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Email</Text>
+            <TextInput
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+              value={employee.email}
+              onChangeText={(text) => handleInputChange("email", text)}
+            />
+          </View>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Precio Hora</Text>
-          <TextInput
-           style={[
-            styles.input, // Base styles
-            { width: inputWidth }, // Dynamic width
-          ]}
-            value={String(employee.hourly_fee)}
-            keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("hourly_fee", Number(text))
-            }
-          />
-        </View>
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Precio Hora</Text>
+            <TextInput
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+              value={String(employee.hourly_fee)}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleInputChange("hourly_fee", Number(text))
+              }
+            />
+          </View>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Horas Declaradas</Text>
-          <Text style={styles.fieldDescription}>
-            Ingresar unicamente si tiene bono de sueldo, para poder sacar las
-            horas excedentes. Se ingresa en minutos. Ejemplo : 1.5hs se ingresa
-            como 90.
-          </Text>
-          <TextInput
-            style={[
-              styles.input, // Base styles
-              { width: inputWidth }, // Dynamic width
-            ]}
-            value={String(employee.declared_hours)}
-            keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("declared_hours", Number(text))
-            }
-          />
-        </View>
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Horas Declaradas</Text>
+            <Text style={styles.fieldDescription}>
+              Ingresar unicamente si tiene bono de sueldo, para poder sacar las
+              horas excedentes. Se ingresa en minutos. Ejemplo : 1.5hs se
+              ingresa como 90.
+            </Text>
+            <TextInput
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+              value={String(employee.declared_hours)}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleInputChange("declared_hours", Number(text))
+              }
+            />
+          </View>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Viáticos</Text>
-          <TextInput
-            style={[
-              styles.input, // Base styles
-              { width: inputWidth }, // Dynamic width
-            ]}
-            value={String(employee.travel_cost)}
-            keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("travel_cost", Number(text))
-            }
-          />
-        </View>
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Viáticos</Text>
+            <TextInput
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+              value={String(employee.travel_cost)}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleInputChange("travel_cost", Number(text))
+              }
+            />
+          </View>
 
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Premio</Text>
-          <TextInput
-            style={[
-              styles.input, // Base styles
-              { width: inputWidth }, // Dynamic width
-            ]}
-            value={String(employee.bonus_prize)}
-            keyboardType="numeric"
-            onChangeText={(text) =>
-              handleInputChange("bonus_prize", Number(text))
-            }
-          />
-        </View>
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Premio</Text>
+            <TextInput
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+              value={String(employee.bonus_prize)}
+              keyboardType="numeric"
+              onChangeText={(text) =>
+                handleInputChange("bonus_prize", Number(text))
+              }
+            />
+          </View>
 
-        {/* Role Picker */}
-        <View style={styles.fieldGroup}>
-          <Text style={styles.fieldTitle}>Roles</Text>
-          <Picker
-            selectedValue={employee.role}
-            onValueChange={(value) => handleInputChange("role", value)}
-            style={[
-              styles.input, // Base styles
-              { width: inputWidth }, // Dynamic width
-            ]}
-          >
-            <Picker.Item label="Adminstrador" value="Admin" />
-            <Picker.Item label="Empleado" value="User" />
-          </Picker>
+          {/* Role Picker */}
+          <View style={styles.fieldGroup}>
+            <Text style={styles.fieldTitle}>Roles</Text>
+            <Picker
+              selectedValue={employee.role}
+              onValueChange={(value) => handleInputChange("role", value)}
+              style={[
+                styles.input, // Base styles
+                { width: inputWidth }, // Dynamic width
+              ]}
+            >
+              <Picker.Item label="Adminstrador" value="Admin" />
+              <Picker.Item label="Empleado" value="User" />
+            </Picker>
+          </View>
         </View>
 
         {/* Save Button */}
-        <Button
-          title={loading ? "Guardando..." : "Guardar"}
+        <Pressable
           onPress={handleSaveChanges}
           disabled={loading}
-        />
+          style={styles.saveButton}
+        >
+          <Text style={saveButtonText}>
+            {loading ? "Guardando..." : "Guardar"}
+          </Text>
+        </Pressable>
 
         <Pressable
           style={[styles.removeButton, loading && styles.disabledButton]}
@@ -240,6 +247,19 @@ const Index = () => {
 export default Index;
 
 const styles = StyleSheet.create({
+  inputContainer:{},
+  saveButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    backgroundColor: "#4caf50",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+  },
+  saveButtonText: { fontSize: 16, fontWeight: "bold", color: "#fff" },
   removeButton: {
     marginTop: 15,
     paddingVertical: 10,
