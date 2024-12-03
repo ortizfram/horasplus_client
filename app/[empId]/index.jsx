@@ -77,7 +77,7 @@ const Index = () => {
   };
 
   const inputContainerWidth = !isMobile ? "50%" : "100%";
-  const inputWidth = !isMobile ? "70%" : "100%";
+  const inputWidth = !isMobile ? "100%" : "100%";
   const inputContainerPadding = !isMobile && 16;
 
   return (
@@ -103,7 +103,7 @@ const Index = () => {
         <View
           style={[
             styles.inputContainer,
-            { padding: inputContainerPadding, width: inputContainerWidth },
+            {  width: inputContainerWidth },
           ]}
         >
           {/* Editable Fields */}
@@ -311,13 +311,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 10,
-    textAlign: "center",
-  },
+  title: { fontSize: 24, fontWeight: "bold", color: "#333", marginBottom: 16 },
   sectionTitle: {
+    textAlign:"center",
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 10,
