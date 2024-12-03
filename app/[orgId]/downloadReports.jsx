@@ -275,7 +275,7 @@ const DownloadReports = () => {
                 <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
                 <DatePicker
                   date={startDate}
-                  onDateChange={onStartDateChange}
+                  onChange={onStartDateChange}
                   style={styles.datePicker}
                 />
               </View>
@@ -288,7 +288,7 @@ const DownloadReports = () => {
                 <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
                 <DatePicker
                   date={endDate}
-                  onDateChange={onEndDateChange}
+                  onChange={onEndDateChange}
                   style={styles.datePicker}
                 />
               </View>
