@@ -83,7 +83,7 @@ const Index = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>
+        <Text style={[styles.title, styles.name]}>
           Empleado:{" "}
           {employee?.firstname
             ? `${employee.firstname} ${employee.lastname}`
@@ -92,10 +92,10 @@ const Index = () => {
 
         {/* Reporte de Horas Button */}
         <Pressable
-          style={styles.gridItem}
+          style={[styles.gridItem, styles.viewButton]}
           onPress={() => router.push(`${empId}/report`)}
         >
-          <Text style={styles.gridText}>🕒 Ver Reporte de Horas</Text>
+          <Text style={[styles.gridText, styles.viewButtonText]}>🕒 Ver Reporte de Horas</Text>
         </Pressable>
 
         <Text style={styles.sectionTitle}>Editar valores</Text>
@@ -304,6 +304,18 @@ const styles = StyleSheet.create({
     color: "#666",
     textAlign: "center", // Centrar descripciones
   },
+  viewButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    backgroundColor: "#4caf50",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+    marginTop: 20,
+  },
   saveButton: {
     paddingVertical: 12,
     paddingHorizontal: 25,
@@ -315,6 +327,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 4,
     marginTop: 20,
+  },
+  viewButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
   },
   saveButtonText: {
     fontSize: 16,
@@ -344,6 +362,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  name: {
+    fontSize: 26,
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 20,
