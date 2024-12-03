@@ -76,7 +76,8 @@ const Index = () => {
     }, 2000);
   };
 
-  const inputWidth = isMobile ? "70%" : "100%";
+  const inputContainerWidth = !isMobile ? "70%" : "100%";
+  const inputWidth = !isMobile ? "70%" : "100%";
   const inputContainerPadding = !isMobile && 16;
 
   return (
@@ -100,7 +101,10 @@ const Index = () => {
         <Text style={styles.sectionTitle}>Editar valores</Text>
 
         <View
-          style={[styles.inputContainer, { padding: inputContainerPadding }]}
+          style={[
+            styles.inputContainer,
+            { padding: inputContainerPadding, width: inputContainerWidth },
+          ]}
         >
           {/* Editable Fields */}
           <View style={styles.fieldGroup}>
