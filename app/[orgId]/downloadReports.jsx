@@ -249,7 +249,7 @@ const DownloadReports = () => {
                   onChange={onStartDateChange}
                   style={[
                     styles.datePicker,
-                    !isMobile && styles.datePickerLarge,
+                    !isMobile && styles.datePickerLarge, 
                   ]}
                 />
               </View>
@@ -309,6 +309,9 @@ const styles = StyleSheet.create({
   datePicker: {
     alignSelf: "center",
     width: "100%",
+  },
+  datePickerLarge: {
+    height: 50, // Set a fixed height for alignment
   },
   downloadButton: {
     paddingVertical: 12,
