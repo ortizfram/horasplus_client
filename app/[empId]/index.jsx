@@ -253,9 +253,56 @@ const Index = () => {
 export default Index;
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    justifyContent: "center", // Centrar contenido verticalmente
+    alignItems: "center", // Centrar contenido horizontalmente
+    padding: 20,
+    backgroundColor: "#f5f5f5",
+  },
+  formContainer: {
+    width: "90%", // Ancho máximo relativo al contenedor padre
+    maxWidth: 500, // Limitar el ancho máximo para pantallas grandes
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+    alignItems: "center", // Centrar todos los elementos internos horizontalmente
+  },
   inputContainer: {
-    alignItems: "flex-start", // Align inputs to the left
-    width: "100%", // Full width inside the form container
+    width: "100%", // Ocupa todo el ancho del formulario
+    alignItems: "center", // Centrar los inputs dentro del contenedor
+  },
+  input: {
+    width: "90%", // Ancho relativo dentro del contenedor
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    fontSize: 14,
+    marginBottom: 10, // Espaciado uniforme entre inputs
+  },
+  fieldGroup: {
+    marginBottom: 15,
+    width: "100%", // Mantener la alineación dentro del contenedor
+    alignItems: "center", // Centrar texto e inputs
+  },
+  fieldTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
+    textAlign: "center", // Centrar los títulos de los campos
+  },
+  fieldDescription: {
+    fontSize: 12,
+    marginBottom: 10,
+    color: "#666",
+    textAlign: "center", // Centrar descripciones
   },
   saveButton: {
     paddingVertical: 12,
@@ -267,8 +314,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 4,
+    marginTop: 20,
   },
-  saveButtonText: { fontSize: 16, fontWeight: "bold", color: "#fff" },
+  saveButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+  },
   removeButton: {
     marginTop: 15,
     paddingVertical: 10,
@@ -282,78 +335,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 4,
-    alignSelf: "center",
   },
   removeButtonText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#fff",
+    textAlign: "center",
   },
-  disabledButton: {
-    backgroundColor: "#FFB3B3",
-  },
-  container: {
-    flexGrow: 1,
-    justifyContent: "center", // Center vertically
-    alignItems: "center", // Center horizontally
-    padding: 20,
-    backgroundColor: "#f5f5f5",
-  },
-  formContainer: {
-    width: "100%", // Full width
-    maxWidth: 500, // Limit the max width for larger screens
-    padding: 20,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  title: { fontSize: 24, fontWeight: "bold", color: "#333", marginBottom: 16 },
   sectionTitle: {
-    textAlign:"center",
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 10,
-    marginBottom: 10,
-  },
-  fieldGroup: {
-    marginBottom: 10,
-  },
-  fieldTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  fieldDescription: {
-    fontSize: 10,
-    marginBottom: 5,
-  },
-  input: {
-    width: "100%", // Make each input span the full width of the input container
-    height: 40,
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    fontSize: 14,
-    marginBottom: 10, // Add spacing between inputs
-  },
-  gridItem: {
-    marginTop: 10,
-    width: "80%",
-    height: 50,
-    backgroundColor: "#007BFF",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 8,
-    alignSelf: "center",
-  },
-  gridText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#fff",
+    marginBottom: 20,
+    textAlign: "center",
   },
 });
