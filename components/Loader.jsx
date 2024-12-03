@@ -1,13 +1,15 @@
 import React from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
+import Logo from "./Logo";
 
 const Loader = () => (
   <View style={styles.loaderContainer}>
-    <ActivityIndicator size="large" color="#007BFF" style={{marginVertical:20}}/>
-    <Image
-      source={{ uri: "../assets/images/app_logo_rectangle.jpg" }}
-      style={styles.smallImage}
+    <ActivityIndicator
+      size="large"
+      color="#007BFF"
+      style={{ marginVertical: 20 }}
     />
+    <Logo />
   </View>
 );
 

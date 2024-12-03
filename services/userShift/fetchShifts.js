@@ -24,6 +24,17 @@ export const fetchShift = async (empId, selectedDate) => {
   }
 };
 
+export const fetchLastShiftUid = async (empId) => {
+  try {
+    const response = await axios.get(`${RESP_URL}/api/shift/${empId}/fetch/last`, {
+    });
+    return response.data.shift;
+  } catch (error) {
+    console.error("Error fetching shift:", error);
+    throw error;
+  }
+};
+
 export const updateShift = async (
   empId,
   selectedDate,

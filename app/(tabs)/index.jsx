@@ -5,6 +5,8 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  Dimensions,
+  ScrollView,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
@@ -19,12 +21,25 @@ export default function OrganizationList() {
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [organization, setOrganization] = useState(null);
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
 
   useEffect(() => {
-    console.log(userInfo.user)
-    console.log("index screen")
+    console.log(
+      "User ID being passed to SearchOrganization:",
+      userInfo?.user?._id
+    );
+    console.log("Selected Organization:", organization);
+    console.log("index screen");
     setIsMounted(true); // Set mounted to true when the component mounts
-  }, []);
+
+    organization?.user_id === userInfo?.user?._id &&
+      console.log("organization owner");
+    userInfo?.user?.isAdmin && console.log("isAdmin");
+    userInfo?.user?.isSuperAdmin && console.log("isSuperAdmin");
+  }, [userInfo, organization]);
 
   useEffect(() => {
     if (isMounted && !userInfo?.user?._id) {
@@ -33,12 +48,15 @@ export default function OrganizationList() {
     }
   }, [userInfo, isMounted]);
 
-  if (!userInfo?.user?._id || authLoading) {
-    // Return loading indicator until userInfo is available
+  if (!userInfo?.user)
     return <ActivityIndicator size="large" color="#0000ff" />;
-  }
 
   const handleSelectOrg = async (orgId) => {
+    if (!orgId) {
+      console.error("Organization ID is missing");
+      return;
+    }
+
     try {
       const response = await axios.get(
         `${RESP_URL}/api/organization/${orgId}`,
@@ -51,15 +69,21 @@ export default function OrganizationList() {
         }
       );
 
-      const organization = response.data;
+      if (!response.data || !response.data._id) {
+        throw new Error("Invalid organization data");
+      }
+
+      const orgData = response.data;
+      setOrganization(orgData);
+
       if (
-        organization?.user_id === userInfo?.user?._id ||
+        orgData?.user_id === userInfo?.user?._id ||
         userInfo?.user?.isAdmin ||
         userInfo?.user?.isSuperAdmin
       ) {
-        router.push(`/${organization?._id}/dashboard`);
+        router.push(`/${orgData?._id}/dashboard`);
       } else {
-        router.push(`/${organization?._id}/bePart`);
+        router.push(`/${orgData?._id}/bePart`);
       }
     } catch (error) {
       console.error("Failed to fetch organization details:", error);
@@ -70,21 +94,36 @@ export default function OrganizationList() {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
+  useEffect(() => {
+    const updateScreenWidth = () =>
+      setScreenWidth(Dimensions.get("window").width);
+
+    Dimensions.addEventListener("change", updateScreenWidth);
+
+    return () => Dimensions.removeEventListener("change", updateScreenWidth);
+  }, []);
+
+  const isMobile = screenWidth < 768; // Define this after screenWidth
+
   return (
-    <View style={styles.container}>
-        <Logo/>
+    <ScrollView
+      style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}
+    >
+      <Logo />
+
       <Text style={styles.welcome}>
-        Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
+        <Text style={styles.header}>Bienvenid@</Text>
+        {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
         {userInfo?.user?.data?.firstname
-          ? userInfo?.user?.data?.firstname
+          ? `${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname}`
           : userInfo?.user?.email || ""}
       </Text>
 
       {/* Check if showSearch is true */}
       {showSearch ? (
         <SearchOrganization
-          userId={userInfo?._id}
+          userId={userInfo?.user?.data?._id}
           token={userInfo.token}
           onSelectOrg={handleSelectOrg}
           isAdmin={userInfo?.user?.isAdmin}
@@ -103,11 +142,11 @@ export default function OrganizationList() {
                     router.push("/organization/create");
                   }}
                 >
-                  (+) Crea un nuevo establecimiento
+                  Crea un nuevo establecimiento
                 </Text>
               </Pressable>
               <SearchOrganization
-                userId={userInfo?._id}
+                userId={userInfo?.user?.data?._id}
                 token={userInfo.token}
                 onSelectOrg={handleSelectOrg}
                 isAdmin={userInfo?.user?.isAdmin}
@@ -144,7 +183,7 @@ export default function OrganizationList() {
                   )}
 
                   <SearchOrganization
-                    userId={userInfo?._id}
+                    userId={userInfo?.user?.data?._id}
                     token={userInfo.token}
                     onSelectOrg={handleSelectOrg}
                     isAdmin={userInfo?.user?.isAdmin}
@@ -159,7 +198,7 @@ export default function OrganizationList() {
           )}
         </>
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -168,18 +207,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
-    marginBottom: 80,
+    padding: 16,
+    marginHorizontal: "2",
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   blue: {
     color: "blue",
     marginBottom: 10,
   },
   welcome: {
+    textAlign: "center",
     color: "blue",
     fontSize: 20,
+    marginBottom: 20, // Adds space below the welcome text
   },
   createBtn: {
+    textAlign: "center",
     padding: 10,
     backgroundColor: "blue",
     marginVertical: 10,

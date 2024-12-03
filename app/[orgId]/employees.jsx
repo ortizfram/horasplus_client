@@ -1,5 +1,6 @@
 import {
   FlatList,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -62,35 +63,38 @@ const Employees = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Mis empleados en {organization?.name}</Text>
-      {organization && (
-        <View>
-          <Text style={{ color: "blue", marginVertical: 5 }}>
-            organización: {organization._id}
-          </Text>
-          <FlatList
-            data={employees}
-            renderItem={renderEmployee}
-            keyExtractor={(item) => item._id.toString()}
-            style={styles.list} // Add a style for FlatList
-            // Optional: If you want to specify a fixed height for the FlatList
-            // contentContainerStyle={{ flexGrow: 1 }} // This helps with scrolling
-          />
-        </View>
-      )}
-    </View>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Mis empleados en {organization?.name}</Text>
+        {organization && (
+          <View>
+            <Text style={{ color: "blue", marginVertical: 5 }}>
+              organización: {organization._id}
+            </Text>
+            <FlatList
+              data={employees}
+              renderItem={renderEmployee}
+              keyExtractor={(item) => item._id.toString()}
+              style={styles.list} // Add a style for FlatList
+              // Optional: If you want to specify a fixed height for the FlatList
+              // contentContainerStyle={{ flexGrow: 1 }} // This helps with scrolling
+            />
+          </View>
+        )}
+      </View>
+    </ScrollView>
   );
 };
 
 export default Employees;
 
 const styles = StyleSheet.create({
+  scrollContainer: { flexGrow: 1 },
   container: {
-    flex: 1, // Set to flex: 1 to enable scrolling
-    padding: 20,
+    padding: 16,
+    alignItems: "center",
     marginBottom: 80,
-    marginTop: "2%",
+    marginTop: "5%",
     marginHorizontal: "8%",
   },
   employeeContainer: {

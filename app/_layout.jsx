@@ -32,7 +32,7 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    < Loader />
+    <Loader />;
   }
 
   return (
@@ -70,6 +70,10 @@ function Layout() {
               name="organization"
               screenOptions={{ headerShown: false, title: "" }}
             />
+            <Stack.Screen
+              name="[orgId]"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
           </>
         ) : (
           <>
@@ -99,10 +103,9 @@ function Layout() {
             />
           </>
         )}
-
         <Stack.Screen name="+not-found" />
+        <Slot />
       </Stack>
-      {/* <Slot />{" "} */}
       {/* This Slot will render the dynamic route based on the navigation */}
     </>
   );

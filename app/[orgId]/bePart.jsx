@@ -10,28 +10,37 @@ import Logo from "../../components/Logo";
 const BePart = () => {
   const { orgId } = useLocalSearchParams();
   const [organization, setOrganization] = useState(null);
-  const [loading, setLoading] = useState(true); // New state to manage loading
+  const [loading, setLoading] = useState(true); // Handles initial loader
   const router = useRouter();
-  const { userInfo, splashLoading, isAuth } = useContext(AuthContext); // Ensure splashLoading is available
+  const { userInfo, splashLoading } = useContext(AuthContext);
+
+  // Fetch organization details
+  const fetchOrganization = async () => {
+    try {
+      const response = await axios.get(`${RESP_URL}/api/organization/${orgId}`);
+      setOrganization(response.data);
+    } catch (error) {
+      console.error("Error fetching organization:", error);
+    } finally {
+      setLoading(false); // Stop loader regardless of success
+    }
+  };
 
   useEffect(() => {
-    if (!splashLoading) {
-      // Show loader for 4 seconds before checking for userInfo
-      const timeoutId = setTimeout(() => {
-        if (!isAuth) {
-          console.log("No userInfo found, redirecting to signup...");
-          setLoading(false); // Hide loading screen after timeout
-          router.push(`/auth/signup?next=/${orgId}/bePart`);
-        } else {
-          console.log("userInfo found:", userInfo?.user?._id);
-          setLoading(false); // Proceed if userInfo exists
+    if (!splashLoading && orgId && userInfo == null) {
+      console.log("Redirecting to signup...");
+      router.push(`/auth/signup?next=/${orgId}/bePart`);
+    } else if (!splashLoading && orgId && userInfo?.user?._id) {
+      fetchOrganization().then(() => {
+        // After fetching organization, check if the organization_id matches
+        if (userInfo?.user?.data?.organization_id?.toString() === orgId.toString()) {
+          console.log("Redirecting to home...");
+          router.push("/"); // Redirect to home if the organization ID matches
         }
-      }, 4000); // Timeout after 4 seconds
-
-      // Cleanup timeout if component is unmounted
-      return () => clearTimeout(timeoutId);
+      });
     }
-  }, [isAuth, splashLoading, router, orgId]);
+  }, [splashLoading, userInfo, orgId]);
+  
 
   const associate = async () => {
     try {
@@ -39,20 +48,13 @@ const BePart = () => {
         `${RESP_URL}/api/organization/${orgId}/bePart`,
         { uid: userInfo.user._id }
       );
-
       if (res.status === 200 || res.status === 201) {
-        console.log(
-          "User successfully associated with the organization:",
-          res.data
-        );
+        console.log("Association successful:", res.data);
         router.push(`/${orgId}/bePartSent`);
       }
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        console.error(
-          "User is already associated with the organization:",
-          error
-        );
+      if (error.response?.status === 400) {
+        console.error("Already associated:", error.response.data);
         router.push("/");
       } else {
         console.error("Error during association:", error);
@@ -60,52 +62,32 @@ const BePart = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchOrganization = async () => {
-      try {
-        const response = await axios.get(
-          `${RESP_URL}/api/organization/${orgId}`
-        );
-        setOrganization(response.data);
-      } catch (error) {
-        console.error("Error fetching organization:", error);
-      }
-    };
-
-    fetchOrganization();
-  }, [orgId]);
-
   return (
     <View style={styles.container}>
-      {loading ? (
-        <Loader />
-      ) : (
-        organization && (
-          <View style={styles.content}>
-            <Logo />
-            <Text style={styles.title}>
-              Hola{" "}
-              {userInfo?.user?.data?.firstname
-                ? userInfo?.user?.data?.firstname
-                : userInfo?.user?.email}{" "}
-              Se parte de :
-            </Text>
-            <View style={styles.header}>
-              <Image
-                source={
-                  organization.image
-                    ? { uri: `${RESP_URL}/${organization.image}` }
-                    : require("../../assets/images/org_placeholder.jpg")
-                }
-                style={styles.image}
-              />
-              <Text style={styles.orgName}>{organization.name}</Text>
-            </View>
-            <Pressable style={styles.button} onPress={associate}>
-              <Text style={styles.buttonText}>Enviar solicitud</Text>
-            </Pressable>
+      {organization ? (
+        <View style={styles.content}>
+          <Logo />
+          <Text style={styles.title}>
+            Hola {userInfo?.user?.data?.firstname || userInfo?.user?.email}, sé
+            parte de:
+          </Text>
+          <View style={styles.header}>
+            <Image
+              source={
+                organization.image
+                  ? { uri: `${RESP_URL}/${organization.image}` }
+                  : require("../../assets/images/org_placeholder.jpg")
+              }
+              style={styles.image}
+            />
+            <Text style={styles.orgName}>{organization.name}</Text>
           </View>
-        )
+          <Pressable style={styles.button} onPress={associate}>
+            <Text style={styles.buttonText}>Enviar solicitud</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <Text>Organización no encontrada</Text>
       )}
     </View>
   );
@@ -123,7 +105,7 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: "center",
-    justifyContent: "center", // Ensure vertical alignment within content
+    justifyContent: "center",
     flex: 1,
   },
   title: {
@@ -134,16 +116,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   header: {
-    flexDirection: "column", // Adjusted to column for better centering
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 20,
   },
   image: {
-    width: 80, // Increased size for better visibility
+    width: 80,
     height: 80,
-    borderRadius: 40, // Maintain circular shape
-    marginBottom: 10, // Add spacing below the image
+    borderRadius: 40,
+    marginBottom: 10,
   },
   orgName: {
     fontSize: 18,
@@ -156,7 +138,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 25,
     borderRadius: 5,
-    marginTop: 20, // Add spacing from other elements
+    marginTop: 20,
   },
   buttonText: {
     color: "#fff",

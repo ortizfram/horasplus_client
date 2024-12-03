@@ -5,6 +5,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
@@ -14,11 +15,14 @@ import { RESP_URL } from "../../config";
 import axios from "axios";
 import Logo from "../../components/Logo";
 
-export default function QRDasboard() {
+export default function QRDashboard() {
   const { userInfo, isLoading: authLoading } = useContext(AuthContext) || {};
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
 
   useEffect(() => {
     console.log("index screen");
@@ -31,6 +35,14 @@ export default function QRDasboard() {
       router.push("/auth/login");
     }
   }, [userInfo, isMounted]);
+
+  // Update screen width on dimension changes
+  useEffect(() => {
+    const onChange = ({ window }) => setScreenWidth(window.width);
+    Dimensions.addEventListener("change", onChange);
+
+    return () => Dimensions.removeEventListener("change", onChange);
+  }, []);
 
   if (!userInfo?.user?._id || authLoading) {
     // Return loading indicator until userInfo is available
@@ -65,26 +77,26 @@ export default function QRDasboard() {
     }
   };
 
-  if (authLoading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+  // Determine if screen is mobile-sized
+  const isMobile = screenWidth < 768;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { marginBottom: isMobile ? 100 : 80 }]}>
       <Logo />
       <Text style={styles.header}>Generar QR de Ingreso</Text>
       <Text style={styles.welcome}>
-        Bienvenido {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
+        <Text style={styles.header}>Bienvenid@</Text>
+        {userInfo?.user?.isAdmin && <Text>Admin</Text>}{" "}
         {userInfo?.user?.isSuperAdmin && <Text>Super Admin</Text>}{" "}
         {userInfo?.user?.data?.firstname
-          ? userInfo?.user?.data?.firstname
+          ? `${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname}`
           : userInfo?.user?.email || ""}
       </Text>
 
       {/* Check if showSearch is true */}
       {showSearch ? (
         <SearchOrganizationQR
-          userId={userInfo?._id}
+          userId={userInfo?.user?.data?._id}
           token={userInfo.token}
           onSelectOrg={handleSelectOrg}
           isAdmin={userInfo?.user?.isAdmin}
@@ -95,11 +107,13 @@ export default function QRDasboard() {
         <>
           {userInfo?.user?.isAdmin ? (
             <View>
-              <Text style={styles.blue}>Toca cada organizacion para ir a generar y descargar su
-              codigo QR</Text>
+              <Text style={styles.blue}>
+                Toca cada organizacion para ir a generar y descargar su codigo
+                QR
+              </Text>
 
               <SearchOrganizationQR
-                userId={userInfo?._id}
+                userId={userInfo?.user?.data?._id}
                 token={userInfo.token}
                 onSelectOrg={handleSelectOrg}
                 isAdmin={userInfo?.user?.isAdmin}
@@ -128,7 +142,7 @@ export default function QRDasboard() {
                   )}
 
                   <SearchOrganizationQR
-                    userId={userInfo?._id}
+                    userId={userInfo?.user?.data?._id}
                     token={userInfo.token}
                     onSelectOrg={handleSelectOrg}
                     isAdmin={userInfo?.user?.isAdmin}
@@ -152,13 +166,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
-    marginBottom: 80,
+    padding: 16,
+    marginHorizontal: "10%",
   },
   header: {
-   fontSize: 24,
-   fontWeight: "bold",
- },
+    fontSize: 24,
+    fontWeight: "bold",
+  },
   blue: {
     color: "blue",
     marginBottom: 10,

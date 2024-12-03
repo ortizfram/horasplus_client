@@ -1,31 +1,46 @@
-// import { Tabs } from "expo-router";
-// import React, { useContext } from "react";
-// import { MaterialIcons } from "@expo/vector-icons";
-// import { AuthContext } from "../../context/AuthContext";
-// const userInfo = useContext(AuthContext);
+import { Stack } from "expo-router";
+import BePart from "./bePart";
 
-// export default function OrgDetailLayout() {
-
-//   return (
-//     <Tabs>
-//       <Tabs.Screen
-//         name="dashboard"
-//         options={{
-//           headerShown: false,
-//           tabBarIcon: ({ color, focused }) => (
-//             <MaterialIcons name={"dashboard"} size={24} color={color} />
-//           ),
-//         }}
-//       />
-//       <Tabs.Screen
-//         name="settings"
-//         options={{
-//           headerShown: false,
-//           tabBarIcon: ({ color, focused }) => (
-//             <MaterialIcons name={"settings"} size={24} color={color} />
-//           ),
-//         }}
-//       />
-//     </Tabs>
-//   );
-// }
+export default function OrgLayout() {
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen
+        name="bePart"
+        component={BePart}
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="bePartSent"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="dashboard"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="downloadQR"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="downloadReports"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Stack.Screen
+        name="employees"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+       <Stack.Screen
+        name="fixRecord"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+       <Stack.Screen
+        name="settings"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+    </Stack>
+  );
+}

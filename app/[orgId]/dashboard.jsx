@@ -138,9 +138,9 @@ export default function Dashboard() {
           <Text style={styles.gridText}>Adelanto de Sueldo</Text>
         </Pressable> */}
       </View>
-      <Pressable style={styles.deleteButton} onPress={confirmDelete}>
+      <Pressable style={styles.removeButton} onPress={confirmDelete}>
         <Icon name="delete" size={24} color="white" />
-        <Text style={styles.deleteButtonText}>Eliminar Organización</Text>
+        <Text style={styles.removeButtonText}>Eliminar Organización</Text>
       </Pressable>
     </View>
   );
@@ -156,6 +156,26 @@ const styles = StyleSheet.create({
     marginBottom:80   
     ,
     marginTop:"2%",
+  },
+  removeButton: {
+    marginTop: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: "#FF4C4C",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 4,
+    alignSelf: "center",
+  },
+  removeButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
   },
   header: {
     flexDirection: "row",
@@ -201,6 +221,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: "red",
+    opacity:"10%",
     padding: 3,
     borderRadius: 5,
     marginTop: 20, // Ensures it's at the bottom

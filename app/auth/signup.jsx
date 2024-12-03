@@ -20,7 +20,6 @@ const Signup = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const { isIn, userInfo } = useContext(AuthContext); // Ensure splashLoading is available
 
-
   const { register, isLoading } = useContext(AuthContext) || {};
   const router = useRouter();
   const { next } = useLocalSearchParams();
@@ -35,7 +34,6 @@ const Signup = () => {
       }
     }
   }, [isIn, next, router]);
-  
 
   const handleSignup = () => {
     setErrorMessage(null); // Clear previous errors
@@ -82,7 +80,9 @@ const Signup = () => {
       </TouchableOpacity>
       <View style={styles.linkContainer}>
         <Text>Ya tienes cuenta? </Text>
-        <TouchableOpacity onPress={() => router.push(`/auth/login?next=${next}`)}>
+        <TouchableOpacity
+          onPress={() => router.push(`/auth/login?next=${next}`)}
+        >
           <Text style={styles.link}>Ingresar</Text>
         </TouchableOpacity>
       </View>

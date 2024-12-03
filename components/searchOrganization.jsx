@@ -29,41 +29,34 @@ export default function SearchOrganization({
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
 
+  const fetchOrganizations = async () => {
+    setLoading(true);
+    console.log("User ID being sent to API:", userId); // Debug log
+    try {
+      const response = await axios.get(`${RESP_URL}/api/organization`, {
+        params: { userId, isAdmin, isSuperAdmin },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      const organizationsData = response.data;
+      setOrganizations(organizationsData);
+      setFilteredOrganizations(organizationsData); // Show all initially
+    } catch (error) {
+      console.error("Failed to fetch organizations:", error);
+      setError("Failed to fetch organizations");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchOrganizations = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(`${RESP_URL}/api/organization`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        });
-
-        let organizationsData = response.data;
-
-        if (isAdmin && !isSuperAdmin) {
-          // Admins only see organizations with IDs in organizationIds
-          organizationsData = organizationsData.filter((org) =>
-            organizationIds.includes(org._id)
-          );
-        }
-        // Super admins see all organizations (no filtering)
-
-        setOrganizations(organizationsData);
-        setFilteredOrganizations(organizationsData); // Show all initially
-      } catch (error) {
-        console.error("Failed to fetch organizations:", error);
-        setError("Failed to fetch organizations");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrganizations();
-  }, [userId, token, isAdmin, isSuperAdmin, organizationIds]);
+  }, [userId, token, isAdmin, isSuperAdmin]);
 
+  // lupa
   useEffect(() => {
     if (searchQuery) {
       const filtered = organizations.filter((org) =>
@@ -109,7 +102,7 @@ export default function SearchOrganization({
         contentContainerStyle={styles.listContainer}
         style={styles.listBg}
         data={filteredOrganizations}
-        keyExtractor={(item) => item._id}
+        keyExtractor={(item) => item._id.toString()}
         renderItem={({ item }) => (
           <Pressable
             onPress={() => onSelectOrg(item._id)}
@@ -146,17 +139,11 @@ export default function SearchOrganization({
 }
 
 const styles = StyleSheet.create({
-  
-  searchInput: {
+  container: {
     flex: 1,
-    fontSize: 16,
-    backgroundColor: "#F0F0F0", // Same as container to blend
-    borderRadius: 25,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
-  },
-  icon: {
-    marginRight: 8,
+    justifyContent: "flex-start", // Aligns content to the top
+    width: "100%",
+    paddingHorizontal:10
   },
   searchContainer: {
     flexDirection: "row",
@@ -173,15 +160,21 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
-  container: {
+  searchInput: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    fontSize: 16,
+    backgroundColor: "#F0F0F0",
+    borderRadius: 25,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
   },
   listBg: {
+    flexGrow: 0, // Ensures it does not expand indefinitely
+    maxHeight: 300, // Sets a fixed height for the scrollable list area
     width: "100%",
   },
   listContainer: {
+    paddingBottom: 10,
     alignItems: "center",
   },
   itemContainer: {
@@ -198,3 +191,4 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
+
