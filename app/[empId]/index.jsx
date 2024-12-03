@@ -76,7 +76,7 @@ const Index = () => {
     }, 2000);
   };
 
-  const inputContainerWidth = !isMobile ? "70%" : "100%";
+  const inputContainerWidth = !isMobile ? "50%" : "100%";
   const inputWidth = !isMobile ? "70%" : "100%";
   const inputContainerPadding = !isMobile && 16;
 
@@ -253,7 +253,10 @@ const Index = () => {
 export default Index;
 
 const styles = StyleSheet.create({
-  inputContainer: {},
+  inputContainer: {
+    justifyContent: "center", // Centra verticalmente
+    alignItems: "center", // C
+  },
   saveButton: {
     paddingVertical: 12,
     paddingHorizontal: 25,
