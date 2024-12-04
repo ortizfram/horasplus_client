@@ -367,8 +367,8 @@ const Report = () => {
 
             // Split the date and increment the day portion
             const [day, month, year] = shift.date.split("/");
-            const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Add 1 to the day, ensuring it's two digits
-            const updatedDate = `${incrementedDay}/${month}/${year}`;
+            // const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Add 1 to the day, ensuring it's two digits
+            const updatedDate = `${day}/${month}/${year}`;
 
             console.log("Updated shift.date:", updatedDate); // Log the updated date
 

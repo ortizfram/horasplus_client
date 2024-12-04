@@ -126,8 +126,8 @@ const DownloadReports = () => {
 
           // Increment the day in shift.date
           const [day, month, year] = shift.date.split("/");
-          const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
-          const updatedDate = `${incrementedDay}/${month}/${year}`;
+          // const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
+          const updatedDate = `${day}/${month}/${year}`;
 
           const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
 
