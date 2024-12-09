@@ -25,7 +25,7 @@ export default function RootLayout() {
   useEffect(() => {
     setIsMounted(true);
     if (isMounted) {
-      if (!userInfo?.user?._id) {
+      if (userInfo === null || userInfo === undefined) {
         router.push("/auth/login");
       } else {
         router.push("/");
