@@ -1,12 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useRouter } from "expo-router";
 import { AuthContext } from "../../context/AuthContext";
 import Spinnerr from "react-native-loading-spinner-overlay";
+import Loader from "../../components/Loader";
 
 const Settings = () => {
   const router = useRouter();
   const { userInfo, isLoading, logout } = useContext(AuthContext);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true)
+    if (isMounted) {
+      if (!userInfo?.user?._id) {
+        router.push("/auth/login");
+      } else {
+        router.push("/")
+      }
+    }
+  }, [isMounted, userInfo]);
+
+  if (!isMounted) {
+    return <Loader />
+  }
 
   return (
     <View style={styles.container}>
@@ -33,10 +50,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginBottom:80   
-    ,
+    marginBottom: 80,
     marginTop: "2%",
-    marginHorizontal: "8%"
+    marginHorizontal: "8%",
   },
   account: {
     color: "blue",

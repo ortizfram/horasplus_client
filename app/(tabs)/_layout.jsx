@@ -26,23 +26,20 @@ export default function TabsLayout() {
     return () => Dimensions.removeEventListener("change", onChange);
   }, []);
 
-  // Set mount state
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Redirect to login if user info is not available
-  useEffect(() => {
-    if (isMounted && !userInfo?.user?._id) {
-      router.push("/auth/login");
+    setIsMounted(true)
+    if (isMounted) {
+      if (!userInfo?.user?._id) {
+        router.push("/auth/login");
+      } else {
+        router.push("/")
+      }
     }
-  }, [userInfo, isMounted]);
+  }, [isMounted, userInfo]);
 
-  // Wait until userInfo is loaded before rendering
-  if (!userInfo?.user?._id) {
-    return null; // Or display a loading state
+  if (!isMounted) {
+    return <Loader />
   }
-
   // Check if the screen is mobile-sized
   const isMobile = screenWidth < 768;
 

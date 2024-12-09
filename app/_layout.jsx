@@ -45,12 +45,23 @@ export default function RootLayout() {
 
 function Layout() {
   const { userInfo, splashLoading } = useContext(AuthContext);
+  const [isMounted, setIsMounted] = useState(false);
+
 
   useEffect(() => {
-    if (userInfo == null) {
-      // router.push("/auth/login");
+    setIsMounted(true);
+    if (isMounted) {
+      if (!userInfo?.user?._id) {
+        router.push("/auth/login");
+      } else {
+        router.push("/");
+      }
     }
-  }, [splashLoading, userInfo]);
+  }, [isMounted, userInfo]);
+
+  if (!isMounted) {
+    return <Loader />;
+  }
 
   return (
     <>
