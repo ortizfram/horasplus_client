@@ -13,6 +13,8 @@ import Loader from "../components/Loader";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const { userInfo, splashLoading } = useContext(AuthContext);
+
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
