@@ -1,11 +1,10 @@
-import { router, Slot, Stack, useRouter } from "expo-router";
+import { Slot, Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useContext, useState } from "react";
 import "react-native-reanimated";
 
 import { AuthContext, AuthProvider } from "../context/AuthContext";
-import { Pressable, StyleSheet, View } from "react-native";
 import BackButtonLayout from "../components/GoBackButton";
 import Loader from "../components/Loader";
 
@@ -13,44 +12,49 @@ import Loader from "../components/Loader";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  return (
+    <AuthProvider>
+      <AppLayout />
+    </AuthProvider>
+  );
+}
+
+function AppLayout() {
+  const { userInfo, splashLoading } = useContext(AuthContext) || {};
+  const router = useRouter();
 
   const [loaded] = useFonts({
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
   });
 
-  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    if (isMounted) {
-      if (userInfo === null || userInfo === undefined) {
+
+    if (isMounted && !splashLoading) {
+      if (!userInfo) {
         router.push("/auth/login");
       } else {
         router.push("/");
       }
     }
-  }, [isMounted, userInfo]);
+  }, [isMounted, userInfo, splashLoading]);
 
-  if (!isMounted) {
+  if (!isMounted || splashLoading) {
     return <Loader />;
   }
 
-  const handleGoBack = () => {
-    router.back();
-  };
-
   return (
-    <AuthProvider style={styles.container}>
+    <>
       <Layout />
       <BackButtonLayout />
-    </AuthProvider>
+    </>
   );
 }
 
 function Layout() {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+  const { userInfo, splashLoading } = useContext(AuthContext) || {};
 
   return (
     <>
@@ -106,7 +110,6 @@ function Layout() {
         <Stack.Screen name="+not-found" />
         <Slot />
       </Stack>
-      {/* This Slot will render the dynamic route based on the navigation */}
     </>
   );
 }
