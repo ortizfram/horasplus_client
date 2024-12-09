@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import Roles from "./roles";
 import QRDashboard from "./QRDashboard";
 import { View, Animated, Dimensions } from "react-native";
+import Loader from "../../components/Loader";
 
 // Create Tab Navigator
 const Tab = createBottomTabNavigator();
