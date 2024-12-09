@@ -347,52 +347,46 @@ const Report = () => {
         )}
 
         {Platform.OS === "web" && (
-          <View style={styles.overlay}>
-            <View style={styles.datePickerContainer}>
-              <Modal
-                transparent={true}
-                animationType="slide"
-                visible={isModalVisible}
-                onRequestClose={() => setModalVisible(false)}
-              >
-                <TouchableOpacity
-                  onPress={() => setModalVisible(true)}
-                  style={styles.label}
-                >
-                  <Text>Seleccionar Fecha de Inicio</Text>
-                </TouchableOpacity>
-                <DatePicker
-                  selected={startDate}
-                  onChange={onStartDateChange}
-                  dateFormat="dd/MM/yyyy"
-                />
-                <TouchableOpacity onPress={() => setModalVisible(false)}>
-                  <Text style={styles.closeButton}>Cerrar</Text>
-                </TouchableOpacity>
-              </Modal>
-              <Modal
-                transparent={true}
-                animationType="slide"
-                visible={isModal2Visible}
-                onRequestClose={() => setModal2Visible(false)}
-              >
-                <TouchableOpacity
-                  onPress={() => setModal2Visible(true)}
-                  style={styles.label}
-                >
-                  <Text>Seleccionar Fecha de Inicio</Text>
-                </TouchableOpacity>
-                <DatePicker
-                  selected={endDate}
-                  onChange={onEndDateChange}
-                  dateFormat="dd/MM/yyyy"
-                />
-                <TouchableOpacity onPress={() => setModal2Visible(false)}>
-                  <Text style={styles.closeButton}>Cerrar</Text>
-                </TouchableOpacity>
-              </Modal>
-            </View>
-          </View>
+          <>
+            <Modal
+              transparent={true}
+              animationType="slide"
+              visible={isModalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View style={styles.overlay}>
+                <View style={styles.datePickerContainer}>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={onStartDateChange}
+                    dateFormat="dd/MM/yyyy"
+                  />
+                  <TouchableOpacity onPress={() => setModalVisible(false)}>
+                    <Text style={styles.closeButton}>Cerrar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+            <Modal
+              transparent={true}
+              animationType="slide"
+              visible={isModal2Visible}
+              onRequestClose={() => setModal2Visible(false)}
+            >
+              <View style={styles.overlay}>
+                <View style={styles.datePickerContainer}>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={onEndDateChange}
+                    dateFormat="dd/MM/yyyy"
+                  />
+                  <TouchableOpacity onPress={() => setModal2Visible(false)}>
+                    <Text style={styles.closeButton}>Cerrar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </>
         )}
 
         {shifts.length > 0 && (
@@ -451,6 +445,28 @@ const Report = () => {
 
 export default Report;
 const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
+  },
+  datePickerContainer: {
+    alignItems: "center",
+    marginVertical: 5, // Reduced vertical space
+  },
+  label: {
+    fontSize: 16, // Slightly smaller size
+    fontWeight: "bold",
+    flex: 1,
+    textAlign: "left",
+  },
+  closeButton: {
+    marginTop: 10,
+    color: "blue",
+    fontSize: 16,
+  },
   scrollContainer: { flexGrow: 1 },
   container: {
     padding: 16,
@@ -467,13 +483,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e0e0e0",
     backgroundColor: "#ffffff",
   },
-  overlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: 1000,
-  },
+
   titleContainer: {
     flexDirection: "row",
     justifyContent: "center", // Center the contents horizontally
@@ -537,11 +547,7 @@ const styles = StyleSheet.create({
     color: "green",
     fontWeight: "bold",
   },
-  closeButton: {
-    marginTop: 10,
-    color: "blue",
-    fontSize: 16,
-  },
+
   outText: {
     color: "red",
     fontWeight: "bold",
@@ -555,10 +561,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 5, // Reduced vertical space
-  },
-  datePickerContainer: {
-    alignItems: "center",
     marginVertical: 5, // Reduced vertical space
   },
 
@@ -589,12 +591,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 5, // Reduced margin
   },
-  label: {
-    fontSize: 16, // Slightly smaller size
-    fontWeight: "bold",
-    flex: 1,
-    textAlign: "left",
-  },
+
   input: {
     flex: 2,
     borderWidth: 1,
