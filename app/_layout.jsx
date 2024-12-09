@@ -1,13 +1,11 @@
 import { router, Slot, Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useContext,useState } from "react";
+import { useEffect, useContext, useState } from "react";
 import "react-native-reanimated";
 
 import { AuthContext, AuthProvider } from "../context/AuthContext";
-import { ActivityIndicator, Text } from "react-native-web";
 import { Pressable, StyleSheet, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import BackButtonLayout from "../components/GoBackButton";
 import Loader from "../components/Loader";
 
@@ -20,33 +18,7 @@ export default function RootLayout() {
   });
 
   const router = useRouter();
-
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    <Loader />;
-  }
-
-  return (
-    <AuthProvider style={styles.container}>
-      <Layout />
-      <BackButtonLayout />
-    </AuthProvider>
-  );
-}
-
-function Layout() {
-  const { userInfo, splashLoading } = useContext(AuthContext);
   const [isMounted, setIsMounted] = useState(false);
-
 
   useEffect(() => {
     setIsMounted(true);
@@ -62,6 +34,21 @@ function Layout() {
   if (!isMounted) {
     return <Loader />;
   }
+
+  const handleGoBack = () => {
+    router.back();
+  };
+
+  return (
+    <AuthProvider style={styles.container}>
+      <Layout />
+      <BackButtonLayout />
+    </AuthProvider>
+  );
+}
+
+function Layout() {
+  const { userInfo, splashLoading } = useContext(AuthContext);
 
   return (
     <>

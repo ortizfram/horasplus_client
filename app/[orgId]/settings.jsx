@@ -11,23 +11,6 @@ import Loader from "../../components/Loader";
 const Settings = () => {
   const router = useRouter();
   const { userInfo, isLoading, logout } = useContext(AuthContext);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true)
-    if (isMounted) {
-      if (!userInfo?.user?._id) {
-        router.push("/auth/login");
-      } else {
-        router.push("/")
-      }
-    }
-  }, [isMounted, userInfo]);
-
-  if (!isMounted) {
-    return <Loader />
-  }
-  
 
   return (
     <View style={styles.container}>

@@ -16,8 +16,9 @@ const Tab = createBottomTabNavigator();
 export default function TabsLayout() {
   const { userInfo } = useContext(AuthContext) || {};
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
 
   // Listen for screen size changes
   useEffect(() => {
@@ -27,20 +28,6 @@ export default function TabsLayout() {
     return () => Dimensions.removeEventListener("change", onChange);
   }, []);
 
-  useEffect(() => {
-    setIsMounted(true)
-    if (isMounted) {
-      if (!userInfo?.user?._id) {
-        router.push("/auth/login");
-      } else {
-        router.push("/")
-      }
-    }
-  }, [isMounted, userInfo]);
-
-  if (!isMounted) {
-    return <Loader />
-  }
   // Check if the screen is mobile-sized
   const isMobile = screenWidth < 768;
 
