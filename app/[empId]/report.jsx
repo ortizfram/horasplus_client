@@ -9,6 +9,7 @@ import {
   ScrollView,
   Image,
   Modal,
+  TouchableOpacity,
 } from "react-native";
 import { fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShiftWithId } from "../../services/userShift/fetchShifts";
