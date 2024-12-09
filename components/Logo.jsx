@@ -19,7 +19,7 @@ const Logo = ({ style }) => {
   return (
     <View style={styles.logoContainer}>
       {/* Main Logo */}
-      <Image
+      {/* <Image
         source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
         style={[
           {
@@ -31,7 +31,7 @@ const Logo = ({ style }) => {
           style,
         ]}
         resizeMode="contain"
-      />
+      /> */}
 
       {/* First Scaled Logo */}
       {/* <Image
