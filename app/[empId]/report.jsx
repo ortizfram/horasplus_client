@@ -346,6 +346,27 @@ const Report = () => {
           />
         )}
 
+        <View style={styles.datePickerContainer}>
+          {" "}
+          {/* Centering for web */}
+          <Text style={styles.label}>Fecha de Inicio</Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text style={styles.dateText}>
+              {startDate
+                ? startDate.toLocaleDateString()
+                : "Selecciona una fecha"}
+            </Text>
+          </TouchableOpacity>
+          <Text style={styles.label}> Fecha de Fin</Text>
+          <TouchableOpacity onPress={() => setModal2Visible(true)}>
+            <Text style={styles.dateText}>
+              {endDate
+                ? endDate.toLocaleDateString()
+                : "Selecciona una fecha"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         {Platform.OS === "web" && (
           <>
             <Modal
@@ -457,6 +478,7 @@ const styles = StyleSheet.create({
     marginVertical: 5, // Reduced vertical space
   },
   label: {
+    color:"blue",
     fontSize: 16, // Slightly smaller size
     fontWeight: "bold",
     flex: 1,
