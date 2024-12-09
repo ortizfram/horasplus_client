@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   useWindowDimensions,
+  Modal,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -26,11 +27,11 @@ const DownloadReports = () => {
   const [employees, setEmployees] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
-
   const { width } = useWindowDimensions();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModal2Visible, setModal2Visible] = useState(false);
 
   // Función para formatear las fechas
   function formatDate(date) {
@@ -77,6 +78,7 @@ const DownloadReports = () => {
     if (Platform.OS === "web") {
       // For web, selectedDate is passed directly
       setStartDate(event); // The 'event' is the date selected in react-datepicker for web
+      setModalVisible(false);
     } else {
       const currentDate = selectedDate || startDate;
       setStartDate(currentDate);
@@ -88,6 +90,7 @@ const DownloadReports = () => {
     if (Platform.OS === "web") {
       // For web, selectedDate is passed directly
       setEndDate(event); // The 'event' is the date selected in react-datepicker for web
+      setModal2Visible(false);
     } else {
       const currentDate = selectedDate || endDate;
       setEndDate(currentDate);
@@ -243,15 +246,38 @@ const DownloadReports = () => {
                   !isMobile && styles.datePickerWrapperLarge,
                 ]}
               >
-                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-                <DatePicker
-                  selected={startDate} // Asegúrate de pasar el estado actualizado
-                  onChange={onStartDateChange}
-                  style={[
-                    styles.datePicker,
-                    !isMobile && styles.datePickerLarge, 
-                  ]}
-                />
+                <Text style={styles.label}>Fecha de Inicio</Text>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <Text style={styles.dateText}>
+                    {startDate
+                      ? startDate.toLocaleDateString()
+                      : "Selecciona una fecha"}
+                  </Text>
+                </TouchableOpacity>
+
+                <Modal
+                  transparent={true}
+                  animationType="slide"
+                  visible={isModalVisible}
+                  onRequestClose={() => setModalVisible(false)}
+                >
+                  <View style={styles.overlay}>
+                    <View style={styles.datePickerContainer}>
+                      <DatePicker
+                        selected={startDate}
+                        onChange={onStartDateChange}
+                        dateFormat="dd/MM/yyyy"
+                        style={[
+                          styles.datePicker,
+                          !isMobile && styles.datePickerLarge,
+                        ]}
+                      />
+                      <TouchableOpacity onPress={() => setModalVisible(false)}>
+                        <Text style={styles.closeButton}>Cerrar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
               </View>
               <View
                 style={[
@@ -259,15 +285,37 @@ const DownloadReports = () => {
                   !isMobile && styles.datePickerWrapperLarge,
                 ]}
               >
-                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-                <DatePicker
-                  selected={endDate} // Asegúrate de pasar el estado actualizado
-                  onChange={onEndDateChange}
-                  style={[
-                    styles.datePicker,
-                    !isMobile && styles.datePickerLarge,
-                  ]}
-                />
+                <Text style={styles.label}>Fecha de Fin</Text>
+                <Modal
+                  transparent={true}
+                  animationType="slide"
+                  visible={isModal2Visible}
+                  onRequestClose={() => setModal2Visible(false)}
+                >
+                  <View style={styles.overlay}>
+                    <View style={styles.datePickerContainer}>
+                      <DatePicker
+                        selected={endDate}
+                        onChange={onEndDateChange}
+                        dateFormat="dd/MM/yyyy"
+                        style={[
+                          styles.datePicker,
+                          !isMobile && styles.datePickerLarge,
+                        ]}
+                      />
+                      <TouchableOpacity onPress={() => setModal2Visible(false)}>
+                        <Text style={styles.closeButton}>Cerrar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+                <TouchableOpacity onPress={() => setModal2Visible(true)}>
+                  <Text style={styles.dateText}>
+                    {endDate
+                      ? endDate.toLocaleDateString()
+                      : "Selecciona una fecha"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -281,6 +329,13 @@ export default DownloadReports;
 
 const styles = StyleSheet.create({
   scrollContainer: { flexGrow: 1 },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
+  },
   container: {
     padding: 16,
     alignItems: "center",
@@ -352,8 +407,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   label: {
+    color: "blue",
+    fontSize: 16, // Slightly smaller size
+    fontWeight: "bold",
+    flex: 1,
+    textAlign: "left",
+  },
+  closeButton: {
+    marginTop: 10,
+    color: "blue",
     fontSize: 16,
-    marginVertical: 5,
-    color: "#555",
   },
 });
