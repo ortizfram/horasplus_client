@@ -7,6 +7,7 @@ import "react-native-reanimated";
 import { AuthContext, AuthProvider } from "../context/AuthContext";
 import BackButtonLayout from "../components/GoBackButton";
 import Loader from "../components/Loader";
+import { StyleSheet } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -14,7 +15,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <AppLayout />
+      <AppLayout style={styles.container}/>
     </AuthProvider>
   );
 }
