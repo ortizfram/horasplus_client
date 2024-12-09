@@ -10,8 +10,8 @@ const Settings = () => {
 
   const handleLogout = async () => {
     try {
-      await logout(); // Llamada a la función de logout
-      router.replace("/"); // Redirige al inicio (o una ruta de tu elección)
+      await logout();
+      window.location.reload();
     } catch (error) {
       console.error("Error during logout:", error);
     }
