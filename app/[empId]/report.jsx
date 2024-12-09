@@ -473,15 +473,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     zIndex: 1000,
   },
-  dateText:{
-    color:"blue"
-  },
   datePickerContainer: {
-    flexDirection: "row", // Alinea los elementos en una fila
-    alignItems: "center", // Centra verticalmente los elementos
-    justifyContent: "space-between", // Espacia los elementos horizontalmente
-    marginVertical: 5,
-    width: "100%", // Asegúrate de que el contenedor ocupe todo el ancho
+    alignItems: "center",
+    marginVertical: 5, // Reduced vertical space
   },
   label: {
     color:"blue",
