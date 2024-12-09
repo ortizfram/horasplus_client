@@ -355,7 +355,12 @@ const Report = () => {
                 visible={isModalVisible}
                 onRequestClose={() => setModalVisible(false)}
               >
-                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
+                <TouchableOpacity
+                  onPress={() => setModalVisible(true)}
+                  style={styles.label}
+                >
+                  <Text>Seleccionar Fecha de Inicio</Text>
+                </TouchableOpacity>
                 <DatePicker
                   selected={startDate}
                   onChange={onStartDateChange}
@@ -371,7 +376,12 @@ const Report = () => {
                 visible={isModal2Visible}
                 onRequestClose={() => setModal2Visible(false)}
               >
-                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
+                <TouchableOpacity
+                  onPress={() => setModal2Visible(true)}
+                  style={styles.label}
+                >
+                  <Text>Seleccionar Fecha de Inicio</Text>
+                </TouchableOpacity>
                 <DatePicker
                   selected={endDate}
                   onChange={onEndDateChange}
@@ -441,15 +451,6 @@ const Report = () => {
 
 export default Report;
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   padding: 15, // Reduced padding
-  //   backgroundColor: "#f5f5f5",
-  //   marginBottom: 80,
-  //   marginTop: "8%",
-  //   marginHorizontal: "5%",
-  //   marginStart: "8%",
-  // },
   scrollContainer: { flexGrow: 1 },
   container: {
     padding: 16,
@@ -471,6 +472,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
   },
   titleContainer: {
     flexDirection: "row",
