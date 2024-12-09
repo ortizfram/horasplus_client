@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Image,
+  Modal,
 } from "react-native";
 import { fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShiftWithId } from "../../services/userShift/fetchShifts";
@@ -39,6 +40,8 @@ const Report = () => {
   const [excedenteCost, setExcedenteCost] = useState(0);
   const [workedTimeMinutes, setWorkedTimeMinutes] = useState(0);
   const [excedenteMin, setExcedenteMin] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModal2Visible, setModal2Visible] = useState(false);
 
   const [bonus, setBonus] = useState(0);
   const [advance, setAdvance] = useState(0);
@@ -97,6 +100,7 @@ const Report = () => {
   const onStartDateChange = (event, selectedDate) => {
     if (Platform.OS === "web") {
       setStartDate(event);
+      setModalVisible(false);
     } else {
       const currentDate = selectedDate || startDate;
       setShowStartDatePicker(Platform.OS === "ios");
@@ -107,6 +111,7 @@ const Report = () => {
   const onEndDateChange = (event, selectedDate) => {
     if (Platform.OS === "web") {
       setEndDate(event);
+      setModal2Visible(false);
     } else {
       const currentDate = selectedDate || endDate;
       setShowEndDatePicker(Platform.OS === "ios");
@@ -341,13 +346,41 @@ const Report = () => {
         )}
 
         {Platform.OS === "web" && (
-          <View style={styles.datePickerContainer}>
-            {" "}
-            {/* Centering for web */}
-            <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-            <DatePicker selected={startDate} onChange={onStartDateChange} />
-            <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-            <DatePicker selected={endDate} onChange={onEndDateChange} />
+          <View style={styles.overlay}>
+            <View style={styles.datePickerContainer}>
+              <Modal
+                transparent={true}
+                animationType="slide"
+                visible={isModalVisible}
+                onRequestClose={() => setModalVisible(false)}
+              >
+                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
+                <DatePicker
+                  selected={startDate}
+                  onChange={onStartDateChange}
+                  dateFormat="dd/MM/yyyy"
+                />
+                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                  <Text style={styles.closeButton}>Cerrar</Text>
+                </TouchableOpacity>
+              </Modal>
+              <Modal
+                transparent={true}
+                animationType="slide"
+                visible={isModal2Visible}
+                onRequestClose={() => setModal2Visible(false)}
+              >
+                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
+                <DatePicker
+                  selected={endDate}
+                  onChange={onEndDateChange}
+                  dateFormat="dd/MM/yyyy"
+                />
+                <TouchableOpacity onPress={() => setModal2Visible(false)}>
+                  <Text style={styles.closeButton}>Cerrar</Text>
+                </TouchableOpacity>
+              </Modal>
+            </View>
           </View>
         )}
 
@@ -432,6 +465,12 @@ const styles = StyleSheet.create({
     borderBottomColor: "#e0e0e0",
     backgroundColor: "#ffffff",
   },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
   titleContainer: {
     flexDirection: "row",
     justifyContent: "center", // Center the contents horizontally
@@ -494,6 +533,11 @@ const styles = StyleSheet.create({
   inText: {
     color: "green",
     fontWeight: "bold",
+  },
+  closeButton: {
+    marginTop: 10,
+    color: "blue",
+    fontSize: 16,
   },
   outText: {
     color: "red",
