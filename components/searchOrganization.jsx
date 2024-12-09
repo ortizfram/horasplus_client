@@ -13,6 +13,7 @@ import axios from "axios";
 import { RESP_URL } from "../config";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { fetchEmployees } from "../services/organization/fetchEmployees";
 
 export default function SearchOrganization({
   userId,
@@ -20,7 +21,7 @@ export default function SearchOrganization({
   onSelectOrg,
   isAdmin,
   isSuperAdmin,
-  organizationIds, // Pass organization IDs the admin has access to
+  organizationIds,
 }) {
   const [organizations, setOrganizations] = useState([]);
   const [filteredOrganizations, setFilteredOrganizations] = useState([]);
@@ -31,7 +32,6 @@ export default function SearchOrganization({
 
   const fetchOrganizations = async () => {
     setLoading(true);
-    console.log("User ID being sent to API:", userId); // Debug log
     try {
       const response = await axios.get(`${RESP_URL}/api/organization`, {
         params: { userId, isAdmin, isSuperAdmin },
@@ -41,9 +41,21 @@ export default function SearchOrganization({
         },
         withCredentials: true,
       });
-      const organizationsData = response.data;
+
+      const organizationsData = await Promise.all(
+        response.data.map(async (org) => {
+          try {
+            const employees = await fetchEmployees(org._id); // Fetch employees for the org
+            return { ...org, employeeCount: employees.length };
+          } catch (err) {
+            console.error(`Error fetching employees for ${org.name}:`, err);
+            return { ...org, employeeCount: 0 }; // Default to 0 if an error occurs
+          }
+        })
+      );
+
       setOrganizations(organizationsData);
-      setFilteredOrganizations(organizationsData); // Show all initially
+      setFilteredOrganizations(organizationsData);
     } catch (error) {
       console.error("Failed to fetch organizations:", error);
       setError("Failed to fetch organizations");
@@ -56,7 +68,6 @@ export default function SearchOrganization({
     fetchOrganizations();
   }, [userId, token, isAdmin, isSuperAdmin]);
 
-  // lupa
   useEffect(() => {
     if (searchQuery) {
       const filtered = organizations.filter((org) =>
@@ -114,20 +125,27 @@ export default function SearchOrganization({
                 width: "100%",
                 flexDirection: "row",
                 alignItems: "center",
+                justifyContent: "space-between", // Space between elements
                 borderRadius: 8,
               },
               styles.itemContainer,
             ]}
           >
-            <Image
-              source={
-                item.image
-                  ? { uri: `${RESP_URL}/${item.image}` }
-                  : require("../assets/images/org_placeholder.jpg")
-              }
-              style={styles.image}
-            />
-            <Text>{item.name}</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={
+                  item.image
+                    ? { uri: `${RESP_URL}/${item.image}` }
+                    : require("../assets/images/org_placeholder.jpg")
+                }
+                style={styles.image}
+              />
+              <Text>{item.name}</Text>
+            </View>
+            <View style={styles.employeeInfo}>
+              <MaterialIcons name="person" size={20} color="#8E8E93" />
+              <Text style={styles.employeeCount}>{item.employeeCount}</Text>
+            </View>
           </Pressable>
         )}
         ListEmptyComponent={
@@ -141,9 +159,9 @@ export default function SearchOrganization({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start", // Aligns content to the top
+    justifyContent: "flex-start",
     width: "100%",
-    paddingHorizontal:10
+    paddingHorizontal: 10,
   },
   searchContainer: {
     flexDirection: "row",
@@ -169,8 +187,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   listBg: {
-    flexGrow: 0, // Ensures it does not expand indefinitely
-    maxHeight: 300, // Sets a fixed height for the scrollable list area
+    flexGrow: 0,
+    maxHeight: 300,
     width: "100%",
   },
   listContainer: {
@@ -186,9 +204,17 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: 15,
   },
+  employeeInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  employeeCount: {
+    marginLeft: 5,
+    fontSize: 16,
+    color: "#8E8E93",
+  },
   noResults: {
     marginTop: 20,
     color: "red",
   },
 });
-
