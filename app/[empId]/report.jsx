@@ -266,10 +266,10 @@ const Report = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <ViewShot ref={viewRef} style={styles.container}>
+        <Logo />
         <Text style={styles.title}>Reporte de Horas</Text>
         <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
         <View style={styles.titleContainer}>
-          <Logo />
           {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}
         </View>
         <Text style={styles.title}>
@@ -360,9 +360,7 @@ const Report = () => {
           <Text style={styles.label}> Fecha de Fin</Text>
           <TouchableOpacity onPress={() => setModal2Visible(true)}>
             <Text style={styles.dateText}>
-              {endDate
-                ? endDate.toLocaleDateString()
-                : "Selecciona una fecha"}
+              {endDate ? endDate.toLocaleDateString() : "Selecciona una fecha"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -478,7 +476,7 @@ const styles = StyleSheet.create({
     marginVertical: 5, // Reduced vertical space
   },
   label: {
-    color:"blue",
+    color: "blue",
     fontSize: 16, // Slightly smaller size
     fontWeight: "bold",
     flex: 1,
@@ -587,9 +585,9 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 24,
+    fontSize: 14,
     fontWeight: "bold",
-    marginBottom: 15, // Reduced margin
+    marginBottom: 8, // Reduced margin
     textAlign: "center",
   },
   employeeText: {
