@@ -585,16 +585,20 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 8, // Reduced margin
+    fontSize: 18,
     textAlign: "center",
   },
   employeeText: {
+    padding: 8, // Mayor espacio interno para un aspecto más limpio
+    borderColor: "#ccc", // Cambia a un gris claro para un borde más sutil
+    borderWidth: 1, // Mantén el grosor del borde
+    borderRadius: 5, // Bordes redondeados para suavizar las esquinas
     fontSize: 18,
-    marginBottom: 5, // Reduced margin
+    marginBottom: 5, // Mantén el margen reducido
     textAlign: "center",
+    backgroundColor: "#f9f9f9", // Fondo claro para mayor contraste
   },
+  
   largeText: {
     fontSize: 28, // Slightly smaller size
     marginTop: 5, // Reduced margin
