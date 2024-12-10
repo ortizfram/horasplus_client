@@ -592,6 +592,7 @@ const styles = StyleSheet.create({
     borderWidth: 1, // Mantén el grosor del borde
     borderRadius: 5, // Bordes redondeados para suavizar las esquinas
     fontSize: 18,
+    marginTop:1,
     marginVertical: 5, // Mantén el margen reducido
     textAlign: "center",
     backgroundColor: "#f9f9f9", // Fondo claro para mayor contraste
