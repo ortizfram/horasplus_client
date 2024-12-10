@@ -267,11 +267,9 @@ const Report = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <ViewShot ref={viewRef} style={styles.container}>
         <Logo />
-        <Text style={styles.title}>Reporte de Horas</Text>
-        <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
-        <View style={styles.titleContainer}>
-          {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}
-        </View>
+        <Text style={styles.header}>Reporte de Horas</Text>
+        <Text style={styles.header}>INFORMACION PRIVADA EMPLEADOR</Text>
+      
         <Text style={styles.title}>
           {employee?.firstname && employee?.lastname ? (
             <Text style={styles.employeeText}>
@@ -708,6 +706,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#555",
     marginBottom: 15,
+  },
+  header: {
+    fontSize: 16,
+    color: "#555",
+    textAlign:"center"
   },
   editableRow: {
     flexDirection: "row",
