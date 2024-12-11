@@ -94,6 +94,7 @@ export const AuthProvider = ({ children }) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
+        console.log("login authContext next:",next)
         next ? router.push(next) : router.push("/");
       }
     } catch (error) {
