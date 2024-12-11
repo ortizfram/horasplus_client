@@ -16,6 +16,7 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <AppLayout style={styles.container}/>
+      <Slot/>
     </AuthProvider>
   );
 }
