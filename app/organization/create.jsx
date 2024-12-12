@@ -101,9 +101,9 @@ const CreateOrganizationView = () => {
         value={name}
         onChangeText={setName}
       />
-      <Pressable onPress={handleChooseImage} style={styles.imagePicker}>
+      {/* <Pressable onPress={handleChooseImage} style={styles.imagePicker}>
         <Text style={styles.imageText}>🏞️ Elige una imagen</Text>
-      </Pressable>
+      </Pressable> */}
       {imageUri ? (
         <Image source={{ uri: imageUri }} style={styles.imagePreview} />
       ) : (
