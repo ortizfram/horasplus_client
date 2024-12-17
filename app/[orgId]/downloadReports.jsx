@@ -180,8 +180,8 @@ const DownloadReports = () => {
           .toFixed(2)
           .padEnd(20)} , $${bonusPrize.toFixed(2).padEnd(20)} , $${holidayCost
           .toFixed(2)
-          .padEnd(20)} , $${excedenteCost.toFixed(2).padEnd(20)} , $${totalFinal
-          .toFixed(2)
+          .padEnd(20)} , ${excedenteCost.toString().padEnd(20)} , ${totalFinal
+          .toString()
           .padEnd(20)} ,, ${declared_hs}\n`;
         csvContent += `             ,,,,,,,Horas Excedente Bono\n`;
         csvContent += ` ,,,,,,,${excedenteHM.padEnd(20)}\n`;
