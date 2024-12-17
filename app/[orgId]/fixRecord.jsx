@@ -206,6 +206,7 @@ const FixARecord = () => {
                 </Picker>
 
                 <Text style={styles.label}>Hora de Ingreso:</Text>
+                <Text style={styles.gray}>Si fuese AM, anteponer con 0.ej.01:00:00</Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails.in}
