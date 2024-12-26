@@ -269,7 +269,7 @@ const Report = () => {
         <Logo />
         <Text style={styles.header}>Reporte de Horas</Text>
         <Text style={styles.header}>INFORMACION PRIVADA EMPLEADOR</Text>
-      
+
         <Text style={styles.title}>
           {employee?.firstname && employee?.lastname ? (
             <Text style={styles.employeeText}>
@@ -412,56 +412,65 @@ const Report = () => {
           </Pressable>
         )}
         {shifts.length > 0 ? (
-  shifts.map((shift, index) => {
-    console.log(
-      "Original shift.date:",
-      shift.date,
-      "type:",
-      typeof shift.date
-    ); // Log date and its type
+          shifts.map((shift, index) => {
+            console.log(
+              "Original shift.date:",
+              shift.date,
+              "type:",
+              typeof shift.date
+            ); // Log date and its type
 
-    // Convert the date to a Date object
-    const [day, month, year] = shift.date.split("/");
-    const dateObject = new Date(`${year}-${month}-${day}`);
+            // Convert the date to a Date object
+            const [day, month, year] = shift.date.split("/");
+            const dateObject = new Date(`${year}-${month}-${day}`);
 
-    // Get the weekday in Spanish
-    const dayName = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(dateObject);
+            // Adjust the date by adding 1 day
+            dateObject.setDate(dateObject.getDate() + 1);
 
-    // Keep the original date format
-    const updatedDate = `${day}/${month}/${year}`;
+            // Get the weekday in Spanish
+            const dayName = new Intl.DateTimeFormat("es-ES", {
+              weekday: "long",
+            }).format(dateObject);
 
-    console.log("Updated shift.date:", updatedDate); // Log the updated date
+            // Keep the original date format
+            const updatedDate = `${day}/${month}/${year}`;
 
-    return (
-      <View key={index} style={styles.shiftContainer}>
-        <View
-          style={
-            shift.shift_mode === "holiday" ? styles.star : styles.circle
-          }
-        >
-          <Text
-            style={
-              shift.shift_mode === "holiday"
-                ? styles.starText
-                : styles.circleText
-            }
-          >
-            {shift.shift_mode === "holiday" ? "F" : "R"}
-          </Text>
-        </View>
-        <Text style={styles.shiftText}>
-          {updatedDate} ({dayName}) -{" "}
-          <Text style={styles.inText}>{shift.in}</Text> -{" "}
-          <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
-          {shift.total_hours}
-        </Text>
-      </View>
-    );
-  })
-) : (
-  <Text style={styles.errorText}></Text>
-)}
+            console.log(
+              "Updated shift.date:",
+              updatedDate,
+              "Day name:",
+              dayName
+            ); // Log the updated date and day name
 
+            return (
+              <View key={index} style={styles.shiftContainer}>
+                <View
+                  style={
+                    shift.shift_mode === "holiday" ? styles.star : styles.circle
+                  }
+                >
+                  <Text
+                    style={
+                      shift.shift_mode === "holiday"
+                        ? styles.starText
+                        : styles.circleText
+                    }
+                  >
+                    {shift.shift_mode === "holiday" ? "F" : "R"}
+                  </Text>
+                </View>
+                <Text style={styles.shiftText}>
+                  {updatedDate} ({dayName}) -{" "}
+                  <Text style={styles.inText}>{shift.in}</Text> -{" "}
+                  <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
+                  {shift.total_hours}
+                </Text>
+              </View>
+            );
+          })
+        ) : (
+          <Text style={styles.errorText}></Text>
+        )}
       </ViewShot>
     </ScrollView>
   );
@@ -599,12 +608,12 @@ const styles = StyleSheet.create({
     borderWidth: 1, // Mantén el grosor del borde
     borderRadius: 5, // Bordes redondeados para suavizar las esquinas
     fontSize: 18,
-    marginTop:1,
+    marginTop: 1,
     marginVertical: 5, // Mantén el margen reducido
     textAlign: "center",
     backgroundColor: "#f9f9f9", // Fondo claro para mayor contraste
   },
-  
+
   largeText: {
     fontSize: 28, // Slightly smaller size
     marginTop: 5, // Reduced margin
@@ -718,7 +727,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 16,
     color: "#555",
-    textAlign:"center"
+    textAlign: "center",
   },
   editableRow: {
     flexDirection: "row",
