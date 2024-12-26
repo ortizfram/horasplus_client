@@ -103,58 +103,64 @@ const DownloadReports = () => {
       let csvContent = `${"INFORMACION PRIVADA EMPLEADOR"}\n${"----------HORAS MAS----------"}\n\n${
         employee.firstname
       } ${employee.lastname}\n\n`;
-
+  
       // Add headers with padding to ensure left alignment in CSV
       csvContent +=
-        "Fecha, Feriado                ,Entrada            ,Salida            ,Horas              \n";
-
+        "Fecha, Día                     ,Feriado            ,Entrada            ,Salida            ,Horas              \n";
+  
       const declared_hs = decimalToHM(employee.declared_hours);
-
+  
       try {
         const shiftsData = await fetchShiftWithId(
           employee._id,
           startDate.toISOString().split("T")[0],
           endDate.toISOString().split("T")[0]
         );
-
+  
         let totalWorkedMinutes = 0;
         let holidayCost = 0;
-
+  
         shiftsData.forEach((shift) => {
+          const [day, month, year] = shift.date.split("/");
+          const dateObject = new Date(`${year}-${month}-${day}`);
+  
+          // Adjust the date by adding 1 day
+          dateObject.setDate(dateObject.getDate() + 1);
+  
+          // Get the weekday name in Spanish
+          const dayName = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(dateObject);
+  
+          const updatedDate = `${day}/${month}/${year}`;
+  
+          const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
+  
           const [h, m] = shift.total_hours.split(" ");
           const hours = parseInt(h.replace("h", ""), 10) || 0;
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
-
-          // Increment the day in shift.date
-          const [day, month, year] = shift.date.split("/");
-          // const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
-          const updatedDate = `${day}/${month}/${year}`;
-
-          const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
-
+  
           const shiftCost =
             shift.shift_mode === "holiday"
               ? hours * (employee.hourly_fee || 0)
               : 0;
           holidayCost += shiftCost;
-
+  
           // Add shift data with padding for left alignment
-          csvContent += `${updatedDate.padEnd(20)}${shiftMode.padEnd(
+          csvContent += `${updatedDate.padEnd(20)}${dayName.padEnd(
             20
-          )}${shift.in.padEnd(20)}${shift.out.padEnd(
+          )}${shiftMode.padEnd(20)}${shift.in.padEnd(20)}${shift.out.padEnd(
             20
           )}${shift.total_hours.padEnd(20)}\n`;
         });
-
+  
         // Totals and final calculations
         const workedHours = Math.floor(totalWorkedMinutes / 60);
         const remainingMinutes = totalWorkedMinutes % 60;
         const hourlyFee = employee.hourly_fee || 0;
         const travelCost = employee.travel_cost || 0;
         const bonusPrize = employee.bonus_prize || 0;
-
+  
         const declaredMinutes = employee.declared_hours || 0;
         const excedenteMinutes = Math.max(
           0,
@@ -165,15 +171,15 @@ const DownloadReports = () => {
         );
         const excedenteHours = Math.floor(excedenteMinutes / 60); // Get the integer number of hours
         const excedenteRemainingMinutes = Math.round(excedenteMinutes % 60); // Get the remaining minutes
-
+  
         const excedenteHM = `${excedenteHours}h ${excedenteRemainingMinutes}m`;
-
+  
         const totalFinal =
           (totalWorkedMinutes / 60) * hourlyFee +
           holidayCost +
           travelCost +
           parseFloat(bonusPrize);
-
+  
         // Summary line with padding for left alignment
         csvContent += `\nValor Hora,Viaticos,Premio,Feriados, Excedente Bono, Total,,Horas Bono\n`;
         csvContent += `$${hourlyFee.toFixed(2).padEnd(20)} , $${travelCost
