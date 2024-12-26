@@ -106,7 +106,7 @@ const DownloadReports = () => {
   
       // Add headers with padding to ensure left alignment in CSV
       csvContent +=
-        "Fecha, Día                     ,Feriado            ,Entrada            ,Salida            ,Horas              \n";
+        "Fecha                     ,Dia                     ,Feriado            ,Entrada            ,Salida            ,Horas              \n";
   
       const declared_hs = decimalToHM(employee.declared_hours);
   
