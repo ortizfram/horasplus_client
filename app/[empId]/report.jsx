@@ -412,49 +412,56 @@ const Report = () => {
           </Pressable>
         )}
         {shifts.length > 0 ? (
-          shifts.map((shift, index) => {
-            console.log(
-              "Original shift.date:",
-              shift.date,
-              "type:",
-              typeof shift.date
-            ); // Log date and its type
+  shifts.map((shift, index) => {
+    console.log(
+      "Original shift.date:",
+      shift.date,
+      "type:",
+      typeof shift.date
+    ); // Log date and its type
 
-            // Split the date and increment the day portion
-            const [day, month, year] = shift.date.split("/");
-            // const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Add 1 to the day, ensuring it's two digits
-            const updatedDate = `${day}/${month}/${year}`;
+    // Convert the date to a Date object
+    const [day, month, year] = shift.date.split("/");
+    const dateObject = new Date(`${year}-${month}-${day}`);
 
-            console.log("Updated shift.date:", updatedDate); // Log the updated date
+    // Get the weekday in Spanish
+    const dayName = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(dateObject);
 
-            return (
-              <View key={index} style={styles.shiftContainer}>
-                <View
-                  style={
-                    shift.shift_mode === "holiday" ? styles.star : styles.circle
-                  }
-                >
-                  <Text
-                    style={
-                      shift.shift_mode === "holiday"
-                        ? styles.starText
-                        : styles.circleText
-                    }
-                  >
-                    {shift.shift_mode === "holiday" ? "F" : "R"}
-                  </Text>
-                </View>
-                <Text style={styles.shiftText}>
-                  {updatedDate} - <Text style={styles.inText}>{shift.in}</Text>{" "}
-                  - <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
-                  {shift.total_hours}
-                </Text>
-              </View>
-            );
-          })
-        ) : (
-          <Text style={styles.errorText}></Text>
-        )}
+    // Keep the original date format
+    const updatedDate = `${day}/${month}/${year}`;
+
+    console.log("Updated shift.date:", updatedDate); // Log the updated date
+
+    return (
+      <View key={index} style={styles.shiftContainer}>
+        <View
+          style={
+            shift.shift_mode === "holiday" ? styles.star : styles.circle
+          }
+        >
+          <Text
+            style={
+              shift.shift_mode === "holiday"
+                ? styles.starText
+                : styles.circleText
+            }
+          >
+            {shift.shift_mode === "holiday" ? "F" : "R"}
+          </Text>
+        </View>
+        <Text style={styles.shiftText}>
+          {updatedDate} ({dayName}) -{" "}
+          <Text style={styles.inText}>{shift.in}</Text> -{" "}
+          <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
+          {shift.total_hours}
+        </Text>
+      </View>
+    );
+  })
+) : (
+  <Text style={styles.errorText}></Text>
+)}
+
       </ViewShot>
     </ScrollView>
   );
