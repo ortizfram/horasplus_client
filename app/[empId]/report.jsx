@@ -588,8 +588,10 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 18,
-    textAlign: "center",
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
   },
   employeeText: {
     padding: 8, // Mayor espacio interno para un aspecto más limpio
@@ -707,12 +709,7 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "#333",
-  },
+
   detailsText: {
     fontSize: 16,
     color: "#555",
