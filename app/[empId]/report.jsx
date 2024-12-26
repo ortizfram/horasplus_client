@@ -296,11 +296,12 @@ const Report = () => {
                 Excedente Bono : {excedente} | Feriados: ${holidayCost || 0}
               </Text>
 
-              <Text style={styles.excedenteText}>
-                Excedente Bono: ${excedenteCost}
+              <Text style={{ textAlign: "center", marginTop: 10 }}>
+                <Text style={styles.excedenteText}>
+                  Excedente Bono: ${excedenteCost}
+                </Text>{" "}
+                <Text style={styles.totalText}>Total: ${totalCost}</Text>
               </Text>
-
-              <Text style={styles.totalText}>Total: ${totalCost}</Text>
             </View>
           </View>
         ) : (
@@ -681,6 +682,11 @@ const styles = StyleSheet.create({
     top: "15%",
     left: "35%",
   },
+  totalText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#28a745",
+  },
   excedenteText: {
     fontSize: 16, // Smaller font size for excedente
     color: "gray", // Optional color to differentiate
@@ -740,10 +746,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     color: "#c00",
-  },
-  totalText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#28a745",
   },
 });
