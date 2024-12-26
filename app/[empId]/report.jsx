@@ -267,8 +267,10 @@ const Report = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <ViewShot ref={viewRef} style={styles.container}>
         <Logo />
-        <Text style={styles.header}>Reporte de Horas</Text>
-        <Text style={styles.header}>INFORMACION PRIVADA EMPLEADOR</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Reporte de Horas</Text>
+          <Text style={styles.headerText}>INFORMA CION PRIVADA EMPLEADOR</Text>
+        </View>
 
         <Text style={styles.title}>
           {employee?.firstname && employee?.lastname ? (
@@ -307,8 +309,6 @@ const Report = () => {
           </Text>
         )}
 
-      
-
         <View style={styles.datePickerContainer}>
           {" "}
           {/* Centering for web */}
@@ -343,7 +343,10 @@ const Report = () => {
                     onChange={onStartDateChange}
                     dateFormat="dd/MM/yyyy"
                   />
-                  <TouchableOpacity  style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setModalVisible(false)}
+                  >
                     <Text style={styles.closeButtonText}>Cerrar</Text>
                   </TouchableOpacity>
                 </View>
@@ -362,7 +365,10 @@ const Report = () => {
                     onChange={onEndDateChange}
                     dateFormat="dd/MM/yyyy"
                   />
-                  <TouchableOpacity  style={styles.closeButton} onPress={() => setModal2Visible(false)}>
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setModal2Visible(false)}
+                  >
                     <Text style={styles.closeButtonText}>Cerrar</Text>
                   </TouchableOpacity>
                 </View>
@@ -443,13 +449,6 @@ const Report = () => {
 
 export default Report;
 const styles = StyleSheet.create({
-  overlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    zIndex: 1000,
-  },
   datePickerContainer: {
     alignItems: "center",
     marginVertical: 5, // Reduced vertical space
@@ -461,9 +460,26 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: "left",
   },
+  dateText: {
+    fontSize: 18, // Larger text for better visibility
+    fontWeight: "600", // Bold but not too heavy
+    color: "#333", // Dark color for contrast
+    paddingVertical: 10, // Adds space above and below the text
+    paddingHorizontal: 15, // Adds space on the left and right
+    borderRadius: 5, // Slightly rounded corners for visual appeal
+    backgroundColor: "#f1f1f1", // Light background to make the text pop
+    marginVertical: 5, // Small vertical spacing between date text and other elements
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
+  },
   closeButton: {
     padding: 10,
-    backgroundColor:"blue",
+    backgroundColor: "blue",
   },
   closeButtonText: {
     marginTop: 10,
@@ -693,10 +709,13 @@ const styles = StyleSheet.create({
     color: "#555",
     marginBottom: 15,
   },
-  header: {
+  headerText: {
     fontSize: 16,
     color: "#555",
     textAlign: "center",
+  },
+  headerContainer: {
+    marginBottom: 4,
   },
   editableRow: {
     flexDirection: "row",
