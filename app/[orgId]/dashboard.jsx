@@ -127,7 +127,7 @@ export default function Dashboard() {
           onPress={() => router.push(`${orgId}/fixRecord`)}
         >
           <Icon name="edit" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Correge o Agrega un Registro</Text>
+          <Text style={styles.gridText}>Corrige o Agrega un Registro</Text>
         </Pressable>
      
         {/* <Pressable
