@@ -498,6 +498,7 @@ const styles = StyleSheet.create({
   shiftContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "flex-start",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
@@ -562,6 +563,8 @@ const styles = StyleSheet.create({
   shiftText: {
     fontSize: 16,
     color: "#333",
+    textAlign: "left", // Ensure text aligns left
+    flex: 1, // Allow the text to take up available space
   },
   inText: {
     color: "green",
