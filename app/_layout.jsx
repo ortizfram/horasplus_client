@@ -33,10 +33,21 @@ function AppLayout() {
   useEffect(() => {
     setIsMounted(true);
 
+    const currentUrl = window.location.href;
+
     if (isMounted && !splashLoading) {
       if (!userInfo) {
-        router.push("/auth/login");
+        const currentUrl = window.location.href;
+      
+        if (currentUrl.includes("/auth/reset?token=")) {
+          // Allow the user to continue with the reset link
+          console.log("Continuing with reset link:", currentUrl);
+        } else {
+          // Redirect to login page
+          router.push("/auth/login");
+        }
       } else {
+        // Redirect to home page
         router.push("/");
       }
     }
