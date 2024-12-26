@@ -307,42 +307,7 @@ const Report = () => {
           </Text>
         )}
 
-        {Platform.OS !== "web" && (
-          <View style={styles.buttonContainer}>
-            {" "}
-            {/* Centering container */}
-            <Pressable
-              style={styles.button}
-              onPress={() => setShowStartDatePicker(true)}
-            >
-              <Text style={styles.buttonText}>Seleccionar Fecha de Inicio</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button}
-              onPress={() => setShowEndDatePicker(true)}
-            >
-              <Text style={styles.buttonText}>Seleccionar Fecha de Fin</Text>
-            </Pressable>
-          </View>
-        )}
-
-        {showStartDatePicker && Platform.OS !== "web" && (
-          <DateTimePicker
-            value={startDate}
-            mode="date"
-            display="default"
-            onChange={onStartDateChange}
-          />
-        )}
-
-        {showEndDatePicker && Platform.OS !== "web" && (
-          <DateTimePicker
-            value={endDate}
-            mode="date"
-            display="default"
-            onChange={onEndDateChange}
-          />
-        )}
+      
 
         <View style={styles.datePickerContainer}>
           {" "}
@@ -378,8 +343,8 @@ const Report = () => {
                     onChange={onStartDateChange}
                     dateFormat="dd/MM/yyyy"
                   />
-                  <TouchableOpacity onPress={() => setModalVisible(false)}>
-                    <Text style={styles.closeButton}>Cerrar</Text>
+                  <TouchableOpacity  style={styles.closeButton} onPress={() => setModalVisible(false)}>
+                    <Text style={styles.closeButtonText}>Cerrar</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -397,8 +362,8 @@ const Report = () => {
                     onChange={onEndDateChange}
                     dateFormat="dd/MM/yyyy"
                   />
-                  <TouchableOpacity onPress={() => setModal2Visible(false)}>
-                    <Text style={styles.closeButton}>Cerrar</Text>
+                  <TouchableOpacity  style={styles.closeButton} onPress={() => setModal2Visible(false)}>
+                    <Text style={styles.closeButtonText}>Cerrar</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -497,8 +462,12 @@ const styles = StyleSheet.create({
     textAlign: "left",
   },
   closeButton: {
+    padding: 10,
+    backgroundColor:"blue",
+  },
+  closeButtonText: {
     marginTop: 10,
-    color: "blue",
+    color: "white",
     fontSize: 16,
   },
   scrollContainer: { flexGrow: 1 },
