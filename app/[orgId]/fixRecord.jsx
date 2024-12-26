@@ -73,7 +73,7 @@ const FixARecord = () => {
     if (empId) {
       loadEmployee();
       loadShiftForEmployee();
-      console.log("startDate ",startDate)
+      console.log("startDate ", startDate);
     }
   }, [empId, startDate]);
 
@@ -115,7 +115,7 @@ const FixARecord = () => {
             inTime,
             outTime,
             shiftType,
-            userInfo?.user?.data?.organization_id 
+            userInfo?.user?.data?.organization_id
           );
         } else {
           throw error;
@@ -156,10 +156,9 @@ const FixARecord = () => {
         {employee && employee.email ? (
           <View>
             <Text style={styles.title}>
-
-            <Text style={styles.employeeText}>
-              {employee.firstname} {employee.lastname}
-            </Text>
+              <Text style={styles.employeeText}>
+                {employee.firstname} {employee.lastname}
+              </Text>
             </Text>
 
             <View style={styles.dateContainer}>
@@ -209,7 +208,9 @@ const FixARecord = () => {
                 </Picker>
 
                 <Text style={styles.label}>Hora de Ingreso:</Text>
-                <Text style={styles.gray}>Si fuese AM, anteponer con 0.ej.01:00:00</Text>
+                <Text style={styles.gray}>
+                  Si fuese AM, anteponer con 0.ej.01:00:00
+                </Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails.in}
@@ -248,7 +249,9 @@ const FixARecord = () => {
                 </Picker>
 
                 <Text style={styles.label}>Hora de Ingreso:</Text>
-                <Text style={styles.gray}>Si fuese AM, anteponer con 0.ej.01:00:00</Text>
+                <Text style={styles.gray}>
+                  Si fuese AM, anteponer con 0.ej.01:00:00
+                </Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails ? shiftDetails?.in : "00:00:00"}
@@ -291,9 +294,9 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     marginHorizontal: "8%",
   },
-  gray:{color:"gray"},
+  gray: { color: "gray" },
   dateContainer: {
-    marginBottom: 16,
+    marginBottom: 5,
     alignItems: "center",
     width: "100%",
   },
@@ -333,7 +336,7 @@ const styles = StyleSheet.create({
     color: "blue",
     fontSize: 16,
   },
- 
+
   employeeItemContainer: {
     backgroundColor: "#f7f7f7",
     padding: 12,
@@ -351,6 +354,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: "#333",
+    textAlign:"center",
+    alignItems:"center",
   },
   employeeText: {
     padding: 8, // Mayor espacio interno para un aspecto más limpio

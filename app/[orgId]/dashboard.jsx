@@ -99,14 +99,14 @@ export default function Dashboard() {
           onPress={() => router.push(`${organization?._id}/employees`)}
         >
           <Icon name="people" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Editar Empleados - Ver Reporte Individual</Text>
+          <Text style={styles.gridText}>Descargar Reporte Individual - Configurar empleado</Text>
         </Pressable>
         <Pressable
           style={styles.gridItem}
           onPress={() => router.push(`${organization?._id}/downloadReports`)}
         >
           <Icon name="assessment" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Descargar reporte mensual de {organization?.name}</Text>
+          <Text style={styles.gridText}>Descargar todos tus reportes de{" "}{organization?.name}</Text>
         </Pressable>
         {/* <Pressable
           style={styles.gridItem}
@@ -127,7 +127,7 @@ export default function Dashboard() {
           onPress={() => router.push(`${orgId}/fixRecord`)}
         >
           <Icon name="edit" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Corregir o Agregar un Registro</Text>
+          <Text style={styles.gridText}>Correge o Agrega un Registro</Text>
         </Pressable>
      
         {/* <Pressable
