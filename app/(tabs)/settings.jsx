@@ -8,6 +8,15 @@ const Settings = () => {
   const router = useRouter();
   const { userInfo, isLoading, logout } = useContext(AuthContext);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      window.location.reload();
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Spinnerr visible={isLoading} />
@@ -20,7 +29,7 @@ const Settings = () => {
       >
         <Text style={styles.linkText}>Mi Perfil</Text>
       </Pressable>
-      <Pressable onPress={logout} style={styles.logoutButton}>
+      <Pressable onPress={handleLogout} style={styles.logoutButton}>
         <Text style={styles.logoutText}>Salir de esta cuenta</Text>
       </Pressable>
     </View>
@@ -33,10 +42,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    marginBottom:80   
-    ,
+    marginBottom: 80,
     marginTop: "2%",
-    marginHorizontal: "8%"
+    marginHorizontal: "8%",
   },
   account: {
     color: "blue",

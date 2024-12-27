@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import Roles from "./roles";
 import QRDashboard from "./QRDashboard";
 import { View, Animated, Dimensions } from "react-native";
+import Loader from "../../components/Loader";
 
 // Create Tab Navigator
 const Tab = createBottomTabNavigator();
@@ -15,8 +16,9 @@ const Tab = createBottomTabNavigator();
 export default function TabsLayout() {
   const { userInfo } = useContext(AuthContext) || {};
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
-  const [screenWidth, setScreenWidth] = useState(Dimensions.get("window").width);
+  const [screenWidth, setScreenWidth] = useState(
+    Dimensions.get("window").width
+  );
 
   // Listen for screen size changes
   useEffect(() => {
@@ -25,23 +27,6 @@ export default function TabsLayout() {
 
     return () => Dimensions.removeEventListener("change", onChange);
   }, []);
-
-  // Set mount state
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  // Redirect to login if user info is not available
-  useEffect(() => {
-    if (isMounted && !userInfo?.user?._id) {
-      router.push("/auth/login");
-    }
-  }, [userInfo, isMounted]);
-
-  // Wait until userInfo is loaded before rendering
-  if (!userInfo?.user?._id) {
-    return null; // Or display a loading state
-  }
 
   // Check if the screen is mobile-sized
   const isMobile = screenWidth < 768;

@@ -73,7 +73,7 @@ const FixARecord = () => {
     if (empId) {
       loadEmployee();
       loadShiftForEmployee();
-      console.log("startDate ",startDate)
+      console.log("startDate ", startDate);
     }
   }, [empId, startDate]);
 
@@ -115,7 +115,7 @@ const FixARecord = () => {
             inTime,
             outTime,
             shiftType,
-            userInfo?.user?.data?.organization_id 
+            userInfo?.user?.data?.organization_id
           );
         } else {
           throw error;
@@ -155,8 +155,10 @@ const FixARecord = () => {
 
         {employee && employee.email ? (
           <View>
-            <Text style={styles.employeeText}>
-              {employee.firstname} {employee.lastname}
+            <Text style={styles.title}>
+              <Text style={styles.employeeText}>
+                {employee.firstname} {employee.lastname}
+              </Text>
             </Text>
 
             <View style={styles.dateContainer}>
@@ -206,6 +208,9 @@ const FixARecord = () => {
                 </Picker>
 
                 <Text style={styles.label}>Hora de Ingreso:</Text>
+                <Text style={styles.gray}>
+                  Si fuese AM, anteponer con 0.ej.01:00:00
+                </Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails.in}
@@ -244,7 +249,9 @@ const FixARecord = () => {
                 </Picker>
 
                 <Text style={styles.label}>Hora de Ingreso:</Text>
-                <Text style={styles.gray}>Si fuese AM, anteponer con 0.ej.01:00:00</Text>
+                <Text style={styles.gray}>
+                  Si fuese AM, anteponer con 0.ej.01:00:00
+                </Text>
                 <TextInput
                   style={styles.input}
                   value={shiftDetails ? shiftDetails?.in : "00:00:00"}
@@ -287,19 +294,29 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     marginHorizontal: "8%",
   },
-  gray:{color:"gray"},
+  gray: { color: "gray" },
   dateContainer: {
-    marginBottom: 16,
+    marginBottom: 5,
     alignItems: "center",
     width: "100%",
   },
   label: {
-    fontSize: 16,
+    color: "blue",
+    fontSize: 16, // Slightly smaller size
+    fontWeight: "bold",
+    flex: 1,
+    textAlign: "left",
     marginBottom: 8,
   },
   dateText: {
-    fontSize: 16,
-    color: "blue",
+    fontSize: 18, // Larger text for better visibility
+    fontWeight: "600", // Bold but not too heavy
+    color: "#333", // Dark color for contrast
+    paddingVertical: 10, // Adds space above and below the text
+    paddingHorizontal: 15, // Adds space on the left and right
+    borderRadius: 5, // Slightly rounded corners for visual appeal
+    backgroundColor: "#f1f1f1", // Light background to make the text pop
+    marginVertical: 5, // Small vertical spacing between date text and other elements
   },
   overlay: {
     flex: 1,
@@ -319,7 +336,7 @@ const styles = StyleSheet.create({
     color: "blue",
     fontSize: 16,
   },
-  title: { fontSize: 24, fontWeight: "bold", color: "#333", marginBottom: 16 },
+
   employeeItemContainer: {
     backgroundColor: "#f7f7f7",
     padding: 12,
@@ -332,12 +349,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#444",
   },
-  employeeText: {
-    fontSize: 20,
+  title: {
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 16,
-    color: "#4CAF50",
+    marginBottom: 10,
+    color: "#333",
+    textAlign:"center",
+    alignItems:"center",
   },
+  employeeText: {
+    padding: 8, // Mayor espacio interno para un aspecto más limpio
+    borderColor: "#ccc", // Cambia a un gris claro para un borde más sutil
+    borderWidth: 1, // Mantén el grosor del borde
+    borderRadius: 5, // Bordes redondeados para suavizar las esquinas
+    fontSize: 18,
+    marginTop: 1,
+    marginVertical: 5, // Mantén el margen reducido
+    textAlign: "center",
+    backgroundColor: "#f9f9f9", // Fondo claro para mayor contraste
+  },
+
   dateContainer: {
     marginBottom: 16,
     alignItems: "center",

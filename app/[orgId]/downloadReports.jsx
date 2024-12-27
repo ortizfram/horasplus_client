@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   useWindowDimensions,
+  Modal,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -26,11 +27,11 @@ const DownloadReports = () => {
   const [employees, setEmployees] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
-
   const { width } = useWindowDimensions();
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModal2Visible, setModal2Visible] = useState(false);
 
   // Función para formatear las fechas
   function formatDate(date) {
@@ -77,6 +78,7 @@ const DownloadReports = () => {
     if (Platform.OS === "web") {
       // For web, selectedDate is passed directly
       setStartDate(event); // The 'event' is the date selected in react-datepicker for web
+      setModalVisible(false);
     } else {
       const currentDate = selectedDate || startDate;
       setStartDate(currentDate);
@@ -88,6 +90,7 @@ const DownloadReports = () => {
     if (Platform.OS === "web") {
       // For web, selectedDate is passed directly
       setEndDate(event); // The 'event' is the date selected in react-datepicker for web
+      setModal2Visible(false);
     } else {
       const currentDate = selectedDate || endDate;
       setEndDate(currentDate);
@@ -103,7 +106,7 @@ const DownloadReports = () => {
 
       // Add headers with padding to ensure left alignment in CSV
       csvContent +=
-        "Fecha, Feriado                ,Entrada            ,Salida            ,Horas              \n";
+        "Fecha                     ,Dia                     ,Feriado            ,Entrada            ,Salida            ,Horas              \n";
 
       const declared_hs = decimalToHM(employee.declared_hours);
 
@@ -118,18 +121,27 @@ const DownloadReports = () => {
         let holidayCost = 0;
 
         shiftsData.forEach((shift) => {
+          const [day, month, year] = shift.date.split("/");
+          const dateObject = new Date(`${year}-${month}-${day}`);
+
+          // Adjust the date by adding 1 day
+          dateObject.setDate(dateObject.getDate() + 1);
+
+          // Get the weekday name in Spanish
+          const dayName = new Intl.DateTimeFormat("es-ES", { weekday: "long" })
+            .format(dateObject)
+            .normalize("NFD") // Normaliza el texto para separar los acentos
+            .replace(/[\u0300-\u036f]/g, ""); // Remueve los caracteres diacríticos
+
+          const updatedDate = `${day}/${month}/${year}`;
+
+          const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
+
           const [h, m] = shift.total_hours.split(" ");
           const hours = parseInt(h.replace("h", ""), 10) || 0;
           const minutes = parseInt(m.replace("m", ""), 10) || 0;
           const shiftMinutes = hours * 60 + minutes;
           totalWorkedMinutes += shiftMinutes;
-
-          // Increment the day in shift.date
-          const [day, month, year] = shift.date.split("/");
-          const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Increment and pad day
-          const updatedDate = `${incrementedDay}/${month}/${year}`;
-
-          const shiftMode = shift?.shift_mode === "holiday" ? "Si" : "";
 
           const shiftCost =
             shift.shift_mode === "holiday"
@@ -138,9 +150,9 @@ const DownloadReports = () => {
           holidayCost += shiftCost;
 
           // Add shift data with padding for left alignment
-          csvContent += `${updatedDate.padEnd(20)}${shiftMode.padEnd(
+          csvContent += `${updatedDate.padEnd(20)}${dayName.padEnd(
             20
-          )}${shift.in.padEnd(20)}${shift.out.padEnd(
+          )}${shiftMode.padEnd(20)}${shift.in.padEnd(20)}${shift.out.padEnd(
             20
           )}${shift.total_hours.padEnd(20)}\n`;
         });
@@ -177,8 +189,8 @@ const DownloadReports = () => {
           .toFixed(2)
           .padEnd(20)} , $${bonusPrize.toFixed(2).padEnd(20)} , $${holidayCost
           .toFixed(2)
-          .padEnd(20)} , $${excedenteCost.toFixed(2).padEnd(20)} , $${totalFinal
-          .toFixed(2)
+          .padEnd(20)} , ${excedenteCost.toString().padEnd(20)} , ${totalFinal
+          .toString()
           .padEnd(20)} ,, ${declared_hs}\n`;
         csvContent += `             ,,,,,,,Horas Excedente Bono\n`;
         csvContent += ` ,,,,,,,${excedenteHM.padEnd(20)}\n`;
@@ -243,15 +255,38 @@ const DownloadReports = () => {
                   !isMobile && styles.datePickerWrapperLarge,
                 ]}
               >
-                <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-                <DatePicker
-                  selected={startDate} // Asegúrate de pasar el estado actualizado
-                  onChange={onStartDateChange}
-                  style={[
-                    styles.datePicker,
-                    !isMobile && styles.datePickerLarge, 
-                  ]}
-                />
+                <Text style={styles.label}>Fecha de Inicio</Text>
+                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                  <Text style={styles.dateText}>
+                    {startDate
+                      ? startDate.toLocaleDateString()
+                      : "Selecciona una fecha"}
+                  </Text>
+                </TouchableOpacity>
+
+                <Modal
+                  transparent={true}
+                  animationType="slide"
+                  visible={isModalVisible}
+                  onRequestClose={() => setModalVisible(false)}
+                >
+                  <View style={styles.overlay}>
+                    <View style={styles.datePickerContainer}>
+                      <DatePicker
+                        selected={startDate}
+                        onChange={onStartDateChange}
+                        dateFormat="dd/MM/yyyy"
+                        style={[
+                          styles.datePicker,
+                          !isMobile && styles.datePickerLarge,
+                        ]}
+                      />
+                      <TouchableOpacity onPress={() => setModalVisible(false)}>
+                        <Text style={styles.closeButton}>Cerrar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
               </View>
               <View
                 style={[
@@ -259,15 +294,37 @@ const DownloadReports = () => {
                   !isMobile && styles.datePickerWrapperLarge,
                 ]}
               >
-                <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-                <DatePicker
-                  selected={endDate} // Asegúrate de pasar el estado actualizado
-                  onChange={onEndDateChange}
-                  style={[
-                    styles.datePicker,
-                    !isMobile && styles.datePickerLarge,
-                  ]}
-                />
+                <Text style={styles.label}>Fecha de Fin</Text>
+                <Modal
+                  transparent={true}
+                  animationType="slide"
+                  visible={isModal2Visible}
+                  onRequestClose={() => setModal2Visible(false)}
+                >
+                  <View style={styles.overlay}>
+                    <View style={styles.datePickerContainer}>
+                      <DatePicker
+                        selected={endDate}
+                        onChange={onEndDateChange}
+                        dateFormat="dd/MM/yyyy"
+                        style={[
+                          styles.datePicker,
+                          !isMobile && styles.datePickerLarge,
+                        ]}
+                      />
+                      <TouchableOpacity onPress={() => setModal2Visible(false)}>
+                        <Text style={styles.closeButton}>Cerrar</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </Modal>
+                <TouchableOpacity onPress={() => setModal2Visible(true)}>
+                  <Text style={styles.dateText}>
+                    {endDate
+                      ? endDate.toLocaleDateString()
+                      : "Selecciona una fecha"}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>
@@ -281,6 +338,13 @@ export default DownloadReports;
 
 const styles = StyleSheet.create({
   scrollContainer: { flexGrow: 1 },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
+  },
   container: {
     padding: 16,
     alignItems: "center",
@@ -352,8 +416,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   label: {
+    color: "blue",
+    fontSize: 16, // Slightly smaller size
+    fontWeight: "bold",
+    flex: 1,
+    textAlign: "left",
+  },
+  closeButton: {
+    marginTop: 10,
+    color: "blue",
     fontSize: 16,
-    marginVertical: 5,
-    color: "#555",
   },
 });

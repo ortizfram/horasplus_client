@@ -8,6 +8,8 @@ import {
   TextInput,
   ScrollView,
   Image,
+  Modal,
+  TouchableOpacity,
 } from "react-native";
 import { fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShiftWithId } from "../../services/userShift/fetchShifts";
@@ -39,6 +41,8 @@ const Report = () => {
   const [excedenteCost, setExcedenteCost] = useState(0);
   const [workedTimeMinutes, setWorkedTimeMinutes] = useState(0);
   const [excedenteMin, setExcedenteMin] = useState(0);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModal2Visible, setModal2Visible] = useState(false);
 
   const [bonus, setBonus] = useState(0);
   const [advance, setAdvance] = useState(0);
@@ -97,6 +101,7 @@ const Report = () => {
   const onStartDateChange = (event, selectedDate) => {
     if (Platform.OS === "web") {
       setStartDate(event);
+      setModalVisible(false);
     } else {
       const currentDate = selectedDate || startDate;
       setShowStartDatePicker(Platform.OS === "ios");
@@ -107,6 +112,7 @@ const Report = () => {
   const onEndDateChange = (event, selectedDate) => {
     if (Platform.OS === "web") {
       setEndDate(event);
+      setModal2Visible(false);
     } else {
       const currentDate = selectedDate || endDate;
       setShowEndDatePicker(Platform.OS === "ios");
@@ -260,12 +266,12 @@ const Report = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <ViewShot ref={viewRef} style={styles.container}>
-        <Text style={styles.title}>Reporte de Horas</Text>
-        <Text style={styles.title}>INFORMACION PRIVADA EMPLEADOR</Text>
-        <View style={styles.titleContainer}>
-          <Logo />
-          {/* <Text style={styles.title}>----------HORAS PLUS----------</Text> */}
+        <Logo />
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Reporte de Horas</Text>
+          <Text style={styles.headerText}>INFORMA CION PRIVADA EMPLEADOR</Text>
         </View>
+
         <Text style={styles.title}>
           {employee?.firstname && employee?.lastname ? (
             <Text style={styles.employeeText}>
@@ -290,11 +296,12 @@ const Report = () => {
                 Excedente Bono : {excedente} | Feriados: ${holidayCost || 0}
               </Text>
 
-              <Text style={styles.excedenteText}>
-                Excedente Bono: ${excedenteCost}
+              <Text style={{ textAlign: "center", marginTop: 10 }}>
+                <Text style={styles.excedenteText}>
+                  Excedente Bono: ${excedenteCost}
+                </Text>{" "}
+                <Text style={styles.totalText}>Total: ${totalCost}</Text>
               </Text>
-
-              <Text style={styles.totalText}>Total: ${totalCost}</Text>
             </View>
           </View>
         ) : (
@@ -303,52 +310,72 @@ const Report = () => {
           </Text>
         )}
 
-        {Platform.OS !== "web" && (
-          <View style={styles.buttonContainer}>
-            {" "}
-            {/* Centering container */}
-            <Pressable
-              style={styles.button}
-              onPress={() => setShowStartDatePicker(true)}
-            >
-              <Text style={styles.buttonText}>Seleccionar Fecha de Inicio</Text>
-            </Pressable>
-            <Pressable
-              style={styles.button}
-              onPress={() => setShowEndDatePicker(true)}
-            >
-              <Text style={styles.buttonText}>Seleccionar Fecha de Fin</Text>
-            </Pressable>
-          </View>
-        )}
-
-        {showStartDatePicker && Platform.OS !== "web" && (
-          <DateTimePicker
-            value={startDate}
-            mode="date"
-            display="default"
-            onChange={onStartDateChange}
-          />
-        )}
-
-        {showEndDatePicker && Platform.OS !== "web" && (
-          <DateTimePicker
-            value={endDate}
-            mode="date"
-            display="default"
-            onChange={onEndDateChange}
-          />
-        )}
+        <View style={styles.datePickerContainer}>
+          {" "}
+          {/* Centering for web */}
+          <Text style={styles.label}>Fecha de Inicio</Text>
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text style={styles.dateText}>
+              {startDate
+                ? startDate.toLocaleDateString()
+                : "Selecciona una fecha"}
+            </Text>
+          </TouchableOpacity>
+          <Text style={styles.label}> Fecha de Fin</Text>
+          <TouchableOpacity onPress={() => setModal2Visible(true)}>
+            <Text style={styles.dateText}>
+              {endDate ? endDate.toLocaleDateString() : "Selecciona una fecha"}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         {Platform.OS === "web" && (
-          <View style={styles.datePickerContainer}>
-            {" "}
-            {/* Centering for web */}
-            <Text style={styles.label}>Seleccionar Fecha de Inicio</Text>
-            <DatePicker selected={startDate} onChange={onStartDateChange} />
-            <Text style={styles.label}>Seleccionar Fecha de Fin</Text>
-            <DatePicker selected={endDate} onChange={onEndDateChange} />
-          </View>
+          <>
+            <Modal
+              transparent={true}
+              animationType="slide"
+              visible={isModalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View style={styles.overlay}>
+                <View style={styles.datePickerContainer}>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={onStartDateChange}
+                    dateFormat="dd/MM/yyyy"
+                  />
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setModalVisible(false)}
+                  >
+                    <Text style={styles.closeButtonText}>Cerrar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+            <Modal
+              transparent={true}
+              animationType="slide"
+              visible={isModal2Visible}
+              onRequestClose={() => setModal2Visible(false)}
+            >
+              <View style={styles.overlay}>
+                <View style={styles.datePickerContainer}>
+                  <DatePicker
+                    selected={endDate}
+                    onChange={onEndDateChange}
+                    dateFormat="dd/MM/yyyy"
+                  />
+                  <TouchableOpacity
+                    style={styles.closeButton}
+                    onPress={() => setModal2Visible(false)}
+                  >
+                    <Text style={styles.closeButtonText}>Cerrar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </>
         )}
 
         {shifts.length > 0 && (
@@ -365,12 +392,27 @@ const Report = () => {
               typeof shift.date
             ); // Log date and its type
 
-            // Split the date and increment the day portion
+            // Convert the date to a Date object
             const [day, month, year] = shift.date.split("/");
-            const incrementedDay = String(parseInt(day) + 1).padStart(2, "0"); // Add 1 to the day, ensuring it's two digits
-            const updatedDate = `${incrementedDay}/${month}/${year}`;
+            const dateObject = new Date(`${year}-${month}-${day}`);
 
-            console.log("Updated shift.date:", updatedDate); // Log the updated date
+            // Adjust the date by adding 1 day
+            dateObject.setDate(dateObject.getDate() + 1);
+
+            // Get the weekday in Spanish
+            const dayName = new Intl.DateTimeFormat("es-ES", {
+              weekday: "long",
+            }).format(dateObject);
+
+            // Keep the original date format
+            const updatedDate = `${day}/${month}/${year}`;
+
+            console.log(
+              "Updated shift.date:",
+              updatedDate,
+              "Day name:",
+              dayName
+            ); // Log the updated date and day name
 
             return (
               <View key={index} style={styles.shiftContainer}>
@@ -390,8 +432,9 @@ const Report = () => {
                   </Text>
                 </View>
                 <Text style={styles.shiftText}>
-                  {updatedDate} - <Text style={styles.inText}>{shift.in}</Text>{" "}
-                  - <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
+                  {updatedDate} ({dayName}) -{" "}
+                  <Text style={styles.inText}>{shift.in}</Text> -{" "}
+                  <Text style={styles.outText}>{shift.out}</Text> - Horas:{" "}
                   {shift.total_hours}
                 </Text>
               </View>
@@ -407,15 +450,43 @@ const Report = () => {
 
 export default Report;
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   padding: 15, // Reduced padding
-  //   backgroundColor: "#f5f5f5",
-  //   marginBottom: 80,
-  //   marginTop: "8%",
-  //   marginHorizontal: "5%",
-  //   marginStart: "8%",
-  // },
+  datePickerContainer: {
+    alignItems: "center",
+    marginVertical: 5, // Reduced vertical space
+  },
+  label: {
+    color: "blue",
+    fontSize: 16, // Slightly smaller size
+    fontWeight: "bold",
+    flex: 1,
+    textAlign: "left",
+  },
+  dateText: {
+    fontSize: 18, // Larger text for better visibility
+    fontWeight: "600", // Bold but not too heavy
+    color: "#333", // Dark color for contrast
+    paddingVertical: 10, // Adds space above and below the text
+    paddingHorizontal: 15, // Adds space on the left and right
+    borderRadius: 5, // Slightly rounded corners for visual appeal
+    backgroundColor: "#f1f1f1", // Light background to make the text pop
+    marginVertical: 5, // Small vertical spacing between date text and other elements
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 1000,
+  },
+  closeButton: {
+    padding: 10,
+    backgroundColor: "blue",
+  },
+  closeButtonText: {
+    marginTop: 10,
+    color: "white",
+    fontSize: 16,
+  },
   scrollContainer: { flexGrow: 1 },
   container: {
     padding: 16,
@@ -427,11 +498,13 @@ const styles = StyleSheet.create({
   shiftContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "flex-start",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
     backgroundColor: "#ffffff",
   },
+
   titleContainer: {
     flexDirection: "row",
     justifyContent: "center", // Center the contents horizontally
@@ -490,11 +563,14 @@ const styles = StyleSheet.create({
   shiftText: {
     fontSize: 16,
     color: "#333",
+    textAlign: "left", // Ensure text aligns left
+    flex: 1, // Allow the text to take up available space
   },
   inText: {
     color: "green",
     fontWeight: "bold",
   },
+
   outText: {
     color: "red",
     fontWeight: "bold",
@@ -510,22 +586,25 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginVertical: 5, // Reduced vertical space
   },
-  datePickerContainer: {
-    alignItems: "center",
-    marginVertical: 5, // Reduced vertical space
-  },
 
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 15, // Reduced margin
-    textAlign: "center",
+    marginBottom: 10,
+    color: "#333",
   },
   employeeText: {
+    padding: 8, // Mayor espacio interno para un aspecto más limpio
+    borderColor: "#ccc", // Cambia a un gris claro para un borde más sutil
+    borderWidth: 1, // Mantén el grosor del borde
+    borderRadius: 5, // Bordes redondeados para suavizar las esquinas
     fontSize: 18,
-    marginBottom: 5, // Reduced margin
+    marginTop: 1,
+    marginVertical: 5, // Mantén el margen reducido
     textAlign: "center",
+    backgroundColor: "#f9f9f9", // Fondo claro para mayor contraste
   },
+
   largeText: {
     fontSize: 28, // Slightly smaller size
     marginTop: 5, // Reduced margin
@@ -542,12 +621,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 5, // Reduced margin
   },
-  label: {
-    fontSize: 16, // Slightly smaller size
-    fontWeight: "bold",
-    flex: 1,
-    textAlign: "left",
-  },
+
   input: {
     flex: 2,
     borderWidth: 1,
@@ -613,6 +687,11 @@ const styles = StyleSheet.create({
     top: "15%",
     left: "35%",
   },
+  totalText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#28a745",
+  },
   excedenteText: {
     fontSize: 16, // Smaller font size for excedente
     color: "gray", // Optional color to differentiate
@@ -630,16 +709,19 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 10,
-    color: "#333",
-  },
+
   detailsText: {
     fontSize: 16,
     color: "#555",
     marginBottom: 15,
+  },
+  headerText: {
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
+  },
+  headerContainer: {
+    marginBottom: 4,
   },
   editableRow: {
     flexDirection: "row",
@@ -664,10 +746,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 15,
     color: "#c00",
-  },
-  totalText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#28a745",
   },
 });

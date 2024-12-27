@@ -1,9 +1,6 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, Pressable, Alert } from "react-native";
-import axios from "axios";
+import { StyleSheet, Text, View, Pressable } from "react-native";
 import { useRouter } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { RESP_URL } from "../../config";
 import { AuthContext } from "../../context/AuthContext";
 import Spinnerr from "react-native-loading-spinner-overlay";
 
@@ -11,13 +8,28 @@ const Settings = () => {
   const router = useRouter();
   const { userInfo, isLoading, logout } = useContext(AuthContext);
 
+  const handleLogout = async () => {
+    try {
+      await logout(); // Llamada a la función de logout
+      router.replace("/"); // Redirige al inicio (o una ruta de tu elección)
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Spinnerr visible={isLoading} />
       <Text style={styles.header}>Configuraciones</Text>
       <Text style={styles.account}>{userInfo ? userInfo.email : ""}</Text>
 
-      <Pressable onPress={logout} style={styles.logoutButton}>
+      <Pressable
+        onPress={() => router.push(`${userInfo?.user?._id}/profile`)}
+        style={styles.logoutButton}
+      >
+        <Text style={styles.linkText}>Mi Perfil</Text>
+      </Pressable>
+      <Pressable onPress={handleLogout} style={styles.logoutButton}>
         <Text style={styles.logoutText}>Salir de esta cuenta</Text>
       </Pressable>
     </View>
@@ -47,6 +59,10 @@ const styles = StyleSheet.create({
   logoutText: {
     color: "red",
     fontSize: 18,
+  },
+  linkText: {
+    color: "blue",
+    fontSize: 15,
   },
 });
 

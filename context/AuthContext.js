@@ -44,14 +44,14 @@ export const AuthProvider = ({ children }) => {
         { email, password, firstname, lastname },
         { withCredentials: true }
       );
-  
+
       if (res.status === 201) {
         let userInfo = res.data;
         console.log("User registered successfully:", userInfo);
-  
+
         setUserInfo(userInfo);
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-  
+
         // Wait briefly before redirecting to ensure `userInfo` updates
         setTimeout(() => {
           router.push(`/auth/login?next=${next}`);
@@ -77,7 +77,6 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
     }
   };
-  
 
   const login = async (email, password, next, onError) => {
     setIsLoading(true);
@@ -94,7 +93,12 @@ export const AuthProvider = ({ children }) => {
         let userInfo = res.data;
         setUserInfo(userInfo);
         await AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
-        next ? router.push(next) : router.push("/");
+        console.log("login authContext next:", next);
+        if (next && typeof next === "string") {
+          router.push(next); // Redirect to next
+        } else {
+          router.push("/"); // Fallback to home
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -149,7 +153,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setSplashLoading(true); // Begin splash screen
       let userInfo = await AsyncStorage.getItem("userInfo");
-  
+
       if (userInfo) {
         // Parse the stored user info if it exists
         userInfo = JSON.parse(userInfo);
@@ -165,10 +169,9 @@ export const AuthProvider = ({ children }) => {
       setSplashLoading(false); // End splash screen
     }
   };
-  
+
   // Derived boolean value
   const isAuth = Boolean(userInfo);
-  
 
   useEffect(() => {
     isLoggedIn();

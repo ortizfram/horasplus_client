@@ -27,20 +27,27 @@ const BePart = () => {
   };
 
   useEffect(() => {
-    if (!splashLoading && orgId && userInfo == null) {
-      console.log("Redirecting to signup...");
-      router.push(`/auth/signup?next=/${orgId}/bePart`);
-    } else if (!splashLoading && orgId && userInfo?.user?._id) {
-      fetchOrganization().then(() => {
-        // After fetching organization, check if the organization_id matches
-        if (userInfo?.user?.data?.organization_id?.toString() === orgId.toString()) {
-          console.log("Redirecting to home...");
-          router.push("/"); // Redirect to home if the organization ID matches
-        }
-      });
-    }
+    if (splashLoading || !orgId) return <Loader />;
+
+    const timeout = setTimeout(() => {
+      if (!splashLoading && orgId && userInfo == null) {
+        console.log("Redirecting to signup...");
+        router.push(`/auth/signup?next=/${orgId}/bePart`);
+      } else if (!splashLoading && orgId && userInfo?.user?._id) {
+        fetchOrganization().then(() => {
+          // After fetching organization, check if the organization_id matches
+          if (
+            userInfo?.user?.data?.organization_id?.toString() ===
+            orgId.toString()
+          ) {
+            console.log("Redirecting to home...");
+            router.push("/"); // Redirect to home if the organization ID matches
+          }
+        });
+      }
+    }, 100);
+    return () => clearTimeout(timeout);
   }, [splashLoading, userInfo, orgId]);
-  
 
   const associate = async () => {
     try {

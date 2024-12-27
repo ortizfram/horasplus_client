@@ -12,6 +12,7 @@ const InOutClock = ({ orgId }) => {
   const [inTime, setInTime] = useState(null);
   const [outTime, setOutTime] = useState(null);
   const [wasIn, setWasIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const fetchOrg = async () => {
     try {
@@ -36,23 +37,24 @@ const InOutClock = ({ orgId }) => {
   const loadCurrentShift = async () => {
     try {
       const shiftData = await fetchLastShiftUid(userInfo?.user?.data?._id);
-  
+
       console.log("Shift Data:", shiftData);
       if (shiftData?.in && !shiftData?.out) {
         setWasIn(true);
       } else if (!shiftData?.in && !shiftData?.out) {
         setWasIn(false);
       }
-  
+
       // Log total_hours
       if (shiftData?.total_hours) {
         console.log("Total Hours:", shiftData.total_hours);
       }
     } catch (error) {
       console.error("Error fetching shifts:", error);
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     const initialize = async () => {
@@ -87,7 +89,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK");
-        setWasIn(true)
+        setWasIn(true);
       } else {
         console.log("Failed to create shift");
         Alert.alert("Error", "Failed to clock in. Please try again.");
@@ -123,7 +125,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
-        setWasIn(true)
+        setWasIn(true);
       } else {
         console.log("Failed to create holiday shift");
         Alert.alert("Error", "Failed to clock in (holiday). Please try again.");
@@ -160,7 +162,7 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 200) {
         console.log("Egresaste OK");
-        setWasIn(false)
+        setWasIn(false);
 
         setInTime(null);
         setOutTime(null);
@@ -196,23 +198,30 @@ const InOutClock = ({ orgId }) => {
         <Text>cargando detalles...</Text>
       )}
       <Text>{new Date().toLocaleString()}</Text>
-      {wasIn === false && (
-        <View>
-          <Pressable style={styles.actionBtn} onPress={handleIngresoPress}>
-            <Text style={styles.actionText}>Ingreso</Text>
-          </Pressable>
-          <Pressable
-            style={styles.actionBtn}
-            onPress={handleIngresoFeriadoPress}
-          >
-            <Text style={styles.actionText}>Ingreso Feriado</Text>
-          </Pressable>
-        </View>
-      )}
-      {wasIn === true && (
-        <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
-          <Text style={styles.actionText}>Egreso</Text>
-        </Pressable>
+
+      {loading ? (
+        <Text>Cargando turno...</Text>
+      ) : (
+        <>
+          {wasIn === false && (
+            <View>
+              <Pressable style={styles.actionBtn} onPress={handleIngresoPress}>
+                <Text style={styles.actionText}>Ingreso</Text>
+              </Pressable>
+              <Pressable
+                style={styles.actionBtn}
+                onPress={handleIngresoFeriadoPress}
+              >
+                <Text style={styles.actionText}>Ingreso Feriado</Text>
+              </Pressable>
+            </View>
+          )}
+          {wasIn === true && (
+            <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
+              <Text style={styles.actionText}>Egreso</Text>
+            </Pressable>
+          )}
+        </>
       )}
     </View>
   );

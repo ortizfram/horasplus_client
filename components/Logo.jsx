@@ -17,13 +17,9 @@ const Logo = ({ style }) => {
   const logoHeight = isMobile ? 186 * 0.8 : 186;
 
   return (
-    <View
-      style={[
-        styles.logoContainer,
-        { marginTop: isMobile ? 55 : 0 }, // Add marginTop based on screen size
-      ]}
-    >
-      <Image
+    <View style={styles.logoContainer}>
+      {/* Main Logo */}
+      {/* <Image
         source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
         style={[
           {
@@ -31,8 +27,38 @@ const Logo = ({ style }) => {
             height: logoHeight,
             alignSelf: "center",
             marginBottom: 15,
-            // borderWidth: 1,
-            // borderColor: "red",
+          },
+          style,
+        ]}
+        resizeMode="contain"
+      /> */}
+
+      {/* First Scaled Logo */}
+      {/* <Image
+        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
+        style={[
+          {
+            width: logoWidth * 0.8, // Scale down
+            height: logoHeight * 0.8,
+            alignSelf: "center",
+            marginBottom: 10,
+            transform: [{ translateY: 10 }], // Move slightly downward
+          },
+          style,
+        ]}
+        resizeMode="contain"
+      /> */}
+
+      {/* Second Scaled Logo */}
+      <Image
+        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
+        style={[
+          {
+            width: logoWidth * 0.6, // Scale further down
+            height: logoHeight * 0.6,
+            alignSelf: "center",
+            marginBottom: 10,
+            transform: [{ translateY: 20 }], // Move further downward
           },
           style,
         ]}

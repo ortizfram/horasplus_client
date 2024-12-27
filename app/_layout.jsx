@@ -1,56 +1,72 @@
-import { router, Slot, Stack, useRouter } from "expo-router";
+import { Slot, Stack, useRouter } from "expo-router";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import "react-native-reanimated";
 
 import { AuthContext, AuthProvider } from "../context/AuthContext";
-import { ActivityIndicator, Text } from "react-native-web";
-import { Pressable, StyleSheet, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import BackButtonLayout from "../components/GoBackButton";
 import Loader from "../components/Loader";
+import { StyleSheet } from "react-native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-  });
-
-  const router = useRouter();
-
-  const handleGoBack = () => {
-    router.back();
-  };
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    <Loader />;
-  }
-
   return (
-    <AuthProvider style={styles.container}>
-      <Layout />
-      <BackButtonLayout />
+    <AuthProvider>
+      <AppLayout style={styles.container}/>
     </AuthProvider>
   );
 }
 
-function Layout() {
-  const { userInfo, splashLoading } = useContext(AuthContext);
+function AppLayout() {
+  const { userInfo, splashLoading } = useContext(AuthContext) || {};
+  const router = useRouter();
+
+  const [loaded] = useFonts({
+    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+  });
+
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (userInfo == null) {
-      // router.push("/auth/login");
+    setIsMounted(true);
+
+    const currentUrl = window.location.href;
+
+    if (isMounted && !splashLoading) {
+      if (!userInfo) {
+        const currentUrl = window.location.href;
+      
+        if (currentUrl.includes("/auth/reset?token=")) {
+          // Allow the user to continue with the reset link
+          console.log("Continuing with reset link:", currentUrl);
+        } else {
+          // Redirect to login page
+          router.push("/auth/login");
+        }
+      } else {
+        // Redirect to home page
+        router.push("/");
+      }
     }
-  }, [splashLoading, userInfo]);
+  }, [isMounted, userInfo, splashLoading]);
+
+  if (!isMounted || splashLoading) {
+    return <Loader />;
+  }
+
+  return (
+    <>
+      <Layout />
+      <BackButtonLayout />
+    </>
+  );
+}
+
+function Layout() {
+  const { userInfo, splashLoading } = useContext(AuthContext) || {};
 
   return (
     <>
@@ -106,7 +122,6 @@ function Layout() {
         <Stack.Screen name="+not-found" />
         <Slot />
       </Stack>
-      {/* This Slot will render the dynamic route based on the navigation */}
     </>
   );
 }
