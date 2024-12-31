@@ -90,6 +90,10 @@ function Layout() {
               name="[orgId]"
               screenOptions={{ headerShown: false, title: "" }}
             />
+            <Stack.Screen
+              name="bienvenido"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
           </>
         ) : (
           <>
@@ -115,6 +119,10 @@ function Layout() {
             />
             <Stack.Screen
               name="auth/changed"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="bienvenido"
               screenOptions={{ headerShown: false, title: "" }}
             />
           </>
