@@ -18,6 +18,8 @@ import { Link, useRouter } from "expo-router";
 import { Svg, Path } from "react-native-svg";
 
 const { width, height } = Dimensions.get("window");
+const isMobile = Dimensions.get("window").width < 768;
+
 
 const Bienvenido = () => {
   const videoSource = { uri: "https://www.example.com/video.mp4" }; // Replace with your video URL
@@ -279,19 +281,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height, // Occupy full screen height
     backgroundColor: "#ffffff",
   },
-  
-  // header: {
-  //   width: "100%",
-  //   height: Dimensions.get("window").height, // Increased height to allow space for header and carousel
-  //   backgroundColor: "#ffffff",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   paddingTop: 20,
-  //   paddingHorizontal: 20,
-  //   borderBottomWidth: 1,
-  //   borderBottomColor: "#e0e0e0",
-  // },
-  
+
   headerTextContainer: {
     flex: 1, // Occupies the remaining 50% of the header
     width: "100%",
@@ -387,7 +377,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
   },
   beneficiosHeader: {
-    fontSize: 22,
+    fontSize: 40,
     fontWeight: "bold",
     color: "#333", // Change the color to #333 for consistency
     marginBottom: 20,
@@ -412,7 +402,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   beneficioText: {
-    fontSize: 14,
+    fontSize: 26,
     color: "#333", // Change the text color to #333
     textAlign: "center",
     marginTop: 5,
@@ -461,33 +451,44 @@ const styles = StyleSheet.create({
     color: "#fff",
     textAlign: "center",
   },
+  // 3 Simple Steps Section///////////////////////////////////////////////
   stepsSection: {
     padding: 20,
     backgroundColor: "#f9f9f9",
   },
   stepsHeader: {
-    fontSize: 22,
+    fontSize: 40,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 20,
     textAlign: "center",
   },
   stepsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: isMobile ? "column" : "row", // Column on mobile, row on larger screens
+    alignItems: isMobile ? "center" : "flex-start",
+    justifyContent: isMobile ? "center" : "space-between",
   },
   step: {
     alignItems: "center",
-    width: "30%",
+    width: isMobile ? "100%" : "30%", // Full width on mobile
+    marginBottom: isMobile ? 20 : 0,
   },
   stepImage: {
-    width: 60,
-    height: 60,
+    width: isMobile ? 100 : 60, // Larger images on mobile
+    height: isMobile ? 100 : 60,
+    borderRadius: isMobile ? 50 : 30, // Circular images
     marginBottom: 10,
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 5, // Adds shadow on Android
   },
   stepText: {
-    fontSize: 16,
+    fontSize: isMobile ? 26 : 16, // Larger font size on mobile
     color: "#333",
+    textAlign: "center",
   },
 });
 
