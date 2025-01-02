@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   carouselImage: {
-    width: 300,
-    height: 200,
+    width: 1080,
+    height: 1920,
     resizeMode: "contain",
     borderRadius: 10,
   },
