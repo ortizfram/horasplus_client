@@ -15,7 +15,7 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   return (
     <AuthProvider>
-      <AppLayout style={styles.container}/>
+      <AppLayout style={styles.container} />
     </AuthProvider>
   );
 }
@@ -36,9 +36,15 @@ function AppLayout() {
     const currentUrl = window.location.href;
 
     if (isMounted && !splashLoading) {
+      const currentUrl = window.location.href;
+
+      if (currentUrl.includes("bienvenido")) {
+        // Do nothing if "bienvenido" is in the URL
+        console.log("Bienvenido link detected, no action taken:", currentUrl);
+        return;
+      }
+
       if (!userInfo) {
-        const currentUrl = window.location.href;
-      
         if (currentUrl.includes("/auth/reset?token=")) {
           // Allow the user to continue with the reset link
           console.log("Continuing with reset link:", currentUrl);
@@ -90,6 +96,10 @@ function Layout() {
               name="[orgId]"
               screenOptions={{ headerShown: false, title: "" }}
             />
+            <Stack.Screen
+              name="bienvenido"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
           </>
         ) : (
           <>
@@ -115,6 +125,10 @@ function Layout() {
             />
             <Stack.Screen
               name="auth/changed"
+              screenOptions={{ headerShown: false, title: "" }}
+            />
+            <Stack.Screen
+              name="bienvenido"
               screenOptions={{ headerShown: false, title: "" }}
             />
           </>
