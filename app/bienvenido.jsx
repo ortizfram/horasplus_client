@@ -137,89 +137,37 @@ const Bienvenido = () => {
           );
         }}
       ></TouchableOpacity>
-      {/* Header */}
-      {/* <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.accederButton}
-          onPress={() => {
-            Linking.openURL("/");
-          }}
-        >
-          <Text style={styles.accederButtonText}>Acceder</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.contactarButton}
-          onPress={() => {
-            Linking.openURL(
-              "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
-            );
-          }}
-        >
-          <Text style={styles.contactarButtonText}>Contactar</Text>
-        </TouchableOpacity>
-        <FlatList
-          ref={carouselRef}
-          data={carouselData}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.carouselItem}>
-              <Logo style={styles.logo} />
-              <View style={styles.carouselTextContainer}>
-                <Text style={styles.imageTitle}>{item.title}</Text>
-              </View>
 
-              <Image
-                source={
-                  typeof item.image === "string"
-                    ? { uri: item.image }
-                    : item.image
-                }
-                style={styles.carouselImage}
-              />
-              <View style={styles.headerTextContainer}>
-                <Text style={styles.headerText}>
-                  Conoce el software de control horario que prioriza la
-                  privacidad de datos
-                </Text>
-                <Text style={styles.subHeaderText}>
-                  Mucho mejor que un reloj de control horario, y accesible desde
-                  cualquier dispositivo
-                </Text>
-              </View>
-            </View>
-          )}
-        />
-      </View> */}
+      {/* Header */}
 
       <View style={styles.header}>
         {/* FlatList en la mitad superior */}
-        <FlatList
-          ref={carouselRef}
-          data={carouselData}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.carouselItem}>
-              <Logo style={styles.logo} />
-              <View style={styles.carouselTextContainer}>
-                <Text style={styles.imageTitle}>{item.title}</Text>
+        <View style={styles.carouselContainer}>
+          <FlatList
+            ref={carouselRef}
+            data={carouselData}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.carouselItem}>
+                <Logo style={styles.logo} />
+                <View style={styles.carouselTextContainer}>
+                  <Text style={styles.imageTitle}>{item.title}</Text>
+                </View>
+                <Image
+                  source={
+                    typeof item.image === "string"
+                      ? { uri: item.image }
+                      : item.image
+                  }
+                  style={styles.carouselImage}
+                />
               </View>
-              <Image
-                source={
-                  typeof item.image === "string"
-                    ? { uri: item.image }
-                    : item.image
-                }
-                style={styles.carouselImage}
-              />
-            </View>
-          )}
-        />
+            )}
+          />
+        </View>
 
         {/* Rectángulo blanco con texto en la mitad inferior */}
         <View style={styles.headerTextContainer}>
@@ -328,20 +276,25 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: Dimensions.get("window").height, // Increased height to allow space for header and carousel
+    height: Dimensions.get("window").height, // Occupy full screen height
     backgroundColor: "#ffffff",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
   },
+  
+  // header: {
+  //   width: "100%",
+  //   height: Dimensions.get("window").height, // Increased height to allow space for header and carousel
+  //   backgroundColor: "#ffffff",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   paddingTop: 20,
+  //   paddingHorizontal: 20,
+  //   borderBottomWidth: 1,
+  //   borderBottomColor: "#e0e0e0",
+  // },
+  
   headerTextContainer: {
-    position: "absolute",
-    bottom: 0, // Fija el texto en la mitad inferior
+    flex: 1, // Occupies the remaining 50% of the header
     width: "100%",
-    height: "50%", // Ocupa la mitad inferior
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
@@ -383,9 +336,19 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  carouselContainer: { height: 250 },
-  carouselItem: { width: Dimensions.get("window").width, alignItems: "center" },
-  carouselImage: { width: "100%", height: "50%", resizeMode: "cover" },
+  carouselContainer: {
+    flex: 1, // Occupies 50% of the header
+    width: "100%",
+  },
+  carouselItem: {
+    width: Dimensions.get("window").width,
+    alignItems: "center",
+  },
+  carouselImage: {
+    width: "100%",
+    height: "100%", // Ensures the image occupies the carousel container fully
+    resizeMode: "cover",
+  },
   carouselTextContainer: {
     position: "absolute",
     bottom: 20,
