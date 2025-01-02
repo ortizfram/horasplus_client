@@ -148,6 +148,7 @@ const Bienvenido = () => {
               <View style={styles.carouselTextContainer}>
                 <Text style={styles.imageTitle}>{item.title}</Text>
               </View>
+
               <Image
                 source={
                   typeof item.image === "string"
@@ -156,21 +157,20 @@ const Bienvenido = () => {
                 }
                 style={styles.carouselImage}
               />
+              <View style={styles.headerTextContainer}>
+                <Text style={styles.headerText}>
+                  Conoce el software de control horario que prioriza la
+                  privacidad de datos
+                </Text>
+                <Text style={styles.subHeaderText}>
+                  Mucho mejor que un reloj de control horario, y accesible desde
+                  cualquier dispositivo
+                </Text>
+              </View>
             </View>
-
           )}
         />
       </View>
-      <View style={styles.headerTextContainer}>
-          <Text style={styles.headerText}>
-            Conoce el software de control horario que prioriza la privacidad de
-            datos
-          </Text>
-          <Text style={styles.subHeaderText}>
-            Mucho mejor que un reloj de control horario, y accesible desde
-            cualquier dispositivo
-          </Text>
-        </View>
 
       {/* Video Section */}
       <View style={styles.videoContainer}>
@@ -475,6 +475,5 @@ const styles = StyleSheet.create({
     height: 200,
   },
 });
-
 
 export default Bienvenido;
