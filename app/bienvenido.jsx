@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 250,
+    height: 300, // Increased height to allow space for header and carousel
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
@@ -282,13 +282,13 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#fff",
+    color: "#333", // Change the color to #333 as requested
     textAlign: "center",
     marginVertical: 10,
   },
   subHeaderText: {
     fontSize: 16,
-    color: "#fff",
+    color: "#333", // Change subheader color to #333
     textAlign: "center",
   },
   accederButton: {
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
   beneficiosHeader: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#333",
+    color: "#333", // Change the color to #333 for consistency
     marginBottom: 20,
     textAlign: "center",
   },
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
   },
   beneficioText: {
     fontSize: 14,
-    color: "#333",
+    color: "#333", // Change the text color to #333
     textAlign: "center",
     marginTop: 5,
   },
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
   },
   imageTextContainer: {
     position: "absolute",
-    bottom: 50,
+    bottom: 20,
     left: 20,
     right: 20,
     alignItems: "center",
@@ -419,61 +419,42 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: "#fff",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-    marginBottom: 10,
     textAlign: "center",
   },
   imageSubHeader: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#fff",
-    textShadowColor: "#000",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
     textAlign: "center",
   },
   stepsSection: {
     padding: 20,
-    alignItems: "center",
+    backgroundColor: "#f9f9f9",
   },
   stepsHeader: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 20,
+    textAlign: "center",
   },
   stepsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
+    justifyContent: "space-between",
   },
   step: {
     alignItems: "center",
+    width: "30%",
   },
   stepImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    width: 60,
+    height: 60,
     marginBottom: 10,
   },
   stepText: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#555",
-  },
-  videoContainer: {
-    marginVertical: 20,
-    alignItems: "center",
-  },
-  video: {
-    width: "90%",
-    height: 200,
+    fontSize: 16,
+    color: "#333",
   },
 });
+
 
 export default Bienvenido;
