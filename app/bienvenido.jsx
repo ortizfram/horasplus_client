@@ -13,7 +13,8 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { useVideoPlayer, VideoView } from "expo-video";
 import Logo from "../components/Logo";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { Svg, Path } from "react-native-svg";
 
 const { width, height } = Dimensions.get("window");
 
@@ -89,7 +90,7 @@ const Bienvenido = () => {
       icon: "devices",
       title: "Accesible desde cualquier dispositivo",
     },
-    { 
+    {
       icon: "thumb-up",
       title: "Fácil de usar",
     },
@@ -116,6 +117,24 @@ const Bienvenido = () => {
     <ScrollView style={styles.container} ref={scrollRef}>
       {/* Header */}
       <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.accederButton}
+          onPress={() => {
+            Linking.openURL("/");
+          }}
+        >
+          <Text style={styles.accederButtonText}>Acceder</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.contactarButton}
+          onPress={() => {
+            Linking.openURL(
+              "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
+            );
+          }}
+        >
+          <Text style={styles.contactarButtonText}>Contactar</Text>
+        </TouchableOpacity>
         <FlatList
           ref={carouselRef}
           data={carouselData}
@@ -161,52 +180,57 @@ const Bienvenido = () => {
           () => Linking.openURL("https://wa.me/2613005849") // Replace with your WhatsApp number
         }
       >
-        <MaterialIcons name="whatsapp" size={24} color="#fff" />
+        <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+          <Path
+            d="M12 0C5.372 0 0 5.372 0 12c0 2.12.552 4.106 1.512 5.832L0 24l6.336-1.512A11.94 11.94 0 0012 24c6.628 0 12-5.372 12-12S18.628 0 12 0zm6.336 17.664c-.264.744-1.536 1.44-2.112 1.512-.552.072-1.224.096-1.944-.12-.456-.12-1.056-.36-1.824-.72-3.192-1.392-5.28-4.824-5.448-5.064-.168-.24-1.296-1.728-1.296-3.288 0-1.56.816-2.328 1.104-2.664.288-.336.624-.408.84-.408.216 0 .432.008.624.012.192.008.456-.072.72.552.264.624.888 2.16.96 2.328.072.168.12.336.024.552-.096.216-.144.336-.288.528-.144.192-.288.336-.432.552-.144.216-.288.432-.12.744.168.312.744 1.224 1.584 1.968 1.08.96 1.992 1.272 2.304 1.416.312.144.48.12.672-.072.192-.192.768-.888.96-1.2.192-.312.384-.24.648-.144.264.096 1.68.792 1.968.936.288.144.48.216.552.336.072.12.072.696-.192 1.44z"
+            fill="#fff"
+          />
+        </Svg>
         <Text style={styles.whatsappButtonText}>Contactar por WhatsApp</Text>
       </TouchableOpacity>
 
-       {/* Full-Screen Image Section */}
-  <View style={styles.fullScreenImageContainer}>
-    <Image
-      source={require("../assets/images/baker.png")} // Replace with your image
-      style={styles.fullScreenImage}
-    />
-    <View style={styles.imageTextContainer}>
-      <Text style={styles.imageHeader}>Nos entusiasma ayudarte</Text>
-      <Text style={styles.imageSubHeader}>
-        Te ayudamos en tu día a día a través de nuestra Academia virtual, Email
-        y WhatsApp
-      </Text>
-    </View>
-  </View>
+      {/* Full-Screen Image Section */}
+      <View style={styles.fullScreenImageContainer}>
+        <Image
+          source={require("../assets/images/handshake.jpg")} // Replace with your image
+          style={styles.fullScreenImage}
+        />
+        <View style={styles.imageTextContainer}>
+          <Text style={styles.imageHeader}>Nos entusiasma ayudarte</Text>
+          <Text style={styles.imageSubHeader}>
+            Te ayudamos en tu día a día a través de nuestra Academia virtual,
+            Email y WhatsApp
+          </Text>
+        </View>
+      </View>
 
-  {/* 3 Simple Steps Section */}
-  <View style={styles.stepsSection}>
-    <Text style={styles.stepsHeader}>Marca 3 simples pasos</Text>
-    <View style={styles.stepsContainer}>
-      <View style={styles.step}>
-        <Image
-           source={require("../assets/images/scan.png")}
-          style={styles.stepImage}
-        />
-        <Text style={styles.stepText}>Escanea</Text>
+      {/* 3 Simple Steps Section */}
+      <View style={styles.stepsSection}>
+        <Text style={styles.stepsHeader}>Marca 3 simples pasos</Text>
+        <View style={styles.stepsContainer}>
+          <View style={styles.step}>
+            <Image
+              source={require("../assets/images/scan.png")}
+              style={styles.stepImage}
+            />
+            <Text style={styles.stepText}>Escanea</Text>
+          </View>
+          <View style={styles.step}>
+            <Image
+              source={require("../assets/images/ingresa.jpg")}
+              style={styles.stepImage}
+            />
+            <Text style={styles.stepText}>Ingresa</Text>
+          </View>
+          <View style={styles.step}>
+            <Image
+              source={require("../assets/images/marca.png")}
+              style={styles.stepImage}
+            />
+            <Text style={styles.stepText}>Marca</Text>
+          </View>
+        </View>
       </View>
-      <View style={styles.step}>
-        <Image
-          source={require("../assets/images/ingresa.jpg")}
-          style={styles.stepImage}
-        />
-        <Text style={styles.stepText}>Ingresa</Text>
-      </View>
-      <View style={styles.step}>
-        <Image
-          source={require("../assets/images/marca.png")}
-          style={styles.stepImage}
-        />
-        <Text style={styles.stepText}>Marca</Text>
-      </View>
-    </View>
-  </View>
     </ScrollView>
   );
 };
@@ -307,13 +331,13 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   imageTitle: {
-    fontSize: 30,
+    fontSize: 36, // Larger font size
     color: "#fff",
     fontWeight: "bold",
     textAlign: "center",
     textShadowColor: "#000",
     textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
+    textShadowRadius: 6,
   },
   logo: {
     backgroundColor: "rgba(255, 255, 255, 0.3)", // Crystal-blurred effect
@@ -363,21 +387,22 @@ const styles = StyleSheet.create({
   },
   carouselItem: {
     width,
-    height,
+    height: height * 0.5,
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "flex-start",
+    position: "relative",
   },
   carouselImage: {
-    width: "100%",
-    height: height * 0.75,
+    width,
+    height: height * 0.5,
     resizeMode: "cover",
   },
   carouselTextContainer: {
     position: "absolute",
-    top: 20,
-    left: 20,
-    right: 20,
-    zIndex: 1,
+    top: "40%", // Adjusts to center on image
+    left: 0,
+    right: 0,
+    alignItems: "center",
   },
   carouselText: {
     backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -454,6 +479,36 @@ const styles = StyleSheet.create({
     color: "#333",
     marginTop: 10,
     textAlign: "center",
+  },
+  accederButton: {
+    position: "absolute",
+    top: 10,
+    right: 90, // Adjust spacing between buttons
+    backgroundColor: "#fff",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    elevation: 3,
+  },
+  accederButtonText: {
+    fontSize: 14,
+    color: "#4CAF50", // Green text
+    fontWeight: "bold",
+  },
+  contactarButton: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "#4CAF50", // Green background
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    elevation: 3,
+  },
+  contactarButtonText: {
+    fontSize: 14,
+    color: "#fff", // White text
+    fontWeight: "bold",
   },
 });
 
