@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Animated,
   ScrollView,
   FlatList,
   Dimensions,
@@ -25,6 +26,7 @@ const Bienvenido = () => {
     player.play();
   });
   const router = useRouter();
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   const scrollRef = useRef(null);
   const carouselRef = useRef(null);
@@ -114,7 +116,11 @@ const Bienvenido = () => {
   };
 
   return (
-    <ScrollView style={styles.container} ref={scrollRef}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 20 }} // Ensures scrollable content isn't cut off
+      ref={scrollRef}
+    >
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
@@ -315,18 +321,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  carouselItem: {
-    width: width - 40,
-    marginHorizontal: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  carouselImage: {
-    width: "100%",
-    height: 200,
-    resizeMode: "cover",
-    borderRadius: 10,
-  },
+  carouselContainer: { height: 250 },
+  carouselItem: { width: 300, alignItems: "center" },
+  carouselImage: { width: "100%", height: 200, borderRadius: 10 },
   carouselTextContainer: {
     position: "absolute",
     bottom: 20,
@@ -335,6 +332,19 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.6)",
     padding: 10,
     borderRadius: 5,
+  },
+  carouselText: { marginTop: 10, fontSize: 16, color: "#333" },
+  indicatorContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  indicator: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#4CAF50",
+    marginHorizontal: 5,
   },
   imageTitle: {
     color: "#fff",
@@ -455,6 +465,5 @@ const styles = StyleSheet.create({
     color: "#333",
   },
 });
-
 
 export default Bienvenido;
