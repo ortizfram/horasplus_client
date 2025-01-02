@@ -16,6 +16,9 @@ import { useVideoPlayer, VideoView } from "expo-video";
 import Logo from "../components/Logo";
 import { Link, useRouter } from "expo-router";
 import { Svg, Path } from "react-native-svg";
+import Navbar from "../components/bienvenido/NavbarBienvenido";
+import HeaderTextContainer from "../components/bienvenido/HeaderTextContainer";
+import Carousel from "../components/bienvenido/Carousel";
 
 const { width, height } = Dimensions.get("window");
 const isMobile = Dimensions.get("window").width < 768;
@@ -123,66 +126,9 @@ const Bienvenido = () => {
       contentContainerStyle={{ paddingBottom: 20 }} // Ensures scrollable content isn't cut off
       ref={scrollRef}
     >
-      <TouchableOpacity
-        style={styles.accederButton}
-        onPress={() => {
-          Linking.openURL("/");
-        }}
-      >
-        <Text style={styles.accederButtonText}>Acceder</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.contactarButton}
-        onPress={() => {
-          Linking.openURL(
-            "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
-          );
-        }}
-      ></TouchableOpacity>
-
-      {/* Header */}
-
-      <View style={styles.header}>
-        {/* FlatList en la mitad superior */}
-        <View style={styles.carouselContainer}>
-          <FlatList
-            ref={carouselRef}
-            data={carouselData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.carouselItem}>
-                <Logo style={styles.logo} />
-                <View style={styles.carouselTextContainer}>
-                  <Text style={styles.imageTitle}>{item.title}</Text>
-                </View>
-                <Image
-                  source={
-                    typeof item.image === "string"
-                      ? { uri: item.image }
-                      : item.image
-                  }
-                  style={styles.carouselImage}
-                />
-              </View>
-            )}
-          />
-        </View>
-
-        {/* Rectángulo blanco con texto en la mitad inferior */}
-        <View style={styles.headerTextContainer}>
-          <Text style={styles.headerText}>
-            Conoce el software de control horario que prioriza la privacidad de
-            datos
-          </Text>
-          <Text style={styles.subHeaderText}>
-            Mucho mejor que un reloj de control horario, y accesible desde
-            cualquier dispositivo
-          </Text>
-        </View>
-      </View>
+      <Navbar />
+      <Carousel carouselData={carouselData} />
+      <HeaderTextContainer />
 
       {/* Video Section */}
       <View style={styles.videoContainer}>
