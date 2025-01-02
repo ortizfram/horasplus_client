@@ -121,8 +121,24 @@ const Bienvenido = () => {
       contentContainerStyle={{ paddingBottom: 20 }} // Ensures scrollable content isn't cut off
       ref={scrollRef}
     >
+      <TouchableOpacity
+        style={styles.accederButton}
+        onPress={() => {
+          Linking.openURL("/");
+        }}
+      >
+        <Text style={styles.accederButtonText}>Acceder</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.contactarButton}
+        onPress={() => {
+          Linking.openURL(
+            "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
+          );
+        }}
+      ></TouchableOpacity>
       {/* Header */}
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <TouchableOpacity
           style={styles.accederButton}
           onPress={() => {
@@ -176,6 +192,46 @@ const Bienvenido = () => {
             </View>
           )}
         />
+      </View> */}
+
+      <View style={styles.header}>
+        {/* FlatList en la mitad superior */}
+        <FlatList
+          ref={carouselRef}
+          data={carouselData}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.carouselItem}>
+              <Logo style={styles.logo} />
+              <View style={styles.carouselTextContainer}>
+                <Text style={styles.imageTitle}>{item.title}</Text>
+              </View>
+              <Image
+                source={
+                  typeof item.image === "string"
+                    ? { uri: item.image }
+                    : item.image
+                }
+                style={styles.carouselImage}
+              />
+            </View>
+          )}
+        />
+
+        {/* Rectángulo blanco con texto en la mitad inferior */}
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>
+            Conoce el software de control horario que prioriza la privacidad de
+            datos
+          </Text>
+          <Text style={styles.subHeaderText}>
+            Mucho mejor que un reloj de control horario, y accesible desde
+            cualquier dispositivo
+          </Text>
+        </View>
       </View>
 
       {/* Video Section */}
@@ -204,7 +260,10 @@ const Bienvenido = () => {
       <TouchableOpacity
         style={styles.whatsappButton}
         onPress={
-          () => Linking.openURL("https://wa.me/2613005849") // Replace with your WhatsApp number
+          () =>
+            Linking.openURL(
+              "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
+            ) // Replace with your WhatsApp number
         }
       >
         <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
@@ -269,7 +328,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 300, // Increased height to allow space for header and carousel
+    height: Dimensions.get("window").height, // Increased height to allow space for header and carousel
     backgroundColor: "#ffffff",
     alignItems: "center",
     justifyContent: "center",
@@ -280,21 +339,24 @@ const styles = StyleSheet.create({
   },
   headerTextContainer: {
     position: "absolute",
-    bottom: 20,
-    left: 20,
-    right: 20,
+    bottom: 0, // Fija el texto en la mitad inferior
+    width: "100%",
+    height: "50%", // Ocupa la mitad inferior
+    backgroundColor: "#ffffff",
     alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
   },
   headerText: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#333", // Change the color to #333 as requested
+    color: "#333",
     textAlign: "center",
-    marginVertical: 10,
+    marginBottom: 10,
   },
   subHeaderText: {
     fontSize: 16,
-    color: "#333", // Change subheader color to #333
+    color: "#333",
     textAlign: "center",
   },
   accederButton: {
@@ -322,8 +384,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   carouselContainer: { height: 250 },
-  carouselItem: { width: 300, alignItems: "center" },
-  carouselImage: { width: "100%", height: 200, borderRadius: 10 },
+  carouselItem: { width: Dimensions.get("window").width, alignItems: "center" },
+  carouselImage: { width: "100%", height: "50%", resizeMode: "cover" },
   carouselTextContainer: {
     position: "absolute",
     bottom: 20,
@@ -420,19 +482,19 @@ const styles = StyleSheet.create({
   },
   imageTextContainer: {
     position: "absolute",
-    bottom: 20,
+    bottom: 60,
     left: 20,
     right: 20,
     alignItems: "center",
   },
   imageHeader: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: "bold",
     color: "#fff",
     textAlign: "center",
   },
   imageSubHeader: {
-    fontSize: 18,
+    fontSize: 26,
     color: "#fff",
     textAlign: "center",
   },
