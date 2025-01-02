@@ -157,7 +157,28 @@ const Bienvenido = () => {
                 style={styles.carouselImage}
               />
             </View>
+
           )}
+        />
+      </View>
+      <View style={styles.headerTextContainer}>
+          <Text style={styles.headerText}>
+            Conoce el software de control horario que prioriza la privacidad de
+            datos
+          </Text>
+          <Text style={styles.subHeaderText}>
+            Mucho mejor que un reloj de control horario, y accesible desde
+            cualquier dispositivo
+          </Text>
+        </View>
+
+      {/* Video Section */}
+      <View style={styles.videoContainer}>
+        <VideoView
+          player={player}
+          style={styles.video}
+          useNativeControls
+          resizeMode="contain"
         />
       </View>
 
@@ -250,6 +271,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderBottomWidth: 1,
     borderBottomColor: "#e0e0e0",
+  },
+  headerTextContainer: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    right: 20,
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+    marginVertical: 10,
+  },
+  subHeaderText: {
+    fontSize: 16,
+    color: "#fff",
+    textAlign: "center",
   },
   accederButton: {
     position: "absolute",
@@ -425,6 +465,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     color: "#555",
+  },
+  videoContainer: {
+    marginVertical: 20,
+    alignItems: "center",
+  },
+  video: {
+    width: "90%",
+    height: 200,
   },
 });
 
