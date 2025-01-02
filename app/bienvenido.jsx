@@ -281,6 +281,14 @@ const styles = StyleSheet.create({
     height: height, // Occupy full screen height
     backgroundColor: "#ffffff",
   },
+  carouselContainer: {
+    flex: 1, // Occupies the top 50% of the header
+    width: "100%",
+    backgroundColor: "#f4f4f4",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 1080,
+  },
   headerTextContainer: {
     flex: 1, // Occupies the bottom 50% of the header
     width: "100%",
@@ -340,15 +348,13 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  carouselContainer: {
-    flex: 1, // Occupies the top 50% of the header
-    width: "100%",
-    backgroundColor: "#f4f4f4",
-  },
+  
   carouselItem: {
     width: width,
+    height:1080,
     alignItems: "center",
     justifyContent: "center",
+    overflow: "hidden",
   },
   carouselImage: {
     width: "100%",
@@ -375,9 +381,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   logo: {
-    width: isMobile ? 120 : 150,
-    height: isMobile ? 40 : 50,
-    marginBottom: 15,
+    position: "absolute",
+    top: 20, // Espaciado desde la parte superior
+    left: "50%",
+    transform: [{ translateX: -75 }], // Centrado horizontalmente (asumiendo un ancho de 150px)
+    width: 150,
+    height: 50,
   },
   beneficios: {
     padding: 20,
