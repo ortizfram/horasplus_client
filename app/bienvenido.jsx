@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   carouselImage: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover",
+    resizeMode: "contain", 
   },
   carouselTextContainer: {
     position: "absolute",
