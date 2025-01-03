@@ -7,38 +7,39 @@ const ShiftDetails = ({ shiftDetails, startDate }) => {
       <Text style={styles.label}>Fecha de Turno:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
-        value={startDate ? startDate.toLocaleDateString() : "No disponible"}
+        value={startDate ? startDate.toLocaleDateString() : "NO EXISTE"}
         editable={false}
       />
 
       <Text style={styles.label}>Modo del Turno:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
-        value={shiftDetails?.shift_mode || "No disponible"}
+        value={shiftDetails?.shift_mode || "NO EXISTE"}
         editable={false}
       />
 
       <Text style={styles.label}>Hora de Ingreso:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
-        value={shiftDetails?.in || "No disponible"}
+        value={shiftDetails?.in || "NO EXISTE"}
         editable={false}
       />
 
       <Text style={styles.label}>Hora de Salida:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
-        value={shiftDetails?.out || "No disponible"}
+        value={shiftDetails?.out || "NO EXISTE"}
         editable={false}
       />
 
       <Text style={styles.label}>Ubicación del Registro:</Text>
       <Text style={{ textAlign: "center", color: "gray" }}>
-        {shiftDetails?.location || "No disponible"}
+        {shiftDetails?.location || "NO EXISTE"}
       </Text>
     </View>
   );
 };
+
 
 
 const styles = StyleSheet.create({

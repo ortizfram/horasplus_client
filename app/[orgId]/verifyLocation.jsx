@@ -46,8 +46,19 @@ const VerifyLocation = () => {
         setShiftDetails(shiftData);
       } catch (error) {
         console.error("Error fetching shifts:", error);
+        if (error.response?.status === 404) {
+          setShiftDetails({
+            shift_mode: "NO EXISTE",
+            in: "NO EXISTE",
+            out: "NO EXISTE",
+            location: "NO EXISTE",
+          });
+        } else {
+          setShiftDetails(null); // Handle other errors
+        }
       }
     };
+    
 
     loadEmployees();
     if (empId) {
