@@ -9,6 +9,7 @@ import EmployeeDetails from "../../components/verifyLocation/employeeDetails";
 import ShiftDetails from "../../components/verifyLocation/shiftDetails";
 import { fetchEmployees, fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShift } from "../../services/userShift/fetchShifts";
+import * as Location from 'expo-location'; 
 
 const VerifyLocation = () => {
   const viewRef = useRef();
@@ -18,6 +19,7 @@ const VerifyLocation = () => {
   const [employees, setEmployees] = useState([]);
   const [showEmployeeList, setShowEmployeeList] = useState(true);
   const [shiftDetails, setShiftDetails] = useState(null);
+  const [location, setLocation] = useState(null)
   const [startDate, setStartDate] = useState(new Date());
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -44,6 +46,14 @@ const VerifyLocation = () => {
       try {
         const shiftData = await fetchShift(empId, startDate.toISOString().split("T")[0]);
         setShiftDetails(shiftData);
+         // If location exists in shiftData, fetch the location details
+         if (shiftData?.location) {
+          const { latitude, longitude } = shiftData.location;
+          // Reverse geocode to get a readable address (optional)
+          const reverseGeocode = await Location.reverseGeocodeAsync({ latitude, longitude });
+          const address = reverseGeocode[0]?.formattedAddress || 'Ubicacion no disponible';
+          setLocation(address);
+        }
       } catch (error) {
         console.error("Error fetching shifts:", error);
         if (error.response?.status === 404) {

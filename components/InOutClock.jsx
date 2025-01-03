@@ -5,6 +5,8 @@ import { RESP_URL } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
+import * as Location from 'expo-location';
+
 
 const InOutClock = ({ orgId }) => {
   const { userInfo } = useContext(AuthContext);
@@ -70,14 +72,34 @@ const InOutClock = ({ orgId }) => {
   const handleIngresoPress = async () => {
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
-    setInTime(currentInTime);
-
+  
     try {
+      // Request permission to access the user's location
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
+  
+      // Get the user's current location
+      const location = await Location.getCurrentPositionAsync({});
+  
+      // Log the location for debugging
+      console.log("User location:", location);
+  
+      const currentLocation = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+  
+      setInTime(currentInTime);
+  
       const response = await axios.post(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
           shiftMode: "regular",
+          location: currentLocation,  // Send location data
         },
         {
           headers: {
@@ -86,7 +108,7 @@ const InOutClock = ({ orgId }) => {
           },
         }
       );
-
+  
       if (response.status === 201) {
         console.log("Ingresaste OK");
         setWasIn(true);
@@ -107,13 +129,29 @@ const InOutClock = ({ orgId }) => {
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
     setInTime(currentInTime);
-
+  
     try {
+      // Request permission to access the user's location
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
+  
+      // Get the user's current location
+      const location = await Location.getCurrentPositionAsync({});
+      const currentLocation = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+  
+      // Send location with the request to clock in
       const response = await axios.post(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
           shiftMode: "holiday",
+          location: currentLocation,  // Send location data
         },
         {
           headers: {
@@ -122,7 +160,7 @@ const InOutClock = ({ orgId }) => {
           },
         }
       );
-
+  
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
         setWasIn(true);
@@ -138,6 +176,7 @@ const InOutClock = ({ orgId }) => {
       );
     }
   };
+  
 
   const handleEgresoPress = async () => {
     const now = new Date();
