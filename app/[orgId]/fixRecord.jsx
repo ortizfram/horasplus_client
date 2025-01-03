@@ -261,7 +261,7 @@ const FixARecord = () => {
                 </Text>
                 <TextInput
                   style={styles.input}
-                  value={shiftDetails?.in || "NO EXISTE"} // Default if shiftDetails is missing
+                  value={shiftDetails?.in || "00:00:00"} // Default if shiftDetails is missing
                   onChangeText={(text) =>
                     setShiftDetails({ ...shiftDetails, in: text })
                   }
@@ -270,7 +270,7 @@ const FixARecord = () => {
                 <Text style={styles.label}>Hora de Salida:</Text>
                 <TextInput
                   style={styles.input}
-                  value={shiftDetails?.out || "NO EXISTE"} // Default if shiftDetails is missing
+                  value={shiftDetails?.out || "00:00:00"} // Default if shiftDetails is missing
                   onChangeText={(text) =>
                     setShiftDetails({ ...shiftDetails, out: text })
                   }
