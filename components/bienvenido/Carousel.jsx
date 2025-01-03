@@ -1,5 +1,8 @@
 import React from "react";
-import { FlatList, View, Image, Text, StyleSheet } from "react-native";
+import { FlatList, View, Image, Text, StyleSheet, Dimensions } from "react-native";
+
+// Get screen dimensions
+const { width, height } = Dimensions.get("window");
 
 export default function Carousel({ carouselData }) {
   return (
@@ -29,24 +32,22 @@ export default function Carousel({ carouselData }) {
 const styles = StyleSheet.create({
   carouselContainer: {
     flex: 1,
-    backgroundColor: "#f4f4f4",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#000", // Black background for better image fit
   },
   carouselItem: {
-    width: 300, // Adjust width to fit your design
+    width, // Use full screen width
+    height, // Use full screen height
     alignItems: "center",
     justifyContent: "center",
-    margin: 10,
   },
   carouselImage: {
-    width: 1080,
-    height: 1920,
-    resizeMode: "contain",
-    borderRadius: 10,
+    width, // Full screen width
+    height, // Full screen height
+    resizeMode: "cover", // Cover to occupy the entire space
   },
   carouselTextContainer: {
-    marginTop: 10,
+    position: "absolute",
+    bottom: 20, // Position text at the bottom of the image
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: 10,
     borderRadius: 5,
