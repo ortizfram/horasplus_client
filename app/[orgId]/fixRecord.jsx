@@ -316,6 +316,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15, // Adds space on the left and right
     borderRadius: 5, // Slightly rounded corners for visual appeal
     backgroundColor: "#f1f1f1", // Light background to make the text pop
+    borderWidth: 1,
+    borderColor: "#25D366", 
     marginVertical: 5, // Small vertical spacing between date text and other elements
   },
   overlay: {

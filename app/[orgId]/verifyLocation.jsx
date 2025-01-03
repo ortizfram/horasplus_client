@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Modal, TouchableOpacity } from "react-native";
 import ViewShot from "react-native-view-shot";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useLocalSearchParams } from "expo-router";
 import EmployeeList from "../../components/verifyLocation/employeeList";
 import EmployeeDetails from "../../components/verifyLocation/employeeDetails";
 import ShiftDetails from "../../components/verifyLocation/shiftDetails";
-import DatePickerModal from "../../components/verifyLocation/datePickerModal";
-import {
-  fetchEmployees,
-  fetchEmployeeWithId,
-} from "../../services/organization/fetchEmployees";
+import { fetchEmployees, fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShift } from "../../services/userShift/fetchShifts";
 
 const VerifyLocation = () => {
@@ -44,10 +42,7 @@ const VerifyLocation = () => {
 
     const loadShiftForEmployee = async () => {
       try {
-        const shiftData = await fetchShift(
-          empId,
-          startDate.toISOString().split("T")[0]
-        );
+        const shiftData = await fetchShift(empId, startDate.toISOString().split("T")[0]);
         setShiftDetails(shiftData);
       } catch (error) {
         console.error("Error fetching shifts:", error);
@@ -66,8 +61,8 @@ const VerifyLocation = () => {
     setShowEmployeeList(false);
   };
 
-  const onStartDateChange = (event, selectedDate) => {
-    setStartDate(selectedDate || startDate);
+  const onStartDateChange = (date) => {
+    setStartDate(date || startDate);
     setModalVisible(false);
   };
 
@@ -84,24 +79,41 @@ const VerifyLocation = () => {
 
         {!showEmployeeList && (
           <>
-            <DatePickerModal
-              isVisible={isModalVisible}
-              date={startDate}
-              onChange={onStartDateChange}
-              onClose={() => setModalVisible(false)}
-            />
+            <View style={styles.dateContainer}>
+              <Text style={styles.label}>Fecha:</Text>
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <Text style={styles.dateText}>{startDate.toLocaleDateString()}</Text>
+              </TouchableOpacity>
+            </View>
 
-            <ShiftDetails
-              shiftDetails={shiftDetails}
-              startDate={startDate}
-            />
+            <Modal
+              transparent={true}
+              animationType="slide"
+              visible={isModalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View style={styles.overlay}>
+                <View style={styles.datePickerContainer}>
+                  <DatePicker
+                    selected={startDate}
+                    onChange={onStartDateChange}
+                    dateFormat="dd/MM/yyyy"
+                    className="date-picker"
+                  />
+                  <TouchableOpacity onPress={() => setModalVisible(false)}>
+                    <Text style={styles.closeButton}>Cerrar</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+
+            <ShiftDetails shiftDetails={shiftDetails} startDate={startDate} />
           </>
         )}
       </ViewShot>
     </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   scrollContainer: { flexGrow: 1 },
@@ -119,6 +131,47 @@ const styles = StyleSheet.create({
     color: "#333",
     textAlign: "center",
     alignItems: "center",
+  },
+  dateContainer: {
+    marginBottom: 16,
+    alignItems: "center",
+    width: "100%",
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "grey",
+    marginBottom: 4,
+  },
+  dateText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#333",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    backgroundColor: "#f1f1f1",
+    borderWidth: 1,
+    borderColor: "#25D366",  
+    marginVertical: 5,
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  datePickerContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 8,
+    width: "80%",
+    alignItems: "center",
+  },
+  closeButton: {
+    marginTop: 10,
+    color: "blue",
+    fontSize: 16,
   },
 });
 
