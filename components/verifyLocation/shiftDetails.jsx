@@ -1,29 +1,7 @@
 import React, { useState, useEffect } from "react";
-import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
+import { View, Text, TextInput, StyleSheet } from "react-native";
 
 const ShiftDetails = ({ shiftDetails, shiftType }) => {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let loc = await Location.getCurrentPositionAsync({});
-      setLocation({
-        latitude: loc.coords.latitude,
-        longitude: loc.coords.longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      });
-    })();
-  }, []);
-
   return (
     <View>
       <Text style={styles.label}>Modo del Turno:</Text>
@@ -48,29 +26,29 @@ const ShiftDetails = ({ shiftDetails, shiftType }) => {
       />
 
       <Text style={styles.label}>Ubicación del Registro:</Text>
-      <View style={{ height: 200, marginVertical: 10 }}>
-        {location ? (
-          <MapView
-            style={{ flex: 1 }}
-            initialRegion={location}
-            showsUserLocation={true}
-          >
-            <Marker
-              coordinate={{
-                latitude: location.latitude,
-                longitude: location.longitude,
-              }}
-              title="Ubicación Actual"
-            />
-          </MapView>
-        ) : (
-          <Text style={{ textAlign: "center", color: "gray" }}>
-            {errorMsg || "Cargando mapa..."}
-          </Text>
-        )}
-      </View>
+      <Text style={{ textAlign: "center", color: "gray" }}>
+        {"No disponible"}
+      </Text>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginVertical: 5,
+  },
+  input: {
+    height: 40,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingLeft: 10,
+  },
+  readOnlyInput: {
+    backgroundColor: "#f9f9f9",
+  },
+});
 
 export default ShiftDetails;
