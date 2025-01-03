@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     backgroundColor: "#f4f4f4",
+    zIndex: 10, // Ensure navbar stays on top of other elements
   },
   logoContainer: {
     flex: 1, // Allow the logo container to take available space
@@ -136,10 +137,12 @@ const styles = StyleSheet.create({
   dropdownMenu: {
     position: "absolute",
     top: 60,
-    right: 15,
+    left: 0,
+    width: "100%", // Full screen width
     backgroundColor: "#f4f4f4",
     borderRadius: 8,
-    padding: 10,
+    paddingVertical: 10,
+    zIndex: 20, // Ensure it appears above the carousel
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -147,11 +150,13 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   dropdownItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingVertical: 15,
+    alignItems: "center", // Center align text in each menu item
   },
   dropdownText: {
-    fontSize: 16,
+    fontSize: 26,
+    fontWeight: "bold",
     color: "#333",
+    textAlign: "center", // Ensure text is centered
   },
 });

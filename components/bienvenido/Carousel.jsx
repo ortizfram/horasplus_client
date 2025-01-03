@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   carouselContainer: {
     flex: 1,
     backgroundColor: "#000", // Black background for better image fit
+    zIndex: 1
   },
   carouselItem: {
     width, // Use full screen width
