@@ -11,12 +11,12 @@ const ShiftDetails = ({ shiftDetails, startDate }) => {
         editable={false}
       />
 
-      <Text style={styles.label}>Modo del Turno:</Text>
+      {/* <Text style={styles.label}>Modo del Turno:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
         value={shiftDetails?.shift_mode || "NO EXISTE"}
         editable={false}
-      />
+      /> */}
 
       <Text style={styles.label}>Hora de Ingreso:</Text>
       <TextInput
