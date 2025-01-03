@@ -1,40 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   TouchableOpacity,
   Text,
   View,
   StyleSheet,
   Linking,
+  Dimensions,
 } from "react-native";
 import Logo from "../Logo";
 
 export default function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const screenWidth = Dimensions.get("window").width;
+  const isMobile = screenWidth < 768; // Define mobile screen width
+
   return (
     <View style={styles.navbar}>
       {/* Logo on the center-left */}
       <View style={styles.logoContainer}>
-        <Logo style={styles.logo} />
+        <Logo style={[styles.logo, isMobile ? null : styles.logoWeb]} />
       </View>
 
-      {/* Buttons on the right */}
-      <View style={styles.buttonContainer}>
+      {/* Buttons or Hamburger Menu */}
+      {isMobile ? (
         <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => Linking.openURL("/")}
+          style={styles.hamburgerMenu}
+          onPress={() => setIsMenuOpen(!isMenuOpen)}
         >
-          <Text style={styles.navButtonText}>Acceder</Text>
+          <View style={styles.hamburgerLine} />
+          <View style={styles.hamburgerLine} />
+          <View style={styles.hamburgerLine} />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.navButtonContact}
-          onPress={() =>
-            Linking.openURL(
-              "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
-            )
-          }
-        >
-          <Text style={styles.navButtonContactText}>Contactar</Text>
-        </TouchableOpacity>
-      </View>
+      ) : (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={() => Linking.openURL("/")}
+          >
+            <Text style={styles.navButtonText}>Acceder</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navButtonContact}
+            onPress={() =>
+              Linking.openURL(
+                "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
+              )
+            }
+          >
+            <Text style={styles.navButtonContactText}>Contactar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Dropdown Menu for Hamburger */}
+      {isMobile && isMenuOpen && (
+        <View style={styles.dropdownMenu}>
+          <TouchableOpacity
+            style={styles.dropdownItem}
+            onPress={() => Linking.openURL("/")}
+          >
+            <Text style={styles.dropdownText}>Acceder</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.dropdownItem}
+            onPress={() =>
+              Linking.openURL(
+                "https://web.whatsapp.com/send?phone=2613005849&text=Hola+quiero+demo+de+Horas+Mas"
+              )
+            }
+          >
+            <Text style={styles.dropdownText}>Contactar</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
@@ -53,7 +91,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start", // Align logo to the left
   },
   logo: {
-    marginLeft: 10, // Add margin to position it slightly inward from the left edge
+    marginLeft: 10, // Default margin for mobile
+  },
+  logoWeb: {
+    marginLeft: 30, // Move the logo 20px more to the right for web
   },
   buttonContainer: {
     flexDirection: "row", // Arrange buttons horizontally
@@ -81,5 +122,36 @@ const styles = StyleSheet.create({
   navButtonContactText: {
     color: "#fff",
     fontWeight: "bold",
+  },
+  hamburgerMenu: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  hamburgerLine: {
+    width: 25,
+    height: 3,
+    backgroundColor: "#333",
+    marginVertical: 3,
+  },
+  dropdownMenu: {
+    position: "absolute",
+    top: 60,
+    right: 15,
+    backgroundColor: "#f4f4f4",
+    borderRadius: 8,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  dropdownItem: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  dropdownText: {
+    fontSize: 16,
+    color: "#333",
   },
 });
