@@ -12,7 +12,7 @@ import fetchOrganization from "../../services/organization/fetchOrganization";
 import { fetchEmployees } from "../../services/organization/fetchEmployees";
 
 const Employees = () => {
-  const { orgId } = useLocalSearchParams();
+  const { orgId, next } = useLocalSearchParams();
   const router = useRouter();
   const [organization, setOrganization] = useState(null);
   const [employees, setEmployees] = useState([]);
@@ -40,8 +40,12 @@ const Employees = () => {
     loadEmployees();
   }, [orgId]);
 
-  const handlePress = (empId) => {
-    router.push(`${empId}`);
+  const handlePress = (empId, next) => {
+    if (empId && !next) {
+      router.push(`${empId}`);
+    } else if (empId && next) {// go verify-location
+      router.push(`${empId}/${next}?orgId=${orgId}`);
+    }
   };
 
   const renderEmployee = ({ item }) => {
@@ -55,7 +59,7 @@ const Employees = () => {
     return (
       <TouchableOpacity
         style={styles.employeeContainer}
-        onPress={() => handlePress(item._id)}
+        onPress={() => handlePress(item._id, next)}
       >
         <Text>{displayName}</Text>
       </TouchableOpacity>

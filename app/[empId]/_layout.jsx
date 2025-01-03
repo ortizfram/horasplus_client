@@ -5,6 +5,7 @@ import Loader from "../../components/Loader";
 import Index from "./index";
 import Profile from "./profile";
 import Report from "./report";
+import VerifyLocation from "./verifyLocation";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +32,11 @@ export default function EmpLayout() {
       <Tab.Screen
         name="report"
         component={Report}
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+      <Tab.Screen
+        name="verifyLocation"
+        component={VerifyLocation}
         screenOptions={{ headerShown: false, title: "" }}
       />
     </Tab.Navigator>
