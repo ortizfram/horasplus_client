@@ -42,9 +42,8 @@ export default function OrgLayout() {
         name="settings"
         screenOptions={{ headerShown: false, title: "" }}
       />
-       <Tab.Screen
+       <Stack.Screen
         name="verifyLocation"
-        component={verifyLocation}
         screenOptions={{ headerShown: false, title: "" }}
       />
     </Stack>
