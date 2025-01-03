@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-start", // Align logo to the left
   },
   logo: {
-    marginLeft: 10, // Default margin for mobile
+    marginLeft: 16, // Default margin for mobile
   },
   logoWeb: {
-    marginLeft: 30, // Move the logo 20px more to the right for web
+    marginLeft: 50, // Move the logo 20px more to the right for web
   },
   buttonContainer: {
     flexDirection: "row", // Arrange buttons horizontally
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   dropdownMenu: {
     position: "absolute",
-    top: 60,
+    top: 80,
     left: 0,
     width: "100%", // Full screen width
     backgroundColor: "#f4f4f4",
