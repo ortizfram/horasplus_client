@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
-import SearchOrganization from "../../components/SearchOrganization";
+import SearchOrganization from "../../components/searchOrganization";
 
 export default function SearchAndCreate({ userInfo, handleSelectOrg }) {
   return (
