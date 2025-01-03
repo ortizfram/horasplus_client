@@ -4,7 +4,6 @@ import {
   Text,
   View,
   StyleSheet,
-  Image,
   Linking,
 } from "react-native";
 import Logo from "../Logo";
@@ -12,8 +11,10 @@ import Logo from "../Logo";
 export default function Navbar() {
   return (
     <View style={styles.navbar}>
-      {/* Logo in the middle */}
-      <Logo style={styles.logo} />
+      {/* Logo on the center-left */}
+      <View style={styles.logoContainer}>
+        <Logo style={styles.logo} />
+      </View>
 
       {/* Buttons on the right */}
       <View style={styles.buttonContainer}>
@@ -31,7 +32,7 @@ export default function Navbar() {
             )
           }
         >
-          <Text style={styles.navButtonText}>Contactar</Text>
+          <Text style={styles.navButtonContactText}>Contactar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -47,25 +48,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: "#f4f4f4",
   },
+  logoContainer: {
+    flex: 1, // Allow the logo container to take available space
+    alignItems: "flex-start", // Align logo to the left
+  },
   logo: {
-    position: "absolute", // Position the logo in the middle
-    top: 10,
-    left: "50%",
-    transform: [{ translateX: -75 }], // Adjust the translation based on the logo width (150px)
-    width: 150,
-    height: 50,
-    resizeMode: "contain",
+    marginLeft: 10, // Add margin to position it slightly inward from the left edge
   },
   buttonContainer: {
     flexDirection: "row", // Arrange buttons horizontally
     alignItems: "center",
-  },
-  navButtonContact: {
-    backgroundColor: "#4CAF50",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-    marginLeft: 10, // Add spacing between the buttons
   },
   navButton: {
     borderColor: "#4CAF50",
@@ -75,12 +67,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginLeft: 10, // Add spacing between the buttons
   },
-  navButtonContactText: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
   navButtonText: {
     color: "#4CAF50",
+    fontWeight: "bold",
+  },
+  navButtonContact: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginLeft: 10, // Add spacing between the buttons
+  },
+  navButtonContactText: {
+    color: "#fff",
     fontWeight: "bold",
   },
 });
