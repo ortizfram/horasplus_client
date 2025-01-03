@@ -13,6 +13,7 @@ import axios from "axios";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Adjust the icon set if needed
 import { RESP_URL } from "../../config";
 import fetchOrganization from "../../services/organization/fetchOrganization";
+import LocationIcon from "../../icons/LocationIcon";
 
 export default function Dashboard() {
   const { orgId } = useLocalSearchParams();
@@ -124,7 +125,7 @@ export default function Dashboard() {
           style={styles.gridItem}
           onPress={() => router.push(`${organization?._id}/verifyLocation`)}
         >
-          <Icon name="location" size={30} color="#007bff" />
+          <LocationIcon size={30} color="#007bff" />
           <Text style={styles.gridText}>Ubicación de Marcaciones</Text>
         </Pressable>
       </View>
