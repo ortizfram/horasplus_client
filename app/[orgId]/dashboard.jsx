@@ -122,7 +122,7 @@ export default function Dashboard() {
         </Pressable>
         <Pressable
           style={styles.gridItem}
-          onPress={() => router.push(`${organization?._id}/employees?next=verifyLocation`)}
+          onPress={() => router.push(`${organization?._id}/verifyLocation`)}
         >
           <Icon name="location" size={30} color="#007bff" />
           <Text style={styles.gridText}>Ubicación de Marcaciones</Text>
