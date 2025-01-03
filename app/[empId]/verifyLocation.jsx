@@ -93,9 +93,7 @@ const VerifyLocation = () => {
 
             <ShiftDetails
               shiftDetails={shiftDetails}
-              setShiftDetails={setShiftDetails}
               startDate={startDate}
-              empId={empId}
             />
           </>
         )}
@@ -103,6 +101,7 @@ const VerifyLocation = () => {
     </ScrollView>
   );
 };
+
 
 const styles = StyleSheet.create({
   scrollContainer: { flexGrow: 1 },

@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from "react-native";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const DatePickerModal = ({ visible, onClose, onChange, selectedDate }) => {
+const DatePickerModal = ({ isVisible, onClose, onChange, date }) => {
   return (
-    <Modal transparent={true} animationType="slide" visible={visible}>
+    <Modal transparent={true} animationType="slide" visible={isVisible}>
       <View style={styles.overlay}>
         <View style={styles.container}>
           <DatePicker
-            selected={selectedDate}
+            selected={date}
             onChange={onChange}
             dateFormat="dd/MM/yyyy"
           />
@@ -21,6 +21,7 @@ const DatePickerModal = ({ visible, onClose, onChange, selectedDate }) => {
     </Modal>
   );
 };
+
 
 const styles = StyleSheet.create({
   overlay: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0, 0, 0, 0.5)" },

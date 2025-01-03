@@ -1,37 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
-const ShiftDetails = ({ shiftDetails, shiftType }) => {
+const ShiftDetails = ({ shiftDetails, startDate }) => {
   return (
     <View>
+      <Text style={styles.label}>Fecha de Turno:</Text>
+      <TextInput
+        style={[styles.input, styles.readOnlyInput]}
+        value={startDate ? startDate.toLocaleDateString() : "No disponible"}
+        editable={false}
+      />
+
       <Text style={styles.label}>Modo del Turno:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
-        value={shiftDetails.shift_mode || shiftType}
+        value={shiftDetails?.shift_mode || "No disponible"}
         editable={false}
       />
 
       <Text style={styles.label}>Hora de Ingreso:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
-        value={shiftDetails.in || "No disponible"}
+        value={shiftDetails?.in || "No disponible"}
         editable={false}
       />
 
       <Text style={styles.label}>Hora de Salida:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
-        value={shiftDetails.out || "No disponible"}
+        value={shiftDetails?.out || "No disponible"}
         editable={false}
       />
 
       <Text style={styles.label}>Ubicación del Registro:</Text>
       <Text style={{ textAlign: "center", color: "gray" }}>
-        {"No disponible"}
+        {shiftDetails?.location || "No disponible"}
       </Text>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   label: {
