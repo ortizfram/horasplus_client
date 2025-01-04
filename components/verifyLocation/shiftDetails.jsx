@@ -37,6 +37,7 @@ const ShiftDetails = ({ shiftDetails, startDate }) => {
         {shiftDetails?.location ? (
           <Text>
             <Text>Latitude: {shiftDetails.location.latitude}</Text>
+            {" "}
             <Text>Longitude: {shiftDetails.location.longitude}</Text>
           </Text>
         ) : (
