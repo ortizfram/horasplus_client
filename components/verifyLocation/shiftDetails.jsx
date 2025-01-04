@@ -34,13 +34,18 @@ const ShiftDetails = ({ shiftDetails, startDate }) => {
 
       <Text style={styles.label}>Ubicación del Registro:</Text>
       <Text style={{ textAlign: "center", color: "gray" }}>
-        {shiftDetails?.location || "NO EXISTE"}
+        {shiftDetails?.location ? (
+          <Text>
+            <Text>Latitude: {shiftDetails.location.latitude}</Text>
+            <Text>Longitude: {shiftDetails.location.longitude}</Text>
+          </Text>
+        ) : (
+          "NO EXISTE"
+        )}
       </Text>
     </View>
   );
 };
-
-
 
 const styles = StyleSheet.create({
   label: {
