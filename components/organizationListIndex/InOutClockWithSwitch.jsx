@@ -15,14 +15,14 @@ export default function InOutClockWithSwitch({
       {hasOrganization ? (
         <>
           <InOutClock orgId={userInfo?.user?.data?.organization_id} />
-          <Pressable
+          {/* <Pressable
             style={styles.switchButton}
             onPress={() => setShowSearch(true)}
           >
             <Text style={styles.switchButtonText}>
               Hoy estoy en otro establecimiento
             </Text>
-          </Pressable>
+          </Pressable> */}
         </>
       ) : (
         <View>

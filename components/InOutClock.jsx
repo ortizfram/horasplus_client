@@ -7,8 +7,7 @@ import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
 import * as Location from 'expo-location';
 
-
-const InOutClock = ({ orgId }) => {
+const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
   const [org, setOrg] = useState(null);
   const [inTime, setInTime] = useState(null);
@@ -47,7 +46,6 @@ const InOutClock = ({ orgId }) => {
         setWasIn(false);
       }
 
-      // Log total_hours
       if (shiftData?.total_hours) {
         console.log("Total Hours:", shiftData.total_hours);
       }
@@ -72,34 +70,29 @@ const InOutClock = ({ orgId }) => {
   const handleIngresoPress = async () => {
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
-  
+
     try {
-      // Request permission to access the user's location
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert("Permission Denied", "Location permission is required.");
         return;
       }
-  
-      // Get the user's current location
+
       const location = await Location.getCurrentPositionAsync({});
-  
-      // Log the location for debugging
-      console.log("User location:", location);
-  
+
       const currentLocation = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       };
-  
+
       setInTime(currentInTime);
-  
+
       const response = await axios.post(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
           shiftMode: "regular",
-          location: currentLocation,  // Send location data
+          location: currentLocation,
         },
         {
           headers: {
@@ -108,20 +101,16 @@ const InOutClock = ({ orgId }) => {
           },
         }
       );
-  
+
       if (response.status === 201) {
         console.log("Ingresaste OK");
         setWasIn(true);
       } else {
-        console.log("Failed to create shift");
         Alert.alert("Error", "Failed to clock in. Please try again.");
       }
     } catch (error) {
       console.log("Error during handleIngresoPress:", error);
-      Alert.alert(
-        "Error",
-        "An error occurred during clock in. Please try again."
-      );
+      Alert.alert("Error", "An error occurred during clock in. Please try again.");
     }
   };
 
@@ -129,29 +118,26 @@ const InOutClock = ({ orgId }) => {
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
     setInTime(currentInTime);
-  
+
     try {
-      // Request permission to access the user's location
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert("Permission Denied", "Location permission is required.");
         return;
       }
-  
-      // Get the user's current location
+
       const location = await Location.getCurrentPositionAsync({});
       const currentLocation = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       };
-  
-      // Send location with the request to clock in
+
       const response = await axios.post(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
           shiftMode: "holiday",
-          location: currentLocation,  // Send location data
+          location: currentLocation,
         },
         {
           headers: {
@@ -160,23 +146,18 @@ const InOutClock = ({ orgId }) => {
           },
         }
       );
-  
+
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
         setWasIn(true);
       } else {
-        console.log("Failed to create holiday shift");
         Alert.alert("Error", "Failed to clock in (holiday). Please try again.");
       }
     } catch (error) {
       console.log("Error during handleIngresoFeriadoPress:", error);
-      Alert.alert(
-        "Error",
-        "An error occurred during holiday clock in. Please try again."
-      );
+      Alert.alert("Error", "An error occurred during holiday clock in. Please try again.");
     }
   };
-  
 
   const handleEgresoPress = async () => {
     const now = new Date();
@@ -202,19 +183,14 @@ const InOutClock = ({ orgId }) => {
       if (response.status === 200) {
         console.log("Egresaste OK");
         setWasIn(false);
-
         setInTime(null);
         setOutTime(null);
       } else {
-        console.log("Failed to complete shift");
         Alert.alert("Error", "Failed to clock out. Please try again.");
       }
     } catch (error) {
       console.log("Error during handleEgresoPress:", error);
-      Alert.alert(
-        "Error",
-        "An error occurred during clock out. Please try again."
-      );
+      Alert.alert("Error", "An error occurred during clock out. Please try again.");
     }
   };
 
@@ -234,12 +210,12 @@ const InOutClock = ({ orgId }) => {
           <Text style={styles.title}>{org.name}</Text>
         </>
       ) : (
-        <Text>cargando detalles...</Text>
+        <Text>Cargando detalles...</Text>
       )}
       <Text>{new Date().toLocaleString()}</Text>
 
       {loading ? (
-        <Text>Cargando turno...</Text>
+        <Text></Text>
       ) : (
         <>
           {wasIn === false && (
@@ -260,6 +236,9 @@ const InOutClock = ({ orgId }) => {
               <Text style={styles.actionText}>Egreso</Text>
             </Pressable>
           )}
+          <Pressable style={styles.switchButton} onPress={() => setShowSearch(true)}>
+            <Text style={styles.switchButtonText}>Hoy estoy en otro establecimiento</Text>
+          </Pressable>
         </>
       )}
     </View>
