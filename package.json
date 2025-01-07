@@ -63,7 +63,8 @@
     "react-native-svg": "^15.10.1",
     "react-native-view-shot": "^3.8.0",
     "react-native-web": "^0.19.12",
-    "react-qr-code": "^2.0.15"
+    "react-qr-code": "^2.0.15",
+    "react-native-maps": "1.18.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

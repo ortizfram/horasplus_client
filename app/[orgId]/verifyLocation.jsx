@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, Text, View, ScrollView, Modal, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Modal,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import ViewShot from "react-native-view-shot";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,7 +17,7 @@ import EmployeeDetails from "../../components/verifyLocation/employeeDetails";
 import ShiftDetails from "../../components/verifyLocation/shiftDetails";
 import { fetchEmployees, fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShift } from "../../services/userShift/fetchShifts";
-import * as Location from 'expo-location'; 
+import { GOOGLE_MAPS_API_KEY } from "../../config";
 
 const VerifyLocation = () => {
   const viewRef = useRef();
@@ -19,9 +27,13 @@ const VerifyLocation = () => {
   const [employees, setEmployees] = useState([]);
   const [showEmployeeList, setShowEmployeeList] = useState(true);
   const [shiftDetails, setShiftDetails] = useState(null);
-  const [location, setLocation] = useState(null)
+  const [location, setLocation] = useState(null);
   const [startDate, setStartDate] = useState(new Date());
   const [isModalVisible, setModalVisible] = useState(false);
+  const [mapRegion, setMapRegion] = useState({
+    latitude: 37.78825, // Coordenadas predeterminadas
+    longitude: -122.4324,
+  });
 
   useEffect(() => {
     const loadEmployees = async () => {
@@ -46,13 +58,11 @@ const VerifyLocation = () => {
       try {
         const shiftData = await fetchShift(empId, startDate.toISOString().split("T")[0]);
         setShiftDetails(shiftData);
-         // If location exists in shiftData, fetch the location details
-         if (shiftData?.location) {
+
+        // Si hay ubicación en los datos del turno, actualiza el mapa
+        if (shiftData?.location) {
           const { latitude, longitude } = shiftData.location;
-          // Reverse geocode to get a readable address (optional)
-          const reverseGeocode = await Location.reverseGeocodeAsync({ latitude, longitude });
-          const address = reverseGeocode[0]?.formattedAddress || 'Ubicacion no disponible';
-          setLocation(address);
+          setMapRegion({ latitude, longitude });
         }
       } catch (error) {
         console.error("Error fetching shifts:", error);
@@ -64,11 +74,10 @@ const VerifyLocation = () => {
             location: "NO EXISTE",
           });
         } else {
-          setShiftDetails(null); // Handle other errors
+          setShiftDetails(null); // Manejo de otros errores
         }
       }
     };
-    
 
     loadEmployees();
     if (empId) {
@@ -128,6 +137,17 @@ const VerifyLocation = () => {
               </View>
             </Modal>
 
+            {Platform.OS === "web" && (
+              <iframe
+                width="100%"
+                height="300"
+                frameBorder="0"
+                style={styles.map}
+                src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${mapRegion.latitude},${mapRegion.longitude}`}
+                allowFullScreen
+              ></iframe>
+            )}
+
             <ShiftDetails shiftDetails={shiftDetails} startDate={startDate} />
           </>
         )}
@@ -151,7 +171,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "#333",
     textAlign: "center",
-    alignItems: "center",
   },
   dateContainer: {
     marginBottom: 16,
@@ -173,7 +192,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: "#f1f1f1",
     borderWidth: 1,
-    borderColor: "#25D366",  
+    borderColor: "#25D366",
     marginVertical: 5,
   },
   overlay: {
@@ -193,6 +212,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: "blue",
     fontSize: 16,
+  },
+  map: {
+    width: "100%",
+    height: 300,
+    marginVertical: 16,
   },
 });
 
