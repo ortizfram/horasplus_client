@@ -14,6 +14,8 @@ const InOutClock = ({ orgId, setShowSearch }) => {
   const [outTime, setOutTime] = useState(null);
   const [wasIn, setWasIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [screenMessage, setScreenMessage] = useState(null);
+
 
   const fetchOrg = async () => {
     try {
@@ -67,6 +69,11 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
   const timeZone = "America/Argentina/Buenos_Aires";
 
+  const showScreenMessage = (message, color) => {
+    setScreenMessage({ message, color });
+    setTimeout(() => setScreenMessage(null), 4000);
+  };
+
   const handleIngresoPress = async () => {
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
@@ -104,6 +111,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK");
+        showScreenMessage("INGRESASTE", "green")
         setWasIn(true);
       } else {
         Alert.alert("Error", "Failed to clock in. Please try again.");
@@ -152,6 +160,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
+        showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
         Alert.alert("Error", "Failed to clock in (holiday). Please try again.");
@@ -204,6 +213,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
   
       if (response.status === 200) {
         console.log("Egresaste OK");
+        showScreenMessage("SALISTE", "red");
         setWasIn(false);
         setInTime(null);
         setOutTime(null);
@@ -222,6 +232,17 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
   return (
     <View style={styles.container}>
+       {screenMessage && (
+        <View
+          style={[
+            styles.messageOverlay,
+            { backgroundColor: screenMessage.color },
+          ]}
+        >
+          <Text style={styles.messageText}>{screenMessage.message}</Text>
+        </View>
+      )}
+
       {org ? (
         <>
           <Image
@@ -279,6 +300,21 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 export default InOutClock;
 
 const styles = StyleSheet.create({
+  messageOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 10,
+  },
+  messageText: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "white",
+  },
   switchButtonTextChange: {
     color: "blue",
   },
