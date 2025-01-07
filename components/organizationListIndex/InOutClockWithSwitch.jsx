@@ -14,7 +14,7 @@ export default function InOutClockWithSwitch({
     <View>
       {hasOrganization ? (
         <>
-          <InOutClock orgId={userInfo?.user?.data?.organization_id} />
+          <InOutClock orgId={userInfo?.user?.data?.organization_id} setShowSearch={setShowSearch}/>
           {/* <Pressable
             style={styles.switchButton}
             onPress={() => setShowSearch(true)}
