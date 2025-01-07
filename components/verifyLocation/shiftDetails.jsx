@@ -1,29 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import React from "react";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
 
 const ShiftDetails = ({ shiftDetails, startDate }) => {
   return (
     <View>
-      {/* <Text style={styles.label}>Fecha de Turno:</Text>
-      <TextInput
-        style={[styles.input, styles.readOnlyInput]}
-        value={startDate ? startDate.toLocaleDateString() : "NO EXISTE"}
-        editable={false}
-      /> */}
-
-      {/* <Text style={styles.label}>Modo del Turno:</Text>
-      <TextInput
-        style={[styles.input, styles.readOnlyInput]}
-        value={shiftDetails?.shift_mode || "NO EXISTE"}
-        editable={false}
-      /> */}
-
       <Text style={styles.label}>Hora de Ingreso:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
         value={shiftDetails?.in || "NO EXISTE"}
         editable={false}
       />
+
+      <Text style={styles.label}>Ubicación de Ingreso:</Text>
+      <Text style={{ textAlign: "center", color: "gray" }}>
+        {shiftDetails?.location.latitude_in ? (
+          <Text>
+            Latitude: {shiftDetails.location.latitude_in} Longitude:{" "}
+            {shiftDetails.location.longitude_in}
+          </Text>
+        ) : (
+          "NO EXISTE"
+        )}
+      </Text>
+
+      {shiftDetails?.location.latitude_in && Platform.OS === "web" && (
+        <iframe
+          width="100%"
+          height="300"
+          frameBorder="0"
+          style={styles.map}
+          src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${shiftDetails.location.latitude_in},${shiftDetails.location.longitude_in}`}
+          allowFullScreen
+        ></iframe>
+      )}
 
       <Text style={styles.label}>Hora de Salida:</Text>
       <TextInput
@@ -32,18 +41,28 @@ const ShiftDetails = ({ shiftDetails, startDate }) => {
         editable={false}
       />
 
-      <Text style={styles.label}>Ubicación del Registro:</Text>
+      <Text style={styles.label}>Ubicación de Egreso:</Text>
       <Text style={{ textAlign: "center", color: "gray" }}>
-        {shiftDetails?.location ? (
+        {shiftDetails?.location.latitude_out ? (
           <Text>
-            <Text>Latitude: {shiftDetails.location.latitude}</Text>
-            {" "}
-            <Text>Longitude: {shiftDetails.location.longitude}</Text>
+            Latitude: {shiftDetails.location.latitude_out} Longitude:{" "}
+            {shiftDetails.location.longitude_out}
           </Text>
         ) : (
           "NO EXISTE"
         )}
       </Text>
+
+      {shiftDetails?.location.latitude_out && Platform.OS === "web" && (
+        <iframe
+          width="100%"
+          height="300"
+          frameBorder="0"
+          style={styles.map}
+          src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${shiftDetails.location.latitude_out},${shiftDetails.location.longitude_out}`}
+          allowFullScreen
+        ></iframe>
+      )}
     </View>
   );
 };
@@ -63,6 +82,11 @@ const styles = StyleSheet.create({
   },
   readOnlyInput: {
     backgroundColor: "#f9f9f9",
+  },
+  map: {
+    width: "100%",
+    height: 300,
+    marginTop: 16,
   },
 });
 

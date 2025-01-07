@@ -81,8 +81,8 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       const location = await Location.getCurrentPositionAsync({});
 
       const currentLocation = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude_in: location.coords.latitude,
+        longitude_in: location.coords.longitude,
       };
 
       setInTime(currentInTime);
@@ -131,8 +131,8 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
       const location = await Location.getCurrentPositionAsync({});
       const currentLocation = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude_in: location.coords.latitude,
+        longitude_in: location.coords.longitude,
       };
 
       const response = await axios.post(
@@ -171,12 +171,28 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       timeZone,
     });
     setOutTime(currentOutTime);
-
+  
     try {
+      // Request location permissions
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
+  
+      // Get current location
+      const location = await Location.getCurrentPositionAsync({});
+      const currentLocation = {
+        latitude_out: location.coords.latitude,
+        longitude_out: location.coords.longitude,
+      };
+  
+      // Send clock-out data
       const response = await axios.put(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           outTime: currentOutTime,
+          location: currentLocation, // Include location data
         },
         {
           headers: {
@@ -185,7 +201,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
           },
         }
       );
-
+  
       if (response.status === 200) {
         console.log("Egresaste OK");
         setWasIn(false);
@@ -202,6 +218,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       );
     }
   };
+  
 
   return (
     <View style={styles.container}>
