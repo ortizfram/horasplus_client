@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import { GOOGLE_MAPS_API_KEY } from "../../config";
 
 const ShiftDetails = ({ shiftDetails, startDate }) => {
   return (
