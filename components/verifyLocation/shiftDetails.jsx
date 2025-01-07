@@ -4,12 +4,12 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 const ShiftDetails = ({ shiftDetails, startDate }) => {
   return (
     <View>
-      <Text style={styles.label}>Fecha de Turno:</Text>
+      {/* <Text style={styles.label}>Fecha de Turno:</Text>
       <TextInput
         style={[styles.input, styles.readOnlyInput]}
         value={startDate ? startDate.toLocaleDateString() : "NO EXISTE"}
         editable={false}
-      />
+      /> */}
 
       {/* <Text style={styles.label}>Modo del Turno:</Text>
       <TextInput

@@ -5,7 +5,7 @@ import { RESP_URL } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -73,7 +73,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
+      if (status !== "granted") {
         Alert.alert("Permission Denied", "Location permission is required.");
         return;
       }
@@ -110,7 +110,10 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       }
     } catch (error) {
       console.log("Error during handleIngresoPress:", error);
-      Alert.alert("Error", "An error occurred during clock in. Please try again.");
+      Alert.alert(
+        "Error",
+        "An error occurred during clock in. Please try again."
+      );
     }
   };
 
@@ -121,7 +124,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
+      if (status !== "granted") {
         Alert.alert("Permission Denied", "Location permission is required.");
         return;
       }
@@ -155,7 +158,10 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       }
     } catch (error) {
       console.log("Error during handleIngresoFeriadoPress:", error);
-      Alert.alert("Error", "An error occurred during holiday clock in. Please try again.");
+      Alert.alert(
+        "Error",
+        "An error occurred during holiday clock in. Please try again."
+      );
     }
   };
 
@@ -190,7 +196,10 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       }
     } catch (error) {
       console.log("Error during handleEgresoPress:", error);
-      Alert.alert("Error", "An error occurred during clock out. Please try again.");
+      Alert.alert(
+        "Error",
+        "An error occurred during clock out. Please try again."
+      );
     }
   };
 
@@ -236,8 +245,13 @@ const InOutClock = ({ orgId, setShowSearch }) => {
               <Text style={styles.actionText}>Egreso</Text>
             </Pressable>
           )}
-          <Pressable style={styles.switchButton} onPress={() => setShowSearch(true)}>
-            <Text style={styles.switchButtonText}>Hoy estoy en otro establecimiento</Text>
+          <Pressable
+            style={styles.switchButton}
+            onPress={() => setShowSearch(true)}
+          >
+            <Text style={styles.switchButtonTextChange}>
+              Hoy estoy en otro establecimiento
+            </Text>
           </Pressable>
         </>
       )}
@@ -248,6 +262,9 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 export default InOutClock;
 
 const styles = StyleSheet.create({
+  switchButtonTextChange: {
+    color: "blue",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
