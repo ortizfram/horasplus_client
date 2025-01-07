@@ -17,7 +17,6 @@ import EmployeeDetails from "../../components/verifyLocation/employeeDetails";
 import ShiftDetails from "../../components/verifyLocation/shiftDetails";
 import { fetchEmployees, fetchEmployeeWithId } from "../../services/organization/fetchEmployees";
 import { fetchShift } from "../../services/userShift/fetchShifts";
-import { GOOGLE_MAPS_API_KEY } from "../../config";
 
 const VerifyLocation = () => {
   const viewRef = useRef();
@@ -137,7 +136,7 @@ const VerifyLocation = () => {
               </View>
             </Modal>
 
-            {Platform.OS === "web" && (
+            {/* {Platform.OS === "web" && (
               <iframe
                 width="100%"
                 height="300"
@@ -146,7 +145,7 @@ const VerifyLocation = () => {
                 src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${mapRegion.latitude},${mapRegion.longitude}`}
                 allowFullScreen
               ></iframe>
-            )}
+            )} */}
 
             <ShiftDetails shiftDetails={shiftDetails} startDate={startDate} />
           </>
