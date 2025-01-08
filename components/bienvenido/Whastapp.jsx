@@ -1,6 +1,6 @@
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import Svg from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 
 const Whastapp = () => {
   return (
