@@ -1,20 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { MaterialIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
-
-const { width, height } = Dimensions.get("window");
-const isMobile = width < 768;
 
 const Soluciones = () => {
   const features = [
     {
       title: "Ubicacion en Tiempo Real",
-      description: "Mejora la operación de tu negocio. Tus empleados podrán realiza asistencia en tiempo real.",
+      description: "Mejora la operación de tu negocio. Tus empleados podrán realizar asistencia en tiempo real.",
       icon: <MaterialIcons name="location-pin" size={40} color="#000" />,
     },
     {
       title: "Disminuye probabilidad de juicios en un 90%",
-      description: "Mejora la operación de tu negocio. Eliminando cualquier tipo de pruebas como planillas de asistencia en papel",
+      description: "Elimina cualquier tipo de pruebas como planillas de asistencia en papel.",
       icon: <MaterialIcons name="print-disabled" size={40} color="#000" />,
     },
     {
@@ -52,7 +49,7 @@ const Soluciones = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1, // Ensure the ScrollView content fills available space
+    flexGrow: 1,
     padding: 20,
     backgroundColor: "#fff",
   },
@@ -68,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   feature: {
-    width: "45%",
+    flexBasis: "45%", // Dynamically adjusts to 45% of available width
     alignItems: "center",
     marginBottom: 20,
   },
