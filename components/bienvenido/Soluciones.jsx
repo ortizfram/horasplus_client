@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { MaterialIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
+
+const isMobile = Dimensions.get("window").width < 768;
+
 
 const Soluciones = () => {
   const features = [
@@ -49,15 +52,17 @@ const Soluciones = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flexGrow: 0,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#f6f6f6",
+
   },
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontSize: isMobile ? 28 : 40,
+    fontWeight: "700",
+    color: "#333",
     marginBottom: 20,
+    textAlign: "center",
   },
   featuresContainer: {
     flexDirection: "row",

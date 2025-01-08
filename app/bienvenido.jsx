@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   },
   beneficios: {
     padding: 20,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
   },
   beneficiosHeader: {
     fontSize: isMobile ? 28 : 40,
