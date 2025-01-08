@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { MaterialIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get("window");
-const isMobile = Dimensions.get("window").width < 768;
+const isMobile = width < 768;
 
 const Soluciones = () => {
   const features = [
@@ -52,6 +52,7 @@ const Soluciones = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flexGrow: 1, // Ensure the ScrollView content fills available space
     padding: 20,
     backgroundColor: "#fff",
   },
