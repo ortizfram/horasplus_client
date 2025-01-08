@@ -19,6 +19,7 @@ import { Svg, Path } from "react-native-svg";
 import Navbar from "../components/bienvenido/NavbarBienvenido";
 import HeaderTextContainer from "../components/bienvenido/HeaderTextContainer";
 import Carousel from "../components/bienvenido/Carousel";
+import Soluciones from "../components/bienvenido/Soluciones";
 
 const { width, height } = Dimensions.get("window");
 const isMobile = Dimensions.get("window").width < 768;
@@ -129,6 +130,8 @@ const Bienvenido = () => {
       <Navbar />
       <Carousel carouselData={carouselData} />
       <HeaderTextContainer />
+
+      <Soluciones />
 
       {/* Video Section */}
       <View style={styles.videoContainer}>
