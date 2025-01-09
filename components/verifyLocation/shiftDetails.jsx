@@ -14,23 +14,23 @@ const ShiftDetails = ({ shiftDetails, startDate }) => {
 
       <Text style={styles.label}>Ubicación de Ingreso:</Text>
       <Text style={{ textAlign: "center", color: "gray" }}>
-        {shiftDetails?.location.latitude_in ? (
+        {shiftDetails?.location?.latitude_in ? (
           <Text>
-            Latitude: {shiftDetails.location.latitude_in} Longitude:{" "}
-            {shiftDetails.location.longitude_in}
+            Latitude: {shiftDetails?.location?.latitude_in} Longitude:{" "}
+            {shiftDetails?.location?.longitude_in}
           </Text>
         ) : (
           "NO EXISTE"
         )}
       </Text>
 
-      {shiftDetails?.location.latitude_in && Platform.OS === "web" && (
+      {shiftDetails?.location?.latitude_in && Platform.OS === "web" && (
         <iframe
           width="100%"
           height="300"
           frameBorder="0"
           style={styles.map}
-          src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${shiftDetails.location.latitude_in},${shiftDetails.location.longitude_in}`}
+          src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${shiftDetails?.location?.latitude_in},${shiftDetails?.location?.longitude_in}`}
           allowFullScreen
         ></iframe>
       )}
@@ -44,23 +44,23 @@ const ShiftDetails = ({ shiftDetails, startDate }) => {
 
       <Text style={styles.label}>Ubicación de Egreso:</Text>
       <Text style={{ textAlign: "center", color: "gray" }}>
-        {shiftDetails?.location.latitude_out ? (
+        {shiftDetails?.location?.latitude_out ? (
           <Text>
-            Latitude: {shiftDetails.location.latitude_out} Longitude:{" "}
-            {shiftDetails.location.longitude_out}
+            Latitude: {shiftDetails?.location?.latitude_out} Longitude:{" "}
+            {shiftDetails?.location?.longitude_out}
           </Text>
         ) : (
           "NO EXISTE"
         )}
       </Text>
 
-      {shiftDetails?.location.latitude_out && Platform.OS === "web" && (
+      {shiftDetails?.location?.latitude_out && Platform.OS === "web" && (
         <iframe
           width="100%"
           height="300"
           frameBorder="0"
           style={styles.map}
-          src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${shiftDetails.location.latitude_out},${shiftDetails.location.longitude_out}`}
+          src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${shiftDetails?.location?.latitude_out},${shiftDetails?.location?.longitude_out}`}
           allowFullScreen
         ></iframe>
       )}

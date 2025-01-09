@@ -136,17 +136,6 @@ const VerifyLocation = () => {
               </View>
             </Modal>
 
-            {/* {Platform.OS === "web" && (
-              <iframe
-                width="100%"
-                height="300"
-                frameBorder="0"
-                style={styles.map}
-                src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${mapRegion.latitude},${mapRegion.longitude}`}
-                allowFullScreen
-              ></iframe>
-            )} */}
-
             <ShiftDetails shiftDetails={shiftDetails} startDate={startDate} />
           </>
         )}
