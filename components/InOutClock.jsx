@@ -6,6 +6,8 @@ import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
 import * as Location from "expo-location";
+import { set } from "react-datepicker/dist/date_utils";
+import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -74,6 +76,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
   };
 
   const handleIngresoPress = async () => {
+    setLoading(true);
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
 
@@ -110,6 +113,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK");
+        setLoading(false);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
@@ -121,10 +125,13 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         "Error",
         "An error occurred during clock in. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleIngresoFeriadoPress = async () => {
+    setLoading(true);
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
     setInTime(currentInTime);
@@ -159,6 +166,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
+        setLoading(false);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
@@ -170,10 +178,13 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         "Error",
         "An error occurred during holiday clock in. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleEgresoPress = async () => {
+    setLoading(true);
     const now = new Date();
     const currentOutTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", {
       timeZone,
@@ -212,6 +223,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
       if (response.status === 200) {
         console.log("Egresaste OK");
+        setLoading(false);
         showScreenMessage("SALISTE", "red");
         setWasIn(false);
         setInTime(null);
@@ -225,6 +237,8 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         "Error",
         "An error occurred during clock out. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -257,27 +271,35 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       ) : (
         <Text>Cargando detalles...</Text>
       )}
-      {/* <Text>{new Date().toLocaleString()}</Text> */}
 
       {loading ? (
-        <Text></Text>
+        <LoadingIndicator color="#007bff" />
       ) : (
         <>
           {wasIn === false && (
             <View>
-              <Pressable style={styles.actionBtn} onPress={handleIngresoPress}>
+              <Pressable
+                style={styles.actionBtnIN}
+                onPress={handleIngresoPress}
+                disabled={loading}
+              >
                 <Text style={styles.actionText}>Ingreso</Text>
               </Pressable>
               <Pressable
                 style={styles.actionBtn}
                 onPress={handleIngresoFeriadoPress}
+                disabled={loading}
               >
                 <Text style={styles.actionText}>Ingreso Feriado</Text>
               </Pressable>
             </View>
           )}
           {wasIn === true && (
-            <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
+            <Pressable
+              style={styles.actionBtnL}
+              onPress={handleEgresoPress}
+              disabled={loading}
+            >
               <Text style={styles.actionText}>Egreso</Text>
             </Pressable>
           )}
@@ -346,6 +368,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     marginVertical: 5,
+  },
+  actionBtnIN: {
+    backgroundColor: "#28a745",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginBottom: 14,
   },
   actionBtnL: {
     backgroundColor: "#dc3545",
