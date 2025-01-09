@@ -4,7 +4,7 @@ import SearchOrganization from "../../components/searchOrganization";
 
 export default function SearchAndCreate({ userInfo, handleSelectOrg }) {
   return (
-    <View>
+    <View style={styles.wrapper}>
       {userInfo?.user?.isAdmin && (
         <Pressable style={styles.createBtn}>
           <Text
@@ -28,6 +28,26 @@ export default function SearchAndCreate({ userInfo, handleSelectOrg }) {
 }
 
 const styles = StyleSheet.create({
-  createBtn: { backgroundColor: "blue", padding: 10 },
-  createText: { color: "white" },
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    padding: 15,
+  },
+  createBtn: {
+    backgroundColor: "#32a891", // Green matching the image gradient
+    borderRadius: 8,
+    padding: 15,
+    marginVertical: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5, // Shadow for Android
+  },
+  createText: {
+    color: "#FFFFFF", // White text for contrast
+    fontWeight: "bold",
+    fontSize: 16,
+  },
 });
