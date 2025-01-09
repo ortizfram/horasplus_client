@@ -16,7 +16,6 @@ const InOutClock = ({ orgId, setShowSearch }) => {
   const [loading, setLoading] = useState(true);
   const [screenMessage, setScreenMessage] = useState(null);
 
-
   const fetchOrg = async () => {
     try {
       const response = await axios.get(
@@ -111,7 +110,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK");
-        showScreenMessage("INGRESASTE", "green")
+        showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
         Alert.alert("Error", "Failed to clock in. Please try again.");
@@ -180,7 +179,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       timeZone,
     });
     setOutTime(currentOutTime);
-  
+
     try {
       // Request location permissions
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -188,14 +187,14 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         Alert.alert("Permission Denied", "Location permission is required.");
         return;
       }
-  
+
       // Get current location
       const location = await Location.getCurrentPositionAsync({});
       const currentLocation = {
         latitude_out: location.coords.latitude,
         longitude_out: location.coords.longitude,
       };
-  
+
       // Send clock-out data
       const response = await axios.put(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
@@ -210,7 +209,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
           },
         }
       );
-  
+
       if (response.status === 200) {
         console.log("Egresaste OK");
         showScreenMessage("SALISTE", "red");
@@ -228,11 +227,10 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       );
     }
   };
-  
 
   return (
     <View style={styles.container}>
-       {screenMessage && (
+      {screenMessage && (
         <View
           style={[
             styles.messageOverlay,
@@ -303,75 +301,63 @@ const styles = StyleSheet.create({
   messageOverlay: {
     position: "absolute",
     top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    width: "100%",
+    padding: 10,
+    zIndex: 2,
     justifyContent: "center",
     alignItems: "center",
-    zIndex: 10,
   },
   messageText: {
-    fontSize: 32,
-    fontWeight: "bold",
+    fontSize: 16,
     color: "white",
+    textAlign: "center",
   },
   switchButtonTextChange: {
-    color: "blue",
+    color: "#007bff",
+    fontSize: 14,
+    textDecorationLine: "underline",
+    textAlign: "center",
+  },
+  switchButton: {
+    marginTop: 15,
   },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f9f9f9",
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 20,
+    width: 120, // Adjust width as needed
+    height: 120, // Adjust height as needed
+    borderRadius: 60, // Makes the image circular
+    marginBottom: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
-    marginBottom: 30,
+    textAlign: "center",
+    marginBottom: 20,
   },
   actionBtn: {
-    width: "100%",
-    marginVertical: 15,
-    paddingVertical: 15,
-    backgroundColor: "#007bff",
+    backgroundColor: "#28a745",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
-    elevation: 5,
+    marginVertical: 5,
   },
   actionBtnL: {
-    width: "100%",
-    marginVertical: 15,
-    paddingVertical: 15,
-    backgroundColor: "red",
+    backgroundColor: "#dc3545",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
-    elevation: 5,
+    marginVertical: 5,
   },
   actionText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "600",
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
