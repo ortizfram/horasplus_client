@@ -257,7 +257,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       ) : (
         <Text>Cargando detalles...</Text>
       )}
-      <Text>{new Date().toLocaleString()}</Text>
+      {/* <Text>{new Date().toLocaleString()}</Text> */}
 
       {loading ? (
         <Text></Text>
