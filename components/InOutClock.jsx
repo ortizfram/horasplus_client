@@ -6,7 +6,6 @@ import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
 import * as Location from "expo-location";
-import { set } from "react-datepicker/dist/date_utils";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
@@ -279,7 +278,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
           {wasIn === false && (
             <View>
               <Pressable
-                style={styles.actionBtnIN}
+                style={styles.actionBtn}
                 onPress={handleIngresoPress}
                 disabled={loading}
               >
