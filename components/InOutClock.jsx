@@ -74,24 +74,26 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     setTimeout(() => setScreenMessage(null), 4000);
   };
 
-  const { latitude, longitude } = org;
-const orgLocation = { latitude, longitude };
+  const orgLocation = org ? { latitude: org.latitude, longitude: org.longitude } : null;
 
-const validarUbicacion = async (currentLocation, orgLocation) => {
-  const { latitude_in, longitude_in, latitude_out, longitude_out } = currentLocation;
-  const { latitude, longitude } = orgLocation;
-
-  const coords = latitude_in && longitude_in ? { latitude: latitude_in, longitude: longitude_in } : { latitude: latitude_out, longitude: longitude_out };
-
-  if (!coords.latitude || !coords.longitude) {
-    Alert.alert("Error", "No se encontraron coordenadas válidas.");
-    return;
-  }
-
-  const distance = await Location.computeDistanceBetweenPointsAsync(coords, { latitude, longitude });
-
-  Alert.alert(distance > 300 ? "Error" : "Exito", `Estás a ${distance > 300 ? "más" : "menos"} de 300 metros del establecimiento.`);
-};
+  const validarUbicacion = async (currentLocation, orgLocation) => {
+    if (!orgLocation || !orgLocation.latitude || !orgLocation.longitude) {
+      Alert.alert("Error", "No se encontraron coordenadas válidas del establecimiento.");
+      return;
+    }
+  
+    const { latitude_in, longitude_in, latitude_out, longitude_out } = currentLocation;
+    const coords = latitude_in && longitude_in ? { latitude: latitude_in, longitude: longitude_in } : { latitude: latitude_out, longitude: longitude_out };
+  
+    if (!coords.latitude || !coords.longitude) {
+      Alert.alert("Error", "No se encontraron coordenadas válidas.");
+      return;
+    }
+  
+    const distance = await Location.computeDistanceBetweenPointsAsync(coords, { latitude: orgLocation.latitude, longitude: orgLocation.longitude });
+  
+    Alert.alert(distance > 300 ? "Error" : "Exito", `Estás a ${distance > 300 ? "más" : "menos"} de 300 metros del establecimiento.`);
+  };
 
   const handleIngresoPress = async () => {
     setLoading(true);
