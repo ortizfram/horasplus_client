@@ -105,8 +105,8 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
     toast(
       distance > 300
-        ? "Error: Estás a más de 300 metros del establecimiento."
-        : "Éxito: Estás a menos de 300 metros del establecimiento."
+        ? "Error: Estás a más de x metros del establecimiento."
+        : "Éxito: Estás a menos de x metros del establecimiento."
     );
   };
 
