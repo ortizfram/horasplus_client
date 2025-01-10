@@ -8,7 +8,7 @@ import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
 import * as Location from "expo-location";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 import { getDistance } from "geolib";
-
+import { toast, ToastContainer } from "react-toastify";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -76,25 +76,38 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     setTimeout(() => setScreenMessage(null), 4000);
   };
 
-  const orgLocation = org ? { latitude: org.latitude, longitude: org.longitude } : null;
+  const orgLocation = org
+    ? { latitude: org.latitude, longitude: org.longitude }
+    : null;
 
   const validarUbicacion = async (currentLocation, orgLocation) => {
     if (!orgLocation || !orgLocation.latitude || !orgLocation.longitude) {
-      Alert.alert("Error", "No se encontraron coordenadas válidas del establecimiento.");
+      toast.error("No se encontraron coordenadas válidas del establecimiento.");
       return;
     }
-  
-    const { latitude_in, longitude_in, latitude_out, longitude_out } = currentLocation;
-    const coords = latitude_in && longitude_in ? { latitude: latitude_in, longitude: longitude_in } : { latitude: latitude_out, longitude: longitude_out };
-  
+
+    const { latitude_in, longitude_in, latitude_out, longitude_out } =
+      currentLocation;
+    const coords =
+      latitude_in && longitude_in
+        ? { latitude: latitude_in, longitude: longitude_in }
+        : { latitude: latitude_out, longitude: longitude_out };
+
     if (!coords.latitude || !coords.longitude) {
-      Alert.alert("Error", "No se encontraron coordenadas válidas.");
+      toast.error("No se encontraron coordenadas válidas.");
       return;
     }
-  
-    const distance = getDistance(coords, { latitude: orgLocation.latitude, longitude: orgLocation.longitude });
-  
-    Alert.alert(distance > 300 ? "Error" : "Exito", `Estás a ${distance > 300 ? "más" : "menos"} de 300 metros del establecimiento.`);
+
+    const distance = getDistance(coords, {
+      latitude: orgLocation.latitude,
+      longitude: orgLocation.longitude,
+    });
+
+    toast(
+      distance > 300
+        ? "Error: Estás a más de 300 metros del establecimiento."
+        : "Éxito: Estás a menos de 300 metros del establecimiento."
+    );
   };
 
   const handleIngresoPress = async () => {
@@ -269,6 +282,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
   return (
     <View style={styles.container}>
+      <ToastContainer />
       {screenMessage && (
         <View
           style={[
