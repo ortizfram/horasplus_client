@@ -74,6 +74,25 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     setTimeout(() => setScreenMessage(null), 4000);
   };
 
+  const { latitude, longitude } = org?.location;
+  const orgLocation = { latitude, longitude };
+  
+  const validarUbicacion = async (currentLocation, orgLocation) => {
+    const { latitude_in, longitude_in, latitude_out, longitude_out } = currentLocation;
+    const { latitude, longitude } = orgLocation;
+  
+    const coords = latitude_in && longitude_in ? { latitude: latitude_in, longitude: longitude_in } : { latitude: latitude_out, longitude: longitude_out };
+  
+    if (!coords.latitude || !coords.longitude) {
+      Alert.alert("Error", "No se encontraron coordenadas válidas.");
+      return;
+    }
+  
+    const distance = await Location.computeDistanceBetweenPointsAsync(coords, { latitude, longitude });
+  
+    Alert.alert(distance > 300 ? "Error" : "Exito", `Estás a ${distance > 300 ? "más" : "menos"} de 300 metros del establecimiento.`);
+  };
+
   const handleIngresoPress = async () => {
     setLoading(true);
     const now = new Date();
@@ -113,6 +132,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 201) {
         console.log("Ingresaste OK");
         setLoading(false);
+        validarUbicacion(currentLocation, orgLocation);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
@@ -166,6 +186,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
         setLoading(false);
+        validarUbicacion(currentLocation, orgLocation);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
@@ -223,6 +244,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 200) {
         console.log("Egresaste OK");
         setLoading(false);
+        validarUbicacion(currentLocation, orgLocation);
         showScreenMessage("SALISTE", "red");
         setWasIn(false);
         setInTime(null);
