@@ -7,6 +7,8 @@ import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
 import * as Location from "expo-location";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
+import { getDistance } from "geolib";
+
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -90,7 +92,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       return;
     }
   
-    const distance = await Location.computeDistanceBetweenPointsAsync(coords, { latitude: orgLocation.latitude, longitude: orgLocation.longitude });
+    const distance = getDistance(coords, { latitude: orgLocation.latitude, longitude: orgLocation.longitude });
   
     Alert.alert(distance > 300 ? "Error" : "Exito", `Estás a ${distance > 300 ? "más" : "menos"} de 300 metros del establecimiento.`);
   };
