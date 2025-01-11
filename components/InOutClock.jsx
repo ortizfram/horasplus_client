@@ -121,14 +121,15 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
     const orgAdminCellphones = org.admin_celphones.map((number) => number);
     orgAdminCellphones.forEach((phone) => {
-      client.messages
-        .create({
-          body: message,
-          to: phone, // Text this number
-          from: TWILIO_PHONE, // From a valid Twilio number
-        })
-        .then((message) => console.log(message.sid))
-        .catch((error) => console.error(error));
+      // client.messages
+      //   .create({
+      //     body: message,
+      //     to: phone, // Text this number
+      //     from: TWILIO_PHONE, // From a valid Twilio number
+      //   })
+      //   .then((message) => console.log(message.sid))
+      //   .catch((error) => console.error(error));
+      console.log("Message sent to:", phone);
     });
   };
 
