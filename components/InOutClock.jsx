@@ -104,11 +104,11 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       longitude: orgLocation.longitude,
     });
 
-    toast(
-      distance > 300
-        ? `HorasMas | Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} más de 300 metros del establecimiento.`
-        : `HorasMas | Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`
-    );
+    // toast(
+    //   distance > 300
+    //     ? `HorasMas | Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} más de 300 metros del establecimiento.`
+    //     : `HorasMas | Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`
+    // );
 
     const message =
       distance > 300
