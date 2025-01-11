@@ -9,7 +9,7 @@ import * as Location from "expo-location";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 import { getDistance } from "geolib";
 import { toast, ToastContainer } from "react-toastify";
-import { Twilio } from "twilio";
+import Twilio  from "twilio";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -19,6 +19,8 @@ const InOutClock = ({ orgId, setShowSearch }) => {
   const [wasIn, setWasIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [screenMessage, setScreenMessage] = useState(null);
+  const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+
 
   const fetchOrg = async () => {
     try {
@@ -116,7 +118,6 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         : `Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`;
 
 
-    const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
     const orgAdminCellphones = org.admin_celphones.map((number) => number);
     orgAdminCellphones.forEach((phone) => {
