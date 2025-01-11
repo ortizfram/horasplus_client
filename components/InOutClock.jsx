@@ -9,7 +9,7 @@ import * as Location from "expo-location";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 import { getDistance } from "geolib";
 import { toast, ToastContainer } from "react-toastify";
-import Twilio  from "twilio";
+// import Twilio  from "twilio";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
