@@ -110,14 +110,14 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
     // toast(
     //   distance > 300
-    //     ? `HorasMas | Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} más de 300 metros del establecimiento.`
-    //     : `HorasMas | Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`
+    //     ? `HorasMas | Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} más de 300 metros del establecimiento.`
+    //     : `HorasMas | Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} a menos de 300 metros del establecimiento.`
     // );
 
     const message =
       distance > 300
-        ? `Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} más de 300 metros del establecimiento.`
-        : `Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`;
+        ? `Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} más de 300 metros del establecimiento.`
+        : `Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} a menos de 300 metros del establecimiento.`;
 
     const orgAdminCellphones = org.admin_celphones.map((number) => number);
     orgAdminCellphones.forEach((phone) => {
