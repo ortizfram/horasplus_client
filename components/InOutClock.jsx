@@ -85,7 +85,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     ? { latitude: org.latitude, longitude: org.longitude }
     : null;
 
-  const validarUbicacionAlerta = async (currentLocation, orgLocation) => {
+  const validarUbicacionAlerta = async (currentLocation, orgLocation, shiftMode) => {
     if (!orgLocation || !orgLocation.latitude || !orgLocation.longitude) {
       toast.error(
         "❌ No se encontraron coordenadas válidas del establecimiento."
@@ -117,7 +117,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     const actionEmoji = isIngreso ? "🔵" : "🔴";
     const statusEmoji = distance > 300 ? "❌" : "✅";
 
-    const message = `📍 Horas Mas | ${actionEmoji} ${action} ${statusEmoji} ${status}: ${
+    const message = `📍 Horas Mas | ${actionEmoji} ${action} ${shiftMode} ${statusEmoji} ${status}: ${
       userInfo?.user?.data?.firstname
     } ${userInfo?.user?.data?.lastname} ${action.toLowerCase()} a ${
       org.name
@@ -145,6 +145,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     setLoading(true);
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
+    const shiftMode = "regular";
 
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -166,7 +167,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
-          shiftMode: "regular",
+          shiftMode: shiftMode,
           location: currentLocation,
         },
         {
@@ -180,7 +181,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 201) {
         console.log("Ingresaste OK");
         setLoading(false);
-        validarUbicacionAlerta(currentLocation, orgLocation);
+        validarUbicacionAlerta(currentLocation, orgLocation, shiftMode);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
@@ -202,6 +203,8 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
     setInTime(currentInTime);
+    const shiftMode = "holiday";
+
 
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -220,7 +223,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
-          shiftMode: "holiday",
+          shiftMode: shiftMode,
           location: currentLocation,
         },
         {
@@ -234,7 +237,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
         setLoading(false);
-        validarUbicacionAlerta(currentLocation, orgLocation);
+        validarUbicacionAlerta(currentLocation, orgLocation, shiftMode);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
