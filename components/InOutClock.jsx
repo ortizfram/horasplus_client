@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View, Image, Alert } from "react-native";
 import axios from "axios";
-import { RESP_URL, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } from "../config";
+import { RESP_URL, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
@@ -124,7 +124,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         .create({
           body: message,
           to: phone, // Text this number
-          from: "+1234567890", // From a valid Twilio number
+          from: TWILIO_PHONE, // From a valid Twilio number
         })
         .then((message) => console.log(message.sid))
         .catch((error) => console.error(error));
