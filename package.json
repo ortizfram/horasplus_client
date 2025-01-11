@@ -67,7 +67,8 @@
     "react-native-view-shot": "^3.8.0",
     "react-native-web": "^0.19.12",
     "react-qr-code": "^2.0.15",
-    "react-toastify": "^11.0.2"
+    "react-toastify": "^11.0.2",
+    "twilio": "^5.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

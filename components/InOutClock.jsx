@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View, Image, Alert } from "react-native";
 import axios from "axios";
-import { RESP_URL } from "../config";
+import { RESP_URL, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN } from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
@@ -9,6 +9,7 @@ import * as Location from "expo-location";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 import { getDistance } from "geolib";
 import { toast, ToastContainer } from "react-toastify";
+import { Twilio } from "twilio";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -80,7 +81,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     ? { latitude: org.latitude, longitude: org.longitude }
     : null;
 
-  const validarUbicacion = async (currentLocation, orgLocation) => {
+  const validarUbicacionAlerta = async (currentLocation, orgLocation) => {
     if (!orgLocation || !orgLocation.latitude || !orgLocation.longitude) {
       toast.error("No se encontraron coordenadas válidas del establecimiento.");
       return;
@@ -105,9 +106,29 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
     toast(
       distance > 300
-        ? "Error: Estás a más de x metros del establecimiento."
-        : "Éxito: Estás a menos de x metros del establecimiento."
+        ? `Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} más de 300 metros del establecimiento.`
+        : `Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`
     );
+
+    const message =
+      distance > 300
+        ? `Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} más de 300 metros del establecimiento.`
+        : `Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`;
+
+
+    const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+
+    const orgAdminCellphones = org.admin_celphones.map((number) => number);
+    orgAdminCellphones.forEach((phone) => {
+      client.messages
+        .create({
+          body: message,
+          to: phone, // Text this number
+          from: "+1234567890", // From a valid Twilio number
+        })
+        .then((message) => console.log(message.sid))
+        .catch((error) => console.error(error));
+    });
   };
 
   const handleIngresoPress = async () => {
@@ -149,7 +170,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 201) {
         console.log("Ingresaste OK");
         setLoading(false);
-        validarUbicacion(currentLocation, orgLocation);
+        validarUbicacionAlerta(currentLocation, orgLocation);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
@@ -203,7 +224,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
         setLoading(false);
-        validarUbicacion(currentLocation, orgLocation);
+        validarUbicacionAlerta(currentLocation, orgLocation);
         showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
@@ -261,7 +282,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 200) {
         console.log("Egresaste OK");
         setLoading(false);
-        validarUbicacion(currentLocation, orgLocation);
+        validarUbicacionAlerta(currentLocation, orgLocation);
         showScreenMessage("SALISTE", "red");
         setWasIn(false);
         setInTime(null);
