@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View, Image, Alert } from "react-native";
 import axios from "axios";
-import { RESP_URL, TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE } from "../config";
+import {
+  RESP_URL,
+  TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE,
+} from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
@@ -9,7 +14,6 @@ import * as Location from "expo-location";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 import { getDistance } from "geolib";
 import { toast, ToastContainer } from "react-toastify";
-// import Twilio  from "twilio";
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -19,8 +23,6 @@ const InOutClock = ({ orgId, setShowSearch }) => {
   const [wasIn, setWasIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [screenMessage, setScreenMessage] = useState(null);
-  // const client = new Twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-
 
   const fetchOrg = async () => {
     try {
@@ -117,19 +119,15 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         ? `Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} más de 300 metros del establecimiento.`
         : `Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${orgName} a menos de 300 metros del establecimiento.`;
 
-
-
     const orgAdminCellphones = org.admin_celphones.map((number) => number);
     orgAdminCellphones.forEach((phone) => {
-      // client.messages
-      //   .create({
-      //     body: message,
-      //     to: phone, // Text this number
-      //     from: TWILIO_PHONE, // From a valid Twilio number
-      //   })
-      //   .then((message) => console.log(message.sid))
-      //   .catch((error) => console.error(error));
-      console.log("Message sent to:", phone);
+      axios
+        .post(`${RESP_URL}/api/send-alert`, {
+          message,
+          phone,
+        })
+        .then((response) => console.log("Message twilio api sent:", response.data.sid))
+        .catch((error) => console.error("Error sending twilio api message:", error));
     });
   };
 
