@@ -87,7 +87,9 @@ const InOutClock = ({ orgId, setShowSearch }) => {
 
   const validarUbicacionAlerta = async (currentLocation, orgLocation) => {
     if (!orgLocation || !orgLocation.latitude || !orgLocation.longitude) {
-      toast.error("No se encontraron coordenadas válidas del establecimiento.");
+      toast.error(
+        "❌ No se encontraron coordenadas válidas del establecimiento."
+      );
       return;
     }
 
@@ -99,7 +101,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
         : { latitude: latitude_out, longitude: longitude_out };
 
     if (!coords.latitude || !coords.longitude) {
-      toast.error("No se encontraron coordenadas válidas.");
+      toast.error("❌ No se encontraron coordenadas válidas.");
       return;
     }
 
@@ -108,16 +110,20 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       longitude: orgLocation.longitude,
     });
 
-    // toast(
-    //   distance > 300
-    //     ? `HorasMas | Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} más de 300 metros del establecimiento.`
-    //     : `HorasMas | Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} a menos de 300 metros del establecimiento.`
-    // );
+    const isIngreso = latitude_in && longitude_in;
+    const mapLink = `https://www.google.com/maps/search/?api=1&query=${coords.latitude},${coords.longitude}`;
+    const action = isIngreso ? "Ingreso" : "Egreso";
+    const status = distance > 300 ? "Falso" : "Verdadero";
+    const actionEmoji = isIngreso ? "🔵" : "🔴";
+    const statusEmoji = distance > 300 ? "❌" : "✅";
 
-    const message =
-      distance > 300
-        ? `Error: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} más de 300 metros del establecimiento.`
-        : `Éxito: ${userInfo?.user?.data?.firstname} ${userInfo?.user?.data?.lastname} ingresó a ${org.name} a menos de 300 metros del establecimiento.`;
+    const message = `📍 Horas Mas | ${actionEmoji} ${action} ${statusEmoji} ${status}: ${
+      userInfo?.user?.data?.firstname
+    } ${userInfo?.user?.data?.lastname} ${action.toLowerCase()} a ${
+      org.name
+    } a ${
+      distance > 300 ? "más" : "menos"
+    } de 300 metros del establecimiento. 🌐 [Coordenadas](${mapLink})`;
 
     const orgAdminCellphones = org.admin_celphones.map((number) => number);
     orgAdminCellphones.forEach((phone) => {
@@ -126,8 +132,12 @@ const InOutClock = ({ orgId, setShowSearch }) => {
           message,
           phone,
         })
-        .then((response) => console.log("Message twilio api sent:", response.data.sid))
-        .catch((error) => console.error("Error sending twilio api message:", error));
+        .then((response) =>
+          console.log("Message twilio api sent:", response.data.sid)
+        )
+        .catch((error) =>
+          console.error("Error sending twilio api message:", error)
+        );
     });
   };
 
