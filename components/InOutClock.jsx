@@ -115,7 +115,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     const action = isIngreso ? "Ingreso" : "Egreso";
     const status = distance > 300 ? "Falso" : "Verdadero";
     const actionEmoji = isIngreso ? "🔵" : "🔴";
-    const statusEmoji = distance > 300 ? "❌" : "✅";
+    const statusEmoji = distance > 300 ? "❌" : "✅"; 
 
     const message = `📍 Horas Mas | ${actionEmoji} ${action} ${shiftMode} ${statusEmoji} ${status}: ${
       userInfo?.user?.data?.firstname
