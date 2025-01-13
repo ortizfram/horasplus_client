@@ -1,5 +1,6 @@
 import { Stack } from "expo-router";
 import BePart from "./bePart";
+import verifyLocation from "./verifyLocation";
 
 export default function OrgLayout() {
   return (
@@ -39,6 +40,10 @@ export default function OrgLayout() {
       />
        <Stack.Screen
         name="settings"
+        screenOptions={{ headerShown: false, title: "" }}
+      />
+       <Stack.Screen
+        name="verifyLocation"
         screenOptions={{ headerShown: false, title: "" }}
       />
     </Stack>

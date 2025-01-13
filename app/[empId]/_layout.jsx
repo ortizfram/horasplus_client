@@ -33,6 +33,7 @@ export default function EmpLayout() {
         component={Report}
         screenOptions={{ headerShown: false, title: "" }}
       />
+     
     </Tab.Navigator>
   );
 }

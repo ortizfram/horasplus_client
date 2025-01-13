@@ -119,16 +119,21 @@ export default function SearchOrganization({
             onPress={() => onSelectOrg(item._id)}
             style={({ pressed }) => [
               {
-                padding: 20,
-                backgroundColor: pressed ? "#ddd" : "#f5f5f5",
-                margin: 5,
-                width: "100%",
+                backgroundColor: pressed ? "#e6f7f5" : "#FFFFFF",
+                borderWidth: 1,
+                borderColor: "#ddd",
+                marginVertical: 8,
+                padding: 15,
+                borderRadius: 12,
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between", // Space between elements
-                borderRadius: 8,
+                justifyContent: "space-between",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                shadowRadius: 4,
+                elevation: 3,
               },
-              styles.itemContainer,
             ]}
           >
             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -140,7 +145,7 @@ export default function SearchOrganization({
                 }
                 style={styles.image}
               />
-              <Text>{item.name}</Text>
+              <Text style={styles.orgName}>{item.name}</Text>
             </View>
             <View style={styles.employeeInfo}>
               <MaterialIcons name="person" size={20} color="#8E8E93" />
@@ -171,7 +176,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     marginVertical: 15,
-    marginHorizontal: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -181,8 +185,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    backgroundColor: "#F0F0F0",
-    borderRadius: 25,
     paddingVertical: 8,
     paddingHorizontal: 10,
   },
@@ -195,14 +197,16 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     alignItems: "center",
   },
-  itemContainer: {
-    borderRadius: 8,
-  },
   image: {
     width: 50,
     height: 50,
     borderRadius: 8,
     marginRight: 15,
+  },
+  orgName: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
   },
   employeeInfo: {
     flexDirection: "row",
@@ -210,7 +214,7 @@ const styles = StyleSheet.create({
   },
   employeeCount: {
     marginLeft: 5,
-    fontSize: 16,
+    fontSize: 14,
     color: "#8E8E93",
   },
   noResults: {

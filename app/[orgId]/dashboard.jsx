@@ -13,6 +13,7 @@ import axios from "axios";
 import Icon from "react-native-vector-icons/MaterialIcons"; // Adjust the icon set if needed
 import { RESP_URL } from "../../config";
 import fetchOrganization from "../../services/organization/fetchOrganization";
+import LocationIcon from "../../icons/LocationIcon";
 
 export default function Dashboard() {
   const { orgId } = useLocalSearchParams();
@@ -99,29 +100,20 @@ export default function Dashboard() {
           onPress={() => router.push(`${organization?._id}/employees`)}
         >
           <Icon name="people" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Descargar Reporte Individual - Configurar empleado</Text>
+          <Text style={styles.gridText}>
+            Descargar Reporte Individual - Configurar empleado
+          </Text>
         </Pressable>
         <Pressable
           style={styles.gridItem}
           onPress={() => router.push(`${organization?._id}/downloadReports`)}
         >
           <Icon name="assessment" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Descargar todos tus reportes de{" "}{organization?.name}</Text>
+          <Text style={styles.gridText}>
+            Descargar todos tus reportes de {organization?.name}
+          </Text>
         </Pressable>
-        {/* <Pressable
-          style={styles.gridItem}
-          onPress={() => router.push("/roles")}
-        >
-          <Icon name="group" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Roles</Text>
-        </Pressable> */}
-        {/* <Pressable
-          style={styles.gridItem}
-          onPress={() => router.push("/alerts")}
-        >
-          <Icon name="notifications" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Alertas</Text>
-        </Pressable> */}
+
         <Pressable
           style={styles.gridItem}
           onPress={() => router.push(`${orgId}/fixRecord`)}
@@ -129,14 +121,13 @@ export default function Dashboard() {
           <Icon name="edit" size={30} color="#007bff" />
           <Text style={styles.gridText}>Corrige o Agrega un Registro</Text>
         </Pressable>
-     
-        {/* <Pressable
+        <Pressable
           style={styles.gridItem}
-          onPress={() => router.push("/salary-advance")}
+          onPress={() => router.push(`${organization?._id}/verifyLocation`)}
         >
-          <Icon name="monetization-on" size={30} color="#007bff" />
-          <Text style={styles.gridText}>Adelanto de Sueldo</Text>
-        </Pressable> */}
+          <LocationIcon size={30} color="#007bff" />
+          <Text style={styles.gridText}>Ubicación de Marcaciones</Text>
+        </Pressable>
       </View>
       <Pressable style={styles.removeButton} onPress={confirmDelete}>
         <Icon name="delete" size={24} color="white" />
@@ -151,11 +142,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: "#f5f5f5",
-    justifyContent:"center",
-    alignItems:"center",
-    marginBottom:80   
-    ,
-    marginTop:"2%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 80,
+    marginTop: "2%",
   },
   removeButton: {
     marginTop: 15,
@@ -221,14 +211,14 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     backgroundColor: "red",
-    opacity:"10%",
+    opacity: "10%",
     padding: 3,
     borderRadius: 5,
     marginTop: 20, // Ensures it's at the bottom
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "center",
-    width: "20%"
+    width: "20%",
   },
   deleteButtonText: {
     color: "white",

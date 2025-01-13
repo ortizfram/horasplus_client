@@ -18,38 +18,8 @@ const Logo = ({ style }) => {
 
   return (
     <View style={styles.logoContainer}>
-      {/* Main Logo */}
-      {/* <Image
-        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
-        style={[
-          {
-            width: logoWidth,
-            height: logoHeight,
-            alignSelf: "center",
-            marginBottom: 15,
-          },
-          style,
-        ]}
-        resizeMode="contain"
-      /> */}
+      
 
-      {/* First Scaled Logo */}
-      {/* <Image
-        source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
-        style={[
-          {
-            width: logoWidth * 0.8, // Scale down
-            height: logoHeight * 0.8,
-            alignSelf: "center",
-            marginBottom: 10,
-            transform: [{ translateY: 10 }], // Move slightly downward
-          },
-          style,
-        ]}
-        resizeMode="contain"
-      /> */}
-
-      {/* Second Scaled Logo */}
       <Image
         source={require("../assets/images/app_logo_no_description_appbannerlogo.png")}
         style={[

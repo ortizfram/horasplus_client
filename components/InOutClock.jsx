@@ -1,18 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View, Image, Alert } from "react-native";
 import axios from "axios";
-import { RESP_URL } from "../config";
+import {
+  RESP_URL,
+  TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE,
+} from "../config";
 import { AuthContext } from "../context/AuthContext";
 import { format } from "date-fns-tz";
 import { fetchLastShiftUid } from "../services/userShift/fetchShifts";
+import * as Location from "expo-location";
+import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
+import { getDistance } from "geolib";
+import { toast, ToastContainer } from "react-toastify";
 
-const InOutClock = ({ orgId }) => {
+const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
   const [org, setOrg] = useState(null);
   const [inTime, setInTime] = useState(null);
   const [outTime, setOutTime] = useState(null);
   const [wasIn, setWasIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [screenMessage, setScreenMessage] = useState(null);
 
   const fetchOrg = async () => {
     try {
@@ -45,7 +55,6 @@ const InOutClock = ({ orgId }) => {
         setWasIn(false);
       }
 
-      // Log total_hours
       if (shiftData?.total_hours) {
         console.log("Total Hours:", shiftData.total_hours);
       }
@@ -67,17 +76,99 @@ const InOutClock = ({ orgId }) => {
 
   const timeZone = "America/Argentina/Buenos_Aires";
 
+  const showScreenMessage = (message, color) => {
+    setScreenMessage({ message, color });
+    setTimeout(() => setScreenMessage(null), 4000);
+  };
+
+  const orgLocation = org
+    ? { latitude: org.latitude, longitude: org.longitude }
+    : null;
+
+  const validarUbicacionAlerta = async (currentLocation, orgLocation, shiftMode) => {
+    if (!orgLocation || !orgLocation.latitude || !orgLocation.longitude) {
+      toast.error(
+        "❌ No se encontraron coordenadas válidas del establecimiento."
+      );
+      return;
+    }
+
+    const { latitude_in, longitude_in, latitude_out, longitude_out } =
+      currentLocation;
+    const coords =
+      latitude_in && longitude_in
+        ? { latitude: latitude_in, longitude: longitude_in }
+        : { latitude: latitude_out, longitude: longitude_out };
+
+    if (!coords.latitude || !coords.longitude) {
+      toast.error("❌ No se encontraron coordenadas válidas.");
+      return;
+    }
+
+    const distance = getDistance(coords, {
+      latitude: orgLocation.latitude,
+      longitude: orgLocation.longitude,
+    });
+
+    const isIngreso = latitude_in && longitude_in;
+    const mapLink = `https://www.google.com/maps/search/?api=1&query=${coords.latitude},${coords.longitude}`;
+    const action = isIngreso ? "Ingreso" : "Egreso";
+    const status = distance > 300 ? "Falso" : "Verdadero";
+    const actionEmoji = isIngreso ? "🔵" : "🔴";
+    const statusEmoji = distance > 300 ? "❌" : "✅"; 
+
+    const message = `📍 Horas Mas | ${actionEmoji} ${action} ${shiftMode} ${statusEmoji} ${status}: ${
+      userInfo?.user?.data?.firstname
+    } ${userInfo?.user?.data?.lastname} ${action.toLowerCase()} a ${
+      org.name
+    } a ${
+      distance > 300 ? "más" : "menos"
+    } de 300 metros del establecimiento. 🌐 [Coordenadas](${mapLink})`;
+
+    const orgAdminCellphones = org.admin_celphones.map((number) => number);
+    orgAdminCellphones.forEach((phone) => {
+      axios
+        .post(`${RESP_URL}/api/send-alert`, {
+          message,
+          phone,
+        })
+        .then((response) =>
+          console.log("Message twilio api sent:", response.data.sid)
+        )
+        .catch((error) =>
+          console.error("Error sending twilio api message:", error)
+        );
+    });
+  };
+
   const handleIngresoPress = async () => {
+    setLoading(true);
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
-    setInTime(currentInTime);
+    const shiftMode = "regular";
 
     try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+
+      const currentLocation = {
+        latitude_in: location.coords.latitude,
+        longitude_in: location.coords.longitude,
+      };
+
+      setInTime(currentInTime);
+
       const response = await axios.post(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
-          shiftMode: "regular",
+          shiftMode: shiftMode,
+          location: currentLocation,
         },
         {
           headers: {
@@ -89,9 +180,11 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("Ingresaste OK");
+        setLoading(false);
+        validarUbicacionAlerta(currentLocation, orgLocation, shiftMode);
+        showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
-        console.log("Failed to create shift");
         Alert.alert("Error", "Failed to clock in. Please try again.");
       }
     } catch (error) {
@@ -100,20 +193,38 @@ const InOutClock = ({ orgId }) => {
         "Error",
         "An error occurred during clock in. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleIngresoFeriadoPress = async () => {
+    setLoading(true);
     const now = new Date();
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
     setInTime(currentInTime);
+    const shiftMode = "holiday";
+
 
     try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
+
+      const location = await Location.getCurrentPositionAsync({});
+      const currentLocation = {
+        latitude_in: location.coords.latitude,
+        longitude_in: location.coords.longitude,
+      };
+
       const response = await axios.post(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           inTime: currentInTime,
-          shiftMode: "holiday",
+          shiftMode: shiftMode,
+          location: currentLocation,
         },
         {
           headers: {
@@ -125,9 +236,11 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 201) {
         console.log("IngresasteFeriado OK");
+        setLoading(false);
+        validarUbicacionAlerta(currentLocation, orgLocation, shiftMode);
+        showScreenMessage("INGRESASTE", "green");
         setWasIn(true);
       } else {
-        console.log("Failed to create holiday shift");
         Alert.alert("Error", "Failed to clock in (holiday). Please try again.");
       }
     } catch (error) {
@@ -136,10 +249,13 @@ const InOutClock = ({ orgId }) => {
         "Error",
         "An error occurred during holiday clock in. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleEgresoPress = async () => {
+    setLoading(true);
     const now = new Date();
     const currentOutTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", {
       timeZone,
@@ -147,10 +263,26 @@ const InOutClock = ({ orgId }) => {
     setOutTime(currentOutTime);
 
     try {
+      // Request location permissions
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission Denied", "Location permission is required.");
+        return;
+      }
+
+      // Get current location
+      const location = await Location.getCurrentPositionAsync({});
+      const currentLocation = {
+        latitude_out: location.coords.latitude,
+        longitude_out: location.coords.longitude,
+      };
+
+      // Send clock-out data
       const response = await axios.put(
         `${RESP_URL}/api/shift/${userInfo.user._id}/${org._id}`,
         {
           outTime: currentOutTime,
+          location: currentLocation, // Include location data
         },
         {
           headers: {
@@ -162,12 +294,13 @@ const InOutClock = ({ orgId }) => {
 
       if (response.status === 200) {
         console.log("Egresaste OK");
+        setLoading(false);
+        validarUbicacionAlerta(currentLocation, orgLocation);
+        showScreenMessage("SALISTE", "red");
         setWasIn(false);
-
         setInTime(null);
         setOutTime(null);
       } else {
-        console.log("Failed to complete shift");
         Alert.alert("Error", "Failed to clock out. Please try again.");
       }
     } catch (error) {
@@ -176,11 +309,25 @@ const InOutClock = ({ orgId }) => {
         "Error",
         "An error occurred during clock out. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.container}>
+      <ToastContainer />
+      {screenMessage && (
+        <View
+          style={[
+            styles.messageOverlay,
+            { backgroundColor: screenMessage.color },
+          ]}
+        >
+          <Text style={styles.messageText}>{screenMessage.message}</Text>
+        </View>
+      )}
+
       {org ? (
         <>
           <Image
@@ -195,32 +342,48 @@ const InOutClock = ({ orgId }) => {
           <Text style={styles.title}>{org.name}</Text>
         </>
       ) : (
-        <Text>cargando detalles...</Text>
+        <Text>Cargando detalles...</Text>
       )}
-      <Text>{new Date().toLocaleString()}</Text>
 
       {loading ? (
-        <Text>Cargando turno...</Text>
+        <LoadingIndicator color="#007bff" />
       ) : (
         <>
           {wasIn === false && (
             <View>
-              <Pressable style={styles.actionBtn} onPress={handleIngresoPress}>
+              <Pressable
+                style={styles.actionBtn}
+                onPress={handleIngresoPress}
+                disabled={loading}
+              >
                 <Text style={styles.actionText}>Ingreso</Text>
               </Pressable>
               <Pressable
                 style={styles.actionBtn}
                 onPress={handleIngresoFeriadoPress}
+                disabled={loading}
               >
                 <Text style={styles.actionText}>Ingreso Feriado</Text>
               </Pressable>
             </View>
           )}
           {wasIn === true && (
-            <Pressable style={styles.actionBtnL} onPress={handleEgresoPress}>
+            <Pressable
+              style={styles.actionBtnL}
+              onPress={handleEgresoPress}
+              disabled={loading}
+            >
               <Text style={styles.actionText}>Egreso</Text>
             </Pressable>
           )}
+          <Pressable
+            style={styles.switchButton}
+            onPress={() => setShowSearch(true)}
+          >
+            <Text style={styles.switchButtonTextChange}>
+              Hoy estoy en otro establecimiento
+            </Text>
+          </Pressable>
         </>
       )}
     </View>
@@ -230,60 +393,73 @@ const InOutClock = ({ orgId }) => {
 export default InOutClock;
 
 const styles = StyleSheet.create({
+  messageOverlay: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    padding: 10,
+    zIndex: 2,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  messageText: {
+    fontSize: 16,
+    color: "white",
+    textAlign: "center",
+  },
+  switchButtonTextChange: {
+    color: "#007bff",
+    fontSize: 14,
+    textDecorationLine: "underline",
+    textAlign: "center",
+  },
+  switchButton: {
+    marginTop: 15,
+  },
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f9f9f9",
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 20,
+    width: 120, // Adjust width as needed
+    height: 120, // Adjust height as needed
+    borderRadius: 60, // Makes the image circular
+    marginBottom: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
-    marginBottom: 30,
+    textAlign: "center",
+    marginBottom: 20,
   },
   actionBtn: {
-    width: "100%",
-    marginVertical: 15,
-    paddingVertical: 15,
-    backgroundColor: "#007bff",
+    backgroundColor: "#28a745",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
-    elevation: 5,
+    marginVertical: 5,
+  },
+  actionBtnIN: {
+    backgroundColor: "#28a745",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    marginBottom: 14,
   },
   actionBtnL: {
-    width: "100%",
-    marginVertical: 15,
-    paddingVertical: 15,
-    backgroundColor: "red",
+    backgroundColor: "#dc3545",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 8,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 3.84,
-    elevation: 5,
+    marginVertical: 5,
   },
   actionText: {
-    fontSize: 18,
-    color: "#fff",
-    fontWeight: "600",
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

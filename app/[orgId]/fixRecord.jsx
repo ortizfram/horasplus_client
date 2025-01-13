@@ -59,15 +59,22 @@ const FixARecord = () => {
 
     const loadShiftForEmployee = async () => {
       try {
-        const shiftData = await fetchShift(
-          empId,
-          startDate.toISOString().split("T")[0]
-        );
+        const shiftData = await fetchShift(empId, startDate.toISOString().split("T")[0]);
         setShiftDetails(shiftData);
       } catch (error) {
         console.error("Error fetching shifts:", error);
+        if (error.response?.status === 404) {
+          setShiftDetails({
+            shift_mode: "NO EXISTE",
+            in: "NO EXISTE",
+            out: "NO EXISTE",
+          });
+        } else {
+          setShiftDetails(null);
+        }
       }
     };
+    
 
     loadEmployees();
     if (empId) {
@@ -135,7 +142,7 @@ const FixARecord = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <ViewShot ref={viewRef} style={styles.container}>
         <Text style={styles.title}>Corrige un Registro</Text>
-
+  
         {showEmployeeList && (
           <FlatList
             data={employees}
@@ -152,7 +159,7 @@ const FixARecord = () => {
             )}
           />
         )}
-
+  
         {employee && employee.email ? (
           <View>
             <Text style={styles.title}>
@@ -160,7 +167,7 @@ const FixARecord = () => {
                 {employee.firstname} {employee.lastname}
               </Text>
             </Text>
-
+  
             <View style={styles.dateContainer}>
               <Text style={styles.label}>Fecha:</Text>
               <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -169,7 +176,7 @@ const FixARecord = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-
+  
             <Modal
               transparent={true}
               animationType="slide"
@@ -190,13 +197,13 @@ const FixARecord = () => {
                 </View>
               </View>
             </Modal>
-
+  
             {shiftDetails ? (
               <View style={styles.shiftDetailsContainer}>
                 <Text style={styles.shiftDetailsText}>
                   Detalles del registro existente:
                 </Text>
-
+  
                 <Text style={styles.label}>Modo del Turno:</Text>
                 <Picker
                   selectedValue={shiftType}
@@ -206,7 +213,7 @@ const FixARecord = () => {
                   <Picker.Item label="Regular" value="regular" />
                   <Picker.Item label="Feriado" value="holiday" />
                 </Picker>
-
+  
                 <Text style={styles.label}>Hora de Ingreso:</Text>
                 <Text style={styles.gray}>
                   Si fuese AM, anteponer con 0.ej.01:00:00
@@ -218,7 +225,7 @@ const FixARecord = () => {
                     setShiftDetails({ ...shiftDetails, in: text })
                   }
                 />
-
+  
                 <Text style={styles.label}>Hora de Salida:</Text>
                 <TextInput
                   style={styles.input}
@@ -227,7 +234,7 @@ const FixARecord = () => {
                     setShiftDetails({ ...shiftDetails, out: text })
                   }
                 />
-
+  
                 <Pressable style={styles.button} onPress={handleSaveShift}>
                   <Text style={styles.buttonText}>Actualizar Registro</Text>
                 </Pressable>
@@ -237,7 +244,7 @@ const FixARecord = () => {
                 <Text style={styles.shiftDetailsText}>
                   No hay registro Existente, estas por agregar uno nuevo:
                 </Text>
-
+  
                 <Text style={styles.label}>Modo del Turno:</Text>
                 <Picker
                   selectedValue={shiftType}
@@ -247,28 +254,28 @@ const FixARecord = () => {
                   <Picker.Item label="Regular" value="regular" />
                   <Picker.Item label="Feriado" value="holiday" />
                 </Picker>
-
+  
                 <Text style={styles.label}>Hora de Ingreso:</Text>
                 <Text style={styles.gray}>
                   Si fuese AM, anteponer con 0.ej.01:00:00
                 </Text>
                 <TextInput
                   style={styles.input}
-                  value={shiftDetails ? shiftDetails?.in : "00:00:00"}
+                  value={shiftDetails?.in || "00:00:00"} // Default if shiftDetails is missing
                   onChangeText={(text) =>
                     setShiftDetails({ ...shiftDetails, in: text })
                   }
                 />
-
+  
                 <Text style={styles.label}>Hora de Salida:</Text>
                 <TextInput
                   style={styles.input}
-                  value={shiftDetails ? shiftDetails?.out : "00:00:00"}
+                  value={shiftDetails?.out || "00:00:00"} // Default if shiftDetails is missing
                   onChangeText={(text) =>
                     setShiftDetails({ ...shiftDetails, out: text })
                   }
                 />
-
+  
                 <Pressable style={styles.button} onPress={handleSaveShift}>
                   <Text style={styles.buttonText}>Agregar Registro</Text>
                 </Pressable>
@@ -283,6 +290,7 @@ const FixARecord = () => {
       </ViewShot>
     </ScrollView>
   );
+  
 };
 
 const styles = StyleSheet.create({
@@ -316,6 +324,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15, // Adds space on the left and right
     borderRadius: 5, // Slightly rounded corners for visual appeal
     backgroundColor: "#f1f1f1", // Light background to make the text pop
+    borderWidth: 1,
+    borderColor: "#25D366", 
     marginVertical: 5, // Small vertical spacing between date text and other elements
   },
   overlay: {
