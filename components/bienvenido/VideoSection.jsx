@@ -3,7 +3,8 @@ import React from "react";
 import { useVideoPlayer, VideoView } from "expo-video";
 
 const VideoSection = () => {
-  const videoSource = { uri: "https://www.example.com/video.mp4" }; // Replace with your video URL
+  // const videoSource = { uri: "https://www.example.com/video.mp4" }; // Replace with your video URL
+  const videoSource = require("../../assets/videos/bienvenido.mp4") // Replace with your video URL
   const player = useVideoPlayer(videoSource, (player) => {
     player.loop = true;
     player.play();
