@@ -14,6 +14,10 @@ import * as Location from "expo-location";
 import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 import { getDistance } from "geolib";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+import "../styles.css"; // Import the stylesheet
 
 const InOutClock = ({ orgId, setShowSearch }) => {
   const { userInfo } = useContext(AuthContext);
@@ -115,7 +119,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     const action = isIngreso ? "Ingreso" : "Egreso";
     const status = distance > 300 ? "Falso" : "Verdadero";
     const actionEmoji = isIngreso ? "🔵" : "🔴";
-    const statusEmoji = distance > 300 ? "❌" : "✅"; 
+    const statusEmoji = distance > 300 ? "❌" : "✅";
 
     const message = `📍 Horas Mas | ${actionEmoji} ${action} ${shiftMode} ${statusEmoji} ${status}: ${
       userInfo?.user?.data?.firstname
@@ -204,7 +208,6 @@ const InOutClock = ({ orgId, setShowSearch }) => {
     const currentInTime = format(now, "yyyy-MM-dd'T'HH:mm:ssXXX", { timeZone });
     setInTime(currentInTime);
     const shiftMode = "holiday";
-
 
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
@@ -295,7 +298,7 @@ const InOutClock = ({ orgId, setShowSearch }) => {
       if (response.status === 200) {
         console.log("Egresaste OK");
         setLoading(false);
-        validarUbicacionAlerta(currentLocation, orgLocation);
+        validarUbicacionAlerta(currentLocation, orgLocation, "regular");
         showScreenMessage("SALISTE", "red");
         setWasIn(false);
         setInTime(null);
