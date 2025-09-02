@@ -15,7 +15,7 @@ import LoadingIndicator from "./organizationListIndex/LoadingIndicator";
 import { getDistance } from "geolib";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "core-js/stable";
+//import "core-js/stable";
 import "regenerator-runtime/runtime";
 import "../styles.css"; // Import the stylesheet
 
